@@ -32,7 +32,7 @@ namespace GameFramework.GameStructure.Game.ObjectModel
     [System.Serializable]
     public class GameConfiguration : ScriptableObject
     {
-        public enum GameItemType { Character, Level, Player, World }
+        public enum GameItemType { Character, Level, Player, World, AddressableGameItem }
 
         #region Static Singleton Reference
         static GameConfiguration _instance;
@@ -151,6 +151,7 @@ namespace GameFramework.GameStructure.Game.ObjectModel
         {
             DefaultGameItemCounterConfiguration.Add(new CounterConfiguration() { Name = "Coins" });
             DefaultGameItemCounterConfiguration.Add(new CounterConfiguration() { Name = "Score" });
+            DefaultGameItemCounterConfiguration.Add(new CounterConfiguration() { Name = Constants.QUANTITY_COUNTER });
             CharacterCounterConfiguration.Add(new CounterConfiguration() { Name = "Coins" });
             CharacterCounterConfiguration.Add(new CounterConfiguration() { Name = "Score" });
             LevelCounterConfiguration.Add(new CounterConfiguration() { Name = "Coins" });

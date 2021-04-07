@@ -42,6 +42,9 @@ using GameFramework.Preferences;
 using GameFramework.Audio.Messages;
 using GameFramework.GameStructure.GameItems.Messages;
 using GameFramework.GameStructure.Game.ObjectModel;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets.ResourceLocators;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS
@@ -535,6 +538,11 @@ namespace GameFramework.GameStructure
         public PlayerGameItemManager Players { get; set; }
 
         /// <summary>
+        /// ExtGameItemManager containing the current ExtGameItems
+        /// </summary>
+        public AddressableGameItemManager AddressableGameItems { get; set; }
+
+        /// <summary>
         /// The current Player. 
         /// </summary>
         /// PlayerChangedMessage is sent whenever this value changes outside of initialisation.
@@ -606,6 +614,9 @@ namespace GameFramework.GameStructure
                 case GameConfiguration.GameItemType.World:
                     Assert.IsNotNull(Instance.Worlds, "Worlds are not setup but are being referenced.");
                     return Instance.Worlds;
+                case GameConfiguration.GameItemType.AddressableGameItem:
+                    Assert.IsNotNull(Instance.AddressableGameItems, "AddressableGameItems are not setup but are being referenced.");
+                    return Instance.AddressableGameItems;
                 default:
                     return null;
             }
@@ -691,7 +702,7 @@ namespace GameFramework.GameStructure
             BackGroundAudioVolume = PreferencesFactory.GetFloat("BackGroundAudioVolume", BackGroundAudioVolume, false);
             EffectAudioVolume = PreferencesFactory.GetFloat("EffectAudioVolume", EffectAudioVolume, false);
 
-			Assert.IsNotNull(Camera.main, "You need a main camera in your scene!");
+            Assert.IsNotNull(Camera.main, "You need a main camera in your scene!");
             // display related properties
             SetDisplayProperties();
 
@@ -709,9 +720,11 @@ namespace GameFramework.GameStructure
             Worlds = new WorldGameItemManager();
             Levels = new LevelGameItemManager();
             Characters = new CharacterGameItemManager();
+            AddressableGameItems = new AddressableGameItemManager();
 
             #region Workaround / warnings for upgraded values.
-            if (AutoCreateWorlds) {
+            if (AutoCreateWorlds)
+            {
                 Debug.LogWarning("GameManager World creation is improved and the AutoCreateWorlds property is replaced. In the GameManager component change the World Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
                 WorldSetupMode = GameItemSetupMode.FromResources;
             }
@@ -720,7 +733,8 @@ namespace GameFramework.GameStructure
                 Debug.LogWarning("GameManager Level creation is improved and the AutoCreateLevel property is replaced. In the GameManager component change the Level Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
                 LevelSetupMode = GameItemSetupMode.FromResources;
             }
-            if (AutoCreateCharacters) {
+            if (AutoCreateCharacters)
+            {
                 Debug.LogWarning("GameManager Character creation is improved and the AutoCreateCharacters property is replaced. In the GameManager component change the Character Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
                 CharacterSetupMode = GameItemSetupMode.FromResources;
             }
@@ -790,6 +804,9 @@ namespace GameFramework.GameStructure
             else if (CharacterSetupMode == GameItemSetupMode.Specified)
                 Debug.LogError("Character 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
 
+            //TODO: Exception handling
+            //Preload Addressables
+            StartCoroutine(AddressableGameItems.Preload());
 
             // coroutine to check for display changes (don't need to do this every frame)
             if (!Mathf.Approximately(DisplayChangeCheckDelay, 0))

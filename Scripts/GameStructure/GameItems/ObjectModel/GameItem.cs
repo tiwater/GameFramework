@@ -54,12 +54,17 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// The different types of prefab we have
         /// </summary>
-        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview }
+        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview, Baby, Young, Adult }
 
         /// <summary>
         /// The different types of sprites we have
         /// </summary>
         public enum LocalisableSpriteType { Custom, SelectionMenu, InGame, UnlockWindow }
+
+        /// <summary>
+        /// The axis directions
+        /// </summary>
+        public enum AxisDirection { X, NegativeX, Y, NegativeY, Z, NegativeZ }
         #endregion Enums
 
         #region Editor Parameters

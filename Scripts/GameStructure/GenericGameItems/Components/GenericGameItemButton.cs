@@ -31,7 +31,7 @@ namespace GameFramework.GameStructure.GenericGameItems.Components
     /// <summary>
     /// GenericGameItem Details Button
     /// </summary>
-    [AddComponentMenu("Game Framework/GameStructure/GenericGameItem/CharacterButton")]
+    [AddComponentMenu("Game Framework/GameStructure/GenericGameItem/GenericGameItemButton")]
     [HelpURL("http://www.flipwebapps.com/game-framework/")]
     public class GenericGameItemButton : GameItemButton<GenericGameItem>
     {

@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -83,7 +84,9 @@ MonoBehaviour:
   - Key: Advertising.UnityAds.UnableToShow
     Description: 
     Languages:
-    - "Unable to load adverts!\r\nPlease try again later."
+    - 'Unable to load adverts!
+
+      Please try again later.'
     - "Kunne ikke laste reklame!\r\nPr\xF8v igjen senere."
     - "Imposs\xEDvel carregar an\xFAncios!\r\nPor Favor tente mais tarde."
     - "No se puede cargar anuncios! \r\n"
@@ -112,17 +115,26 @@ MonoBehaviour:
   - Key: Billing.NotAvailable
     Description: 
     Languages:
-    - "Unable to purchase.\r\n\r\nEither the item is not found or is not currently
-      available for purchase.\r\n\r\nPlease try again later."
+    - 'Unable to purchase.
+
+
+
+      Either the item is not found or is not currently
+      available for purchase.
+
+
+
+      Please try again later.'
     - "Kj\xF8p ikke gjennomf\xF8rbart.\r\n\r\nVaren er enten ikke funnet eller midlertidig
       utilgjengelig.\r\n\r\nVennligst pr\xF8v igjen senere.  "
     - "Impossivel realizar a compra.\r\n\r\nO item n\xE3o foi encontrado ou n\xE3o
       esta dispon\xEDvel para compra.\r\n\r\nPor Favor tente mais tarde."
-    - "Imposible de hacer la compra.\r\n\r\nEl art\xEDculo no se ha encontrado o no
-      est\xE1 disponible para compra.\r\n\r\nPor favor, int\xE9ntelo de nuevo m\xE1s
-      tarde."
+    - "Imposible de hacer la compra.\r\n\r\nEl art\xEDculo no se ha encontrado o
+      no est\xE1 disponible para compra.\r\n\r\nPor favor, int\xE9ntelo de nuevo
+      m\xE1s tarde."
     - "L'achat n'est pas disponible. \r\n\r\nCet article n'a pas \xE9t\xE9 trouv\xE9
-      ou n'est pas disponible pour l'achat actuellement.\r\n\r\nVeuillez essayer ult\xE9rieurement."
+      ou n'est pas disponible pour l'achat actuellement.\r\n\r\nVeuillez essayer
+      ult\xE9rieurement."
     - "\u65E0\u6CD5\u8D2D\u4E70.\r\n\r\n\u8981\u4E48\u662F\u5546\u54C1\u6CA1\u6709\u627E\u5230\u6216\u8005\u5F53\u524D\u65E0\u6CD5\u8D2D\u4E70.\r\n\r\n\u8BF7\u7A0D\u540E\u518D\u8BD5."
     - "Kauf nicht m\xF6glich."
     - "Nie mo\u017Cna dokona\u0107 zakupu.\r\n\r\nNie znaleziono przedmiotu lub jest
@@ -254,10 +266,18 @@ MonoBehaviour:
   - Key: Facebook.Connect
     Description: 
     Languages:
-    - "Facebook\r\nConnect"
-    - "Kobler til\r\nFacebook"
-    - "Facebook\r\nConectar"
-    - "Facebook\r\nConectar"
+    - 'Facebook
+
+      Connect'
+    - 'Kobler til
+
+      Facebook'
+    - 'Facebook
+
+      Conectar'
+    - 'Facebook
+
+      Conectar'
     - Connection sur Facebook.
     - "Facebook\r\n\u8FDE\u63A5"
     - Facebook
@@ -326,16 +346,20 @@ MonoBehaviour:
   - Key: Facebook.Error.Login.Description
     Description: 
     Languages:
-    - "We were unable to log into Facebook and will continue in offline mode.\r\nTry
-      connecting again later."
+    - 'We were unable to log into Facebook and will continue in offline mode.
+
+      Try
+      connecting again later.'
     - "Det var ikke mulig \xE5 koble til Facebook og spillet fortsetter offline.\r\nPr\xF8v
       \xE5 koble til senere. "
-    - "Impossivel conectar ao Facebook, continuar em modo offline.\r\nTente reconectar
-      mais tarde."
+    - 'Impossivel conectar ao Facebook, continuar em modo offline.
+
+      Tente reconectar
+      mais tarde.'
     - "Imposible conectarse a Facebook, continuar\xE1 el modo offline.\r\nIntentar\xE1
       volver a conectarse m\xE1s tarde"
-    - "La connexion sur Facebook est impossible, vous n'\xEAtes pas connect\xE9. R\xE9essayer
-      plus tard."
+    - "La connexion sur Facebook est impossible, vous n'\xEAtes pas connect\xE9.
+      R\xE9essayer plus tard."
     - "\u76EE\u524D\u65E0\u6CD5\u767B\u9646Facebook,\u6E38\u620F\u5C06\u6301\u7EED\u5728\u79BB\u7EBF\u6A21\u5F0F\u4E2D\u8FD0\u884C.\r\n\u5C1D\u8BD5\u7A0D\u540E\u518D\u6B21\u8FDE\u63A5."
     - "Facebook-Anmeldung nicht m\xF6glich. Weiter offline."
     - "Brak po\u0142\u0105czenia z Facebookiem, kontynuacja w trybie offline.\r\nSpr\xF3buj
@@ -473,12 +497,16 @@ MonoBehaviour:
       na stronie www.flipwebapps.com aby\u015Bmy mogli poprawi\u0107 nasz\u0105 gr\u0119."
     - "Ch\xFAng t\xF4i r\u1EA5t ti\u1EBFc v\xEC b\u1EA1n kh\xF4ng th\xEDch tr\xF2
       ch\u01A1i n\xE0y. N\u1EBFu \u0111\u01B0\u1EE3c, b\u1EA1n vui l\xF2ng \u0111\u1EC3
-      l\u1EA1i \u0111\xE1nh gi\xE1 c\u1EE7a m\xECnh t\u1EA1i www.flipwebapps.com \u0111\u1EC3
-      ch\xFAng t\xF4i c\u1EA3i thi\u1EC7n h\u01A1n"
+      l\u1EA1i \u0111\xE1nh gi\xE1 c\u1EE7a m\xECnh t\u1EA1i www.flipwebapps.com
+      \u0111\u1EC3 ch\xFAng t\xF4i c\u1EA3i thi\u1EC7n h\u01A1n"
   - Key: GameFeedback.AssumeLike
     Description: 
     Languages:
-    - "Thanks you for choosing to rate '{0}'.\r\n\r\nYour support is much appreciated."
+    - 'Thanks you for choosing to rate ''{0}''.
+
+
+
+      Your support is much appreciated.'
     - "Takk for tilbakemeldingen! \r\n\r\nVi setter stor pris p\xE5 din st\xF8tte."
     - "Obrigado por avaliar '{0}'.\r\n\r\nSua ajuda \xE9 muito bem vinda."
     - "\xA1Gracias por votar '{0}' .\r\n\r\nSu ayuda es muy bienvenida."
@@ -493,14 +521,26 @@ MonoBehaviour:
   - Key: GameFeedback.AssumeLikeOptionalAndroid
     Description: 
     Languages:
-    - "We hope that you like '{0}'.\r\n\r\nIt'd be really helpful if you rated us
-      in the Play store.\r\nMany thanks for your support."
+    - 'We hope that you like ''{0}''.
+
+
+
+      It''d be really helpful if you rated
+      us in the Play store.
+
+      Many thanks for your support.'
     - "Vi h\xE5per du liker  {0}.\r\n\r\nVi setter stor pris p\xE5 din tilbakemelding
       i Play store.\r\nTakk for din st\xF8tte. "
     - "Esperamos que tenha gostado '{0}'.\r\n\r\n\xC9 de grande ajuda se nos avaliar
       na Play Store.\r\nMuito obrigado pela ajuda."
-    - "Esperamos que hayan disfrutado '{0}' .\r\n\r\nNos ayuda a evaluar si el Juego
-      Store.\r\nGracias por la ayuda."
+    - 'Esperamos que hayan disfrutado ''{0}'' .
+
+
+
+      Nos ayuda a evaluar si el
+      Juego Store.
+
+      Gracias por la ayuda.'
     - "Nous esp\xE9rons que vous avez aim\xE9 '{0}'. \r\n\r\nVos retours sur le PlayStore
       sont tr\xE8s utiles."
     - "\u6211\u5E0C\u671B\u60A8\u559C\u6B22'{0}'.\r\n\u5982\u679C\u60A8\u5728Play
@@ -515,17 +555,30 @@ MonoBehaviour:
   - Key: GameFeedback.AssumeLikeOptionaliOS
     Description: 
     Languages:
-    - "We hope that you like '{0}'.\r\n\r\nIt'd be really helpful if you rated us
-      in the App store.\r\nMany thanks for your support."
+    - 'We hope that you like ''{0}''.
+
+
+
+      It''d be really helpful if you rated
+      us in the App store.
+
+      Many thanks for your support.'
     - "Vi h\xE5per du liker  {0}.\r\n\r\nVi setter stor pris p\xE5 din tilbakemelding
       i app store.\r\nTakk for din st\xF8tte. "
     - "Esperamos que tenha gostado '{0}'.\r\n\r\n\xC9 de grande ajuda se nos avaliar
       na Play Store.\r\nMuito obrigado pela ajuda."
-    - "Esperamos que hayan disfrutado '{0}' .\r\n\r\nNos ayuda a evaluar si el Juego
-      Store.\r\nGracias por la ayuda."
+    - 'Esperamos que hayan disfrutado ''{0}'' .
+
+
+
+      Nos ayuda a evaluar si el
+      Juego Store.
+
+      Gracias por la ayuda.'
     - "Nous esp\xE9rons que vous avez aim\xE9 '{0}'. \r\n\r\nVos retours sur l' AppleStore
       sont tr\xE8s utiles."
-    - "\u6211\u5E0C\u671B\u60A8\u559C\u6B22'{0}'.\r\n\u5982\u679C\u60A8\u5728APP Store\u4E3A\u6211\u4EEC\u8BC4\u5206\u4F1A\u5BF9\u6211\u4EEC\u6709\u975E\u5E38\u5927\u7684\u5E2E\u52A9."
+    - "\u6211\u5E0C\u671B\u60A8\u559C\u6B22'{0}'.\r\n\u5982\u679C\u60A8\u5728APP
+      Store\u4E3A\u6211\u4EEC\u8BC4\u5206\u4F1A\u5BF9\u6211\u4EEC\u6709\u975E\u5E38\u5927\u7684\u5E2E\u52A9."
     - Wir hoffen du magst '{0}'.
     - "Mamy nadziej\u0119, \u017Ce bawi\u0142e\u015B si\u0119 dobrze '{0}'.\r\n\r\nMo\u017Cesz
       nam pom\xF3c oceniaj\u0105c aplikacj\u0119.\r\nDzi\u0119kujemy za wsparcie."
@@ -1064,14 +1117,18 @@ MonoBehaviour:
   - Key: Level.Unlock.New.Text1
     Description: 
     Languages:
-    - "Congratulations!\r\nNew level Unlocked"
+    - 'Congratulations!
+
+      New level Unlocked'
     - "Gratulerer!\r\nNy level l\xE5st opp. "
     - "Parab\xE9ns!\r\nNova fase desbloqueada"
     - "\xA1Felicitaciones!\r\nNueva fase de desbloqueo "
     - "F\xE9licitations !\r\nUn nouveau niveau est d\xE9bloqu\xE9."
     - "\u606D\u559C!\r\n\u65B0\u5173\u5361\u5DF2\u7ECF\u88AB\u89E3\u9501"
     - "Gl\xFCckwunsch!"
-    - "Gratulacje!\r\nOdblokowano nowy poziom"
+    - 'Gratulacje!
+
+      Odblokowano nowy poziom'
     - 
   - Key: Level.Unlock.New.Text2
     Description: 
@@ -1088,7 +1145,9 @@ MonoBehaviour:
   - Key: Level.Unlock.Existing.Text1
     Description: 
     Languages:
-    - "Bad Luck!\r\nLevel Already Unlocked."
+    - 'Bad Luck!
+
+      Level Already Unlocked.'
     - "Uflaks!\r\nLevel er allerede l\xE5st opp. "
     - "Deu Azar!\r\nFase j\xE1 esta desbloqueada."
     - "\xC9l Azar! \r\nFase ya est\xE1 desbloqueado"
@@ -1208,14 +1267,18 @@ MonoBehaviour:
   - Key: World.Unlock.New.Text1
     Description: 
     Languages:
-    - "Congratulations!\r\nNew world Unlocked"
+    - 'Congratulations!
+
+      New world Unlocked'
     - "Gratulerer!\r\nNy verden l\xE5st opp. "
     - "Parab\xE9ns!\r\nNovo mundo desbloqueado"
     - "\xA1Felicitaciones! \r\nNueva fase de desbloqueo "
     - "F\xE9licitations ! \r\nUn nouveau monde est d\xE9bloqu\xE9."
     - "\u606D\u559C!\r\n\u65B0\u4E16\u754C\u5DF2\u7ECF\u88AB\u89E3\u9501"
     - "Gl\xFCckwunsch!"
-    - "Gratulacje!\r\nOdblokowano nowy etap"
+    - 'Gratulacje!
+
+      Odblokowano nowy etap'
     - "Ch\xFAc m\u1EEBng b\u1EA1n!\r\nV\xF9ng m\u1EDBi \u0111\xE3 \u0111\u01B0\u1EE3c
       m\u1EDF kh\xF3a"
   - Key: World.Unlock.New.Text2
@@ -1233,7 +1296,9 @@ MonoBehaviour:
   - Key: World.Unlock.Existing.Text1
     Description: 
     Languages:
-    - "Bad Luck!\r\nWorld Already Unlocked."
+    - 'Bad Luck!
+
+      World Already Unlocked.'
     - "Uflaks!\r\nVerden er allerede l\xE5st opp. "
     - "Deu Azar!\r\nFase j\xE1 esta desbloqueada."
     - "\xC9l Azar! \r\nFase ya est\xE1 desbloqueado"
@@ -1354,7 +1419,9 @@ MonoBehaviour:
   - Key: Character.Unlock.New.Text1
     Description: 
     Languages:
-    - "Congratulations!\r\nNew character Unlocked"
+    - 'Congratulations!
+
+      New character Unlocked'
     - "Gratulerer!\r\nNy karakter l\xE5st opp. "
     - "Parab\xE9ns!\r\nNovo personagem desbloqueado"
     - "\xA1Felicitaciones! \r\nNuevo personaje desbloqueado"
@@ -1379,7 +1446,9 @@ MonoBehaviour:
   - Key: Character.Unlock.Existing.Text1
     Description: 
     Languages:
-    - "Bad Luck!\r\nCharacter Already Unlocked."
+    - 'Bad Luck!
+
+      Character Already Unlocked.'
     - "Uflaks!\r\nKarakteren er allerede l\xE5st opp. "
     - "Deu Azar!\r\nPersonagem j\xE1 desbloqueado"
     - "\xC9l Azar! \r\nPersonaje ya desbloqueado"

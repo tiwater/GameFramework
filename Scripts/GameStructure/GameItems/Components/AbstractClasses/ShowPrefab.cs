@@ -87,6 +87,18 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         bool _worldPositionStays;
 
         /// <summary>
+        ///  The offset of the prefab.
+        /// </summary>
+        public Vector3 Offset
+        {
+            get { return _offset; }
+            set { _offset = value; }
+        }
+        [Tooltip("The offset of the prefab. For the model which is not located at the origin, use offset to correct the position.")]
+        [SerializeField]
+        Vector3 _offset;
+
+        /// <summary>
         /// Settings for how to animate changes. This is used in cases when we are showing the selected item and the selection changes.
         /// </summary>
         [Tooltip("Settings for how to animate changes. This is used in cases when we are showing the selected item and the selection changes.")]
@@ -110,6 +122,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
                     Parent == null ? transform : Parent.transform, WorldPositionStays);
                 if (newPrefabInstance != null)
                 {
+                    newPrefabInstance.transform.position -= _offset;
                     newPrefabInstance.SetActive(false); // start inactive so we don't run transitions immediately
                     _cachedPrefabInstances.Add(GameItem.Number, newPrefabInstance);
                 }
