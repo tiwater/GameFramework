@@ -47,7 +47,7 @@ namespace GameFramework.GameStructure.Players
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
-        public void BasicInitialisationDefaults(int number)
+        public void BasicInitialisationDefaults(string number)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
@@ -60,7 +60,7 @@ namespace GameFramework.GameStructure.Players
 
             //// Assert
             Assert.IsNotNull(player, "GameItem not setup.");
-            Assert.AreEqual(number, player.Number, "Number not set correctly");
+            Assert.AreEqual(number, player.Id, "Number not set correctly");
             //TODO: Verify if we can test the below, or if localisation setup will interfere?
             //Assert.AreEqual("Name", gameItem.Name, "Name not set correctly");
             //Assert.AreEqual("Desc", gameItem.Description, "Description not set correctly");
@@ -81,7 +81,7 @@ namespace GameFramework.GameStructure.Players
 
         [TestCase(1, "Name", "Desc")]
         [TestCase(2, "Name2", "Desc2")]
-        public void BasicInitialisationSpecifiedValues(int number, string name, string desc)
+        public void BasicInitialisationSpecifiedValues(string number, string name, string desc)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
@@ -97,7 +97,7 @@ namespace GameFramework.GameStructure.Players
 
             //// Assert
             Assert.IsNotNull(player, "GameItem not setup.");
-            Assert.AreEqual(number, player.Number, "Number not set correctly");
+            Assert.AreEqual(number, player.Id, "Number not set correctly");
             Assert.AreEqual(name, player.Name, "Name not set correctly");
             Assert.AreEqual(desc, player.Description, "Description not set correctly");
             Assert.AreEqual("Player", player.IdentifierBase, "IdentifierBase not set correctly");
@@ -130,7 +130,7 @@ namespace GameFramework.GameStructure.Players
         [TestCase(0, 1, 20, false, false, false, 0, 0, 3, 0, false)]
         [TestCase(0, 1, 20, false, false, false, 0, 0, 0, 0.5f, false)]
         [TestCase(0, 1, 20, false, false, false, 0, 0, 0, 0, true)]
-        public void PersistentValuesLoaded(int playerNumber, int number,  
+        public void PersistentValuesLoaded(string playerNumber, string number,  
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought, int score,
             int coins, int lives, float health, bool isGameWon)
         {
@@ -184,7 +184,7 @@ namespace GameFramework.GameStructure.Players
         [TestCase(0, 1, 20, false, false, false, 0, 0, 3, 0, false)]
         [TestCase(0, 1, 20, false, false, false, 0, 0, 0, 0.5f, false)]
         [TestCase(0, 1, 20, false, false, false, 0, 0, 0, 0, true)]
-        public void PersistentValuesSaved(int playerNumber, int number, 
+        public void PersistentValuesSaved(string playerNumber, string number, 
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought, int score,
             int coins, int lives, float health, bool isGameWon)
         {
@@ -236,7 +236,7 @@ namespace GameFramework.GameStructure.Players
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             player.Score = score1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(PlayerScoreChangedMessage), (x) => {
@@ -265,7 +265,7 @@ namespace GameFramework.GameStructure.Players
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             player.Score = score1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(PlayerHighScoreChangedMessage), (x) => {
@@ -298,7 +298,7 @@ namespace GameFramework.GameStructure.Players
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             player.Coins = coins1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(PlayerCoinsChangedMessage), (x) => {
@@ -331,7 +331,7 @@ namespace GameFramework.GameStructure.Players
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             player.Lives = lives1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(LivesChangedMessage), (x) => {
@@ -364,7 +364,7 @@ namespace GameFramework.GameStructure.Players
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             player.Health = health1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(HealthChangedMessage), (x) => {
@@ -396,7 +396,7 @@ namespace GameFramework.GameStructure.Players
 
             //// Act
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Assert
             Assert.AreNotEqual(-1, player.GetCounterIndex("Score"), "Score counter not setup.");
@@ -415,7 +415,7 @@ namespace GameFramework.GameStructure.Players
 
             //// Act
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Assert
             Assert.AreNotEqual(-1, player.GetCounterIndex("Score"), "Score counter not setup.");

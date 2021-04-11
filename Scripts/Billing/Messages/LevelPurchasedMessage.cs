@@ -31,9 +31,9 @@ namespace GameFramework.Billing.Messages
         /// <summary>
         /// The number of the level that was purchased
         /// </summary>
-        public readonly int LevelNumber;
+        public readonly string LevelNumber;
 
-        public LevelPurchasedMessage(int levelNumber)
+        public LevelPurchasedMessage(string levelNumber)
         {
             LevelNumber = levelNumber;
         }

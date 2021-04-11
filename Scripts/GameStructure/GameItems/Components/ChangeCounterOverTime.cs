@@ -97,7 +97,7 @@ namespace GameFramework.GameStructure.GameItems.Components
         float _floatAmount = 1f;
 
         Counter _counterReference;
-        int _oldGameItemNumber;
+        string _oldGameItemNumber;
         float _counterIncrease; // needed for int counters as we won't necessarily update every frame.
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace GameFramework.GameStructure.GameItems.Components
         protected override void Awake()
         {
             base.Awake();
-            _oldGameItemNumber = GameItem.Number;
+            _oldGameItemNumber = GameItem.Id;
             _counterReference = GameItem.GetCounter(Counter);
             Assert.IsNotNull(_counterReference, string.Format("The specified Counter '{0}' was not found. Check that is exists in the game configuration.", Counter));
         }
@@ -134,7 +134,7 @@ namespace GameFramework.GameStructure.GameItems.Components
             if (!OnlyWhenLevelRunning || LevelManager.Instance.IsLevelRunning)
             {
                 // update counter reference if gameitem has changed (e.g. if selected mode).
-                if (_oldGameItemNumber != GameItem.Number)
+                if (_oldGameItemNumber != GameItem.Id)
                     _counterReference = GameItem.GetCounter(Counter);
 
                 // int counter we can't update each frame as it is an int, so wait until > 1 before increasing

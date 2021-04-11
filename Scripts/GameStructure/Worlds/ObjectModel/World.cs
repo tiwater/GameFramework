@@ -70,7 +70,7 @@ namespace GameFramework.GameStructure.Worlds.ObjectModel
             {
                 Assert.IsNotNull(Levels,
                     string.Format(
-                        "Error trying to get the star won count when no levels are set for world {0}", Number));
+                        "Error trying to get the star won count when no levels are set for world {0}", Id));
 
                 return Levels.StarsWon;
             }
@@ -85,7 +85,7 @@ namespace GameFramework.GameStructure.Worlds.ObjectModel
             {
                 Assert.IsNotNull(Levels,
                     string.Format(
-                        "Error trying to get the stars total count when no levels are set for world {0}", Number));
+                        "Error trying to get the stars total count when no levels are set for world {0}", Id));
 
                 return Levels.StarsTotal;
             }

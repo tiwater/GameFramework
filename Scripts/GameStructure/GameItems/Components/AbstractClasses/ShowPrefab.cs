@@ -104,7 +104,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         [Tooltip("Settings for how to animate changes. This is used in cases when we are showing the selected item and the selection changes.")]
         public GameObjectToGameObjectAnimation GameObjectToGameObjectAnimation;
 
-        readonly Dictionary<int, GameObject> _cachedPrefabInstances = new Dictionary<int, GameObject>();
+        readonly Dictionary<string, GameObject> _cachedPrefabInstances = new Dictionary<string, GameObject>();
         GameObject _selectedPrefabInstance;
 
 
@@ -115,7 +115,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         public override void RunMethod(bool isStart = true)
         {
             GameObject newPrefabInstance;
-            _cachedPrefabInstances.TryGetValue(GameItem.Number, out newPrefabInstance);
+            _cachedPrefabInstances.TryGetValue(GameItem.Id, out newPrefabInstance);
             if (newPrefabInstance == null)
             {
                 newPrefabInstance = GameItem.InstantiatePrefab(PrefabType, Name,
@@ -124,14 +124,14 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
                 {
                     newPrefabInstance.transform.position -= _offset;
                     newPrefabInstance.SetActive(false); // start inactive so we don't run transitions immediately
-                    _cachedPrefabInstances.Add(GameItem.Number, newPrefabInstance);
+                    _cachedPrefabInstances.Add(GameItem.Id, newPrefabInstance);
                 }
             }
 
             Assert.IsNotNull(newPrefabInstance,
                 string.Format(
                     "The Prefab you are trying to instantiate is not setup. Please ensure the add it to the target GameItem {0}_{1}.",
-                    GameItem.IdentifierBase, GameItem.Number));
+                    GameItem.IdentifierBase, GameItem.Id));
 
             if (isStart)
                 GameObjectToGameObjectAnimation.SwapImmediately(_selectedPrefabInstance, newPrefabInstance);

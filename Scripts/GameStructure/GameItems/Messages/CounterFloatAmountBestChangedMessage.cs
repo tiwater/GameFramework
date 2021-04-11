@@ -48,7 +48,7 @@ namespace GameFramework.GameStructure.GameItems.Messages
         /// <returns></returns>
         public override string ToString()
         {
-             return string.Format("GameItem Type {0}, GameItem Number {1}, Counter {2}, New Amount {3}, Old Amount {4}", GameItem.IdentifierBase, GameItem.Number, Counter.Configuration.Name, NewAmount, OldAmount);
+             return string.Format("GameItem Type {0}, GameItem Number {1}, Counter {2}, New Amount {3}, Old Amount {4}", GameItem.IdentifierBase, GameItem.Id, Counter.Configuration.Name, NewAmount, OldAmount);
         }
     }
 }

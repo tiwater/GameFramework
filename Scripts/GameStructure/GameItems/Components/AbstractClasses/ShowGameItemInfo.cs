@@ -69,7 +69,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
             if (GameItem != null)
             {
-                _textComponent.text = Text.FormatValue(GameItem.Number, GameItem.Name, GameItem.Description, GameItem.ValueToUnlock);
+                _textComponent.text = Text.FormatValue(GameItem.Id, GameItem.Name, GameItem.Description, GameItem.ValueToUnlock);
             }
         }
     }

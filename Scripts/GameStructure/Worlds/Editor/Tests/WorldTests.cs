@@ -47,14 +47,14 @@ namespace GameFramework.GameStructure.Worlds
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
-        public void BasicInitialisationDefaults(int number)
+        public void BasicInitialisationDefaults(string number)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<World>();
@@ -62,7 +62,7 @@ namespace GameFramework.GameStructure.Worlds
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Number, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
             //TODO: Verify if we can test the below, or if localisation setup will interfere?
             //Assert.AreEqual("Name", gameItem.Name, "Name not set correctly");
             //Assert.AreEqual("Desc", gameItem.Description, "Description not set correctly");
@@ -79,14 +79,14 @@ namespace GameFramework.GameStructure.Worlds
 
         [TestCase(1, "Name", "Desc")]
         [TestCase(2, "Name2", "Desc2")]
-        public void BasicInitialisationSpecifiedValues(int number, string name, string desc)
+        public void BasicInitialisationSpecifiedValues(string number, string name, string desc)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<World>();
@@ -96,7 +96,7 @@ namespace GameFramework.GameStructure.Worlds
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Number, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
             Assert.AreEqual(name, gameItem.Name, "Name not set correctly");
             Assert.AreEqual(desc, gameItem.Description, "Description not set correctly");
             Assert.AreEqual("World", gameItem.IdentifierBase, "IdentifierBase not set correctly");
@@ -120,7 +120,7 @@ namespace GameFramework.GameStructure.Worlds
         [TestCase(0, 1, 20, true, false, false)]
         [TestCase(0, 1, 20, false, true, false)]
         [TestCase(0, 1, 20, false, false, true)]
-        public void PersistentValuesLoaded(int playerNumber, int number,
+        public void PersistentValuesLoaded(string playerNumber, string number,
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
         {
             //// Arrange
@@ -157,7 +157,7 @@ namespace GameFramework.GameStructure.Worlds
         [TestCase(0, 1, 20, true, false, false)]
         [TestCase(0, 1, 20, false, true, false)]
         [TestCase(0, 1, 20, false, false, true)]
-        public void PersistentValuesSaved(int playerNumber, int number,
+        public void PersistentValuesSaved(string playerNumber, string number,
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
         {
             //// Arrange

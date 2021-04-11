@@ -77,7 +77,7 @@ namespace GameFramework.GameStructure.Game.GameConditions.GameItem
             var secondGameItem = SecondGameItem;
             if (gameItem && secondGameItem)
             {
-                return gameItem.Number == secondGameItem.Number;
+                return gameItem.Id == secondGameItem.Id;
             }
             return false;
         }

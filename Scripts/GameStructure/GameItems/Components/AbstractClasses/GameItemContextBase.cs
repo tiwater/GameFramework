@@ -52,10 +52,17 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
             {
                 // refresh if needed
                 if (Context.ContextMode == GameItemContext.ContextModeType.Selected || Context.ContextMode == GameItemContext.ContextModeType.Reference || _gameItem == null)
+                {
+                    //Avoid loop reference
+                    if(Context.ContextMode == GameItemContext.ContextModeType.Reference && Context.ReferencedGameItemContextBase == this)
+                    {
+                        return _gameItem;
+                    }
                     GameItem = GameItemContext.GetGameItemFromContextReference(Context, GetIBaseGameItemManager(), gameObject.name);
+                }
                 return _gameItem;
             }
-            private set
+            set
             {
                 _gameItem = value;
             }

@@ -98,8 +98,9 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         }
 
 
-        void CreateButtons()
+        protected virtual void CreateButtons()
         {
+            Debug.Log("Default CreateButtons");
             // first delete any old buttons
             while (_buttonGameObjects.Count != 0)
             {

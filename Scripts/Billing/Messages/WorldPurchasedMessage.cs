@@ -31,9 +31,9 @@ namespace GameFramework.Billing.Messages
         /// <summary>
         /// The number of the world that was purchased
         /// </summary>
-        public readonly int WorldNumber;
+        public readonly string WorldNumber;
 
-        public WorldPurchasedMessage(int worldNumber)
+        public WorldPurchasedMessage(string worldNumber)
         {
             WorldNumber = worldNumber;
         }

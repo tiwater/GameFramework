@@ -77,7 +77,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
-        GameItem BaseGetItem(int number);
+        GameItem BaseGetItem(string number);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 T oldItem = Selected;
                 _selected = value;
-                if (_isLoaded && oldItem.Number != _selected.Number)
+                if (_isLoaded && oldItem.Id != _selected.Id)
                 {
                     if (SelectedChanged != null)
                         SelectedChanged(oldItem, Selected);
@@ -129,9 +129,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                     OnSelectedChanged(Selected, oldItem);
 
                     if (_holdsPlayers)
-                        PreferencesFactory.SetInt("Selected" + TypeName, Selected.Number);
+                        PreferencesFactory.SetString("Selected" + TypeName, Selected.Id);
                     else
-                        GameManager.Instance.Player.SetSetting(_baseKey + "Selected" + TypeName, Selected.Number);
+                        GameManager.Instance.Player.SetSetting(_baseKey + "Selected" + TypeName, Selected.Id);
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 #endif
             for (var i = 0; i < count; i++)
             {
-                var loadedItem = GameItem.LoadFromResources<T>(TypeName, startNumber + i);
+                var loadedItem = GameItem.LoadFromResources<T>(TypeName, (startNumber + i).ToString());
                 if (loadedItem != null)
                 {
                     Items[i] = loadedItem;
@@ -217,7 +217,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 #endif
                     Items[i] = ScriptableObject.CreateInstance<T>();
                     Items[i].Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger,
-                        startNumber + i, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: 10);
+                        (startNumber + i).ToString(), LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: 10);
                     Items[i].UnlockWithCoins = true;
                 }
             }
@@ -246,7 +246,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 Items[i] = ScriptableObject.CreateInstance<T>();
                 Items[i].Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger,
-                    startNumber + i, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: valueToUnlock);
+                    (startNumber + i).ToString(), LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: valueToUnlock);
                 Items[i].UnlockWithCompletion = unlockWithCompletion;
                 Items[i].UnlockWithCoins = unlockWithCoins;
             }
@@ -288,7 +288,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 }
                 var gameItem = UnityEngine.Object.Instantiate(instance) as T; // create a copy so we don't overwrite values.
                 Assert.IsNotNull(gameItem, "The gameItem for item " + i + " is not of type " + TypeName);
-                gameItem.Number = i;
+                gameItem.Id = i.ToString();
                 gameItem.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
                 Items[i-1] = gameItem;
             }
@@ -313,12 +313,12 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         {
             // get the previously selected item or default to the first - for player type we need to get setting at global level.
             var selectedNumber = _holdsPlayers ? 
-                PreferencesFactory.GetInt("Selected" + TypeName, -1) : 
-                GameManager.Instance.Player.GetSettingInt(_baseKey + "Selected" + TypeName, -1);
+                PreferencesFactory.GetString("Selected" + TypeName, "-1") : 
+                GameManager.Instance.Player.GetSettingString(_baseKey + "Selected" + TypeName, "-1");
 
             foreach (T item in Items)
             {
-                if (item.Number == selectedNumber)
+                if (item.Id == selectedNumber)
                     Selected = item;
             }
             if (Selected == null)
@@ -344,10 +344,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="number"></param>
         /// <returns>index or -1 if not found</returns>
-        int GetItemIndex(int number)
+        int GetItemIndex(string number)
         {
             for (var i = 0; i < Items.Length; i++)
-                if (Items[i].Number == number)
+                if (Items[i].Id.Equals(number))
                     return i;
             return -1;
         }
@@ -357,7 +357,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
-        public T GetItem(int number)
+        public T GetItem(string number)
         {
             var i = GetItemIndex(number);
             return i == -1 ? null : Items[i];
@@ -381,7 +381,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <returns>A GameItem or null</returns>
         public T GetNextItem(T item)
         {
-            return GetNextItem(item.Number);
+            return GetNextItem(item.Id);
         }
 
 
@@ -390,7 +390,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
-        public T GetNextItem(int number)
+        public T GetNextItem(string number)
         {
             var i = GetItemIndex(number);
             if (i == -1) return null;
@@ -415,7 +415,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <returns>A GameItem or null</returns>
         public T GetPreviousItem(T item)
         {
-            return GetPreviousItem(item.Number);
+            return GetPreviousItem(item.Id);
         }
 
 
@@ -424,7 +424,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
-        public T GetPreviousItem(int number)
+        public T GetPreviousItem(string number)
         {
             var i = GetItemIndex(number);
             if (i == -1) return null;
@@ -436,7 +436,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Set the selected item to be the one with the specified number
         /// </summary>
         /// <param name="number"></param>
-        public void SetSelected(int number)
+        public void SetSelected(string number)
         {
             Selected = GetItem(number);
         }
@@ -671,7 +671,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             get { return EnumeratorCurrent; }
         }
 
-        public GameItem BaseGetItem(int number)
+        public GameItem BaseGetItem(string number)
         {
             return GetItem(number);
         }

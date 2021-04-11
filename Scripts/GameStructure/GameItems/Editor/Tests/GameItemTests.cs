@@ -43,7 +43,7 @@ namespace GameFramework.GameStructure.GameItems
 
         #region Helper functions for verifying testing
 
-        internal static void SetCommonPreferences(int playerNumber, int number, string identifierBasePrefs, int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
+        internal static void SetCommonPreferences(string playerNumber, string number, string identifierBasePrefs, int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
         {
             PlayerPrefs.SetInt(string.Format("P{0}.{1}{2}.HS", playerNumber, identifierBasePrefs, number), highScore);
             PlayerPrefs.SetInt(string.Format("P{0}.{1}{2}.IsU", playerNumber, identifierBasePrefs, number), isUnlocked ? 1 : 0);
@@ -51,7 +51,7 @@ namespace GameFramework.GameStructure.GameItems
             PlayerPrefs.SetInt(string.Format("{0}{1}.IsB", identifierBasePrefs, number), isBought ? 1 : 0);
         }
 
-        internal static void AssertCommonPreferences(int playerNumber, int number, string identifierBasePrefs, GameItem gameItem)
+        internal static void AssertCommonPreferences(string playerNumber, string number, string identifierBasePrefs, GameItem gameItem)
         {
             Assert.AreEqual(PlayerPrefs.GetInt(string.Format("P{0}.{1}{2}.HS", playerNumber, identifierBasePrefs, number), 0), gameItem.HighScore, "HighScore not set correctly");
             // note for the below, unlocked is changed by setting bought - we should have a test for this somewhere... 
@@ -67,14 +67,14 @@ namespace GameFramework.GameStructure.GameItems
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
-        public void InitialisationDefaults(int number)
+        public void InitialisationDefaults(string number)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
@@ -82,7 +82,7 @@ namespace GameFramework.GameStructure.GameItems
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Number, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
             //TODO: Verify if we can test the below, or if localisation setup will interfere?
             //Assert.AreEqual("Name", gameItem.Name, "Name not set correctly");
             //Assert.AreEqual("Desc", gameItem.Description, "Description not set correctly");
@@ -99,14 +99,14 @@ namespace GameFramework.GameStructure.GameItems
 
         [TestCase(1, "Name", "Desc", "Test", "T")]
         [TestCase(2, "Name2", "Desc2", "Another", "A")]
-        public void InitialisationBasicSpecifiedValues(int number, string name, string desc, string identifierBase, string identifierBasePrefs)
+        public void InitialisationBasicSpecifiedValues(string number, string name, string desc, string identifierBase, string identifierBasePrefs)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
@@ -116,7 +116,7 @@ namespace GameFramework.GameStructure.GameItems
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Number, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
             Assert.AreEqual(name, gameItem.Name, "Name not set correctly");
             Assert.AreEqual(desc, gameItem.Description, "Description not set correctly");
             Assert.AreEqual(identifierBase, gameItem.IdentifierBase, "IdentifierBase not set correctly");
@@ -132,14 +132,14 @@ namespace GameFramework.GameStructure.GameItems
 
         [TestCase(1)]
         [TestCase(2)]
-        public void InitialisationStartUnlocked(int number)
+        public void InitialisationStartUnlocked(string number)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
@@ -162,7 +162,7 @@ namespace GameFramework.GameStructure.GameItems
         [TestCase(0, 1, "Test", "T", 20, true, false, false)]
         [TestCase(0, 1, "Test", "T", 20, false, true, false)]
         [TestCase(0, 1, "Test", "T", 20, false, false, true)]
-        public void PersistentValuesLoaded(int playerNumber, int number, string identifierBase, string identifierBasePrefs, 
+        public void PersistentValuesLoaded(string playerNumber, string number, string identifierBase, string identifierBasePrefs, 
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
         {
             //// Arrange
@@ -200,7 +200,7 @@ namespace GameFramework.GameStructure.GameItems
         [TestCase(0, 1, "Test", "T", 20, true, false, false)]
         [TestCase(0, 1, "Test", "T", 20, false, true, false)]
         [TestCase(0, 1, "Test", "T", 20, false, false, true)]
-        public void PersistentValuesSaved(int playerNumber, int number, string identifierBase, string identifierBasePrefs,
+        public void PersistentValuesSaved(string playerNumber, string number, string identifierBase, string identifierBasePrefs,
             int highScore, bool isUnlocked, bool isUnlockedAnimationShown, bool isBought)
         {
             //// Arrange
@@ -242,9 +242,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -275,9 +275,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -308,9 +308,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -345,9 +345,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -381,9 +381,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -418,9 +418,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(ScoreChangedMessage), (x) => {
@@ -452,9 +452,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var player = ScriptableObject.CreateInstance<Player>();
             var messenger = new Messenger();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             //// Act
             gameItem.Score = score;
@@ -474,9 +474,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(HighScoreChangedMessage), (x) => {
@@ -507,9 +507,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Score = score1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(HighScoreChangedMessage), (x) => {
@@ -539,9 +539,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins1;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -572,9 +572,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins;
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -605,9 +605,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -642,9 +642,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -678,9 +678,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -715,9 +715,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.Coins = coins;                 // initialise
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CoinsChangedMessage), (x) => {
@@ -749,9 +749,9 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var player = ScriptableObject.CreateInstance<Player>();
             var messenger = new Messenger();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             //// Act
             gameItem.Coins = coins;
@@ -766,14 +766,14 @@ namespace GameFramework.GameStructure.GameItems
 
         [TestCase(1)]
         [TestCase(2)]
-        public void IsBoughtSetsUnlocked(int number)
+        public void IsBoughtSetsUnlocked(string number)
         {
             //// Arrange
             PlayerPrefs.DeleteAll();
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
             gameItem.Initialise(gameConfiguration, player, messenger, number);
 
@@ -798,11 +798,11 @@ namespace GameFramework.GameStructure.GameItems
             var gameConfiguration = ScriptableObject.CreateInstance<GameConfiguration>();
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             //// Assert
             Assert.AreEqual("Score", gameItem.GetCounter("Score").Configuration.Name, "Score counter not setup.");
@@ -822,11 +822,11 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             //// Act
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             //// Assert
             Assert.AreNotEqual(-1, gameItem.GetCounterIndex(counterKey), "Counter index not found.");
@@ -851,9 +851,9 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount1);
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CounterIntAmountChangedMessage), (x) => {
@@ -887,9 +887,9 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount1);
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CounterIntAmountBestChangedMessage), (x) => {
@@ -924,9 +924,9 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount1);
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CounterFloatAmountChangedMessage), (x) => {
@@ -961,9 +961,9 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount1);
             messenger.ProcessQueue();               // clear queue incase initialisation generated a message.
             messenger.AddListener(typeof(CounterFloatAmountBestChangedMessage), (x) => {
@@ -998,11 +998,11 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             // save some data to prefs.
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount);
             gameItem.UpdatePlayerPrefs();
             PlayerPrefs.Save();
@@ -1016,7 +1016,7 @@ namespace GameFramework.GameStructure.GameItems
             });
 
             gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             messenger.ProcessQueue();   // force processing of messages.
 
@@ -1041,11 +1041,11 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             // save some data to prefs.
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount);
             gameItem.UpdatePlayerPrefs();
             PlayerPrefs.Save();
@@ -1059,7 +1059,7 @@ namespace GameFramework.GameStructure.GameItems
             });
 
             gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             messenger.ProcessQueue();   // force processing of messages.
 
@@ -1085,11 +1085,11 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             // save some data to prefs.
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount);
             gameItem.UpdatePlayerPrefs();
             PlayerPrefs.Save();
@@ -1103,7 +1103,7 @@ namespace GameFramework.GameStructure.GameItems
             });
 
             gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             messenger.ProcessQueue();   // force processing of messages.
 
@@ -1129,11 +1129,11 @@ namespace GameFramework.GameStructure.GameItems
             });
             var messenger = new Messenger();
             var player = ScriptableObject.CreateInstance<Player>();
-            player.Initialise(gameConfiguration, null, messenger, 1);
+            player.Initialise(gameConfiguration, null, messenger, "1");
 
             // save some data to prefs.
             var gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
             gameItem.GetCounter(counterKey).Set(amount);
             gameItem.UpdatePlayerPrefs();
             PlayerPrefs.Save();
@@ -1147,7 +1147,7 @@ namespace GameFramework.GameStructure.GameItems
             });
 
             gameItem = ScriptableObject.CreateInstance<GameItem>();
-            gameItem.Initialise(gameConfiguration, player, messenger, 1);
+            gameItem.Initialise(gameConfiguration, player, messenger, "1");
 
             messenger.ProcessQueue();   // force processing of messages.
 

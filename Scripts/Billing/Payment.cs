@@ -104,11 +104,11 @@ namespace GameFramework.Billing
             string productId,
             string key,
             Func<GameItemManager<TGameItem, GameItem>> getGameItemManager,
-            Func<int, BaseMessage> createMessage) where TGameItem : GameItem, new()
+            Func<string, BaseMessage> createMessage) where TGameItem : GameItem, new()
         {
             Assert.IsTrue(productId.StartsWith(key), "Invalid product id found");
 
-            int number = int.Parse(productId.Substring(key.Length));
+            string number = productId.Substring(key.Length);
             TGameItem multiPurposeGameItem = null;
 
             // first try and get from game manager

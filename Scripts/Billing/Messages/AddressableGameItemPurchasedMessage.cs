@@ -10,9 +10,9 @@ namespace GameFramework.Billing.Messages
         /// <summary>
         /// The number of the GenericGameItem that was purchased
         /// </summary>
-        public readonly int Number;
+        public readonly string Number;
 
-        public AddressableGameItemPurchasedMessage(int number)
+        public AddressableGameItemPurchasedMessage(string number)
         {
             Number = number;
         }

@@ -75,7 +75,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// If ContextMode is ByNumber then the number of the GameItem we are referencing
         /// </summary>
-        public int Number
+        public string Number
         {
             get
             {
@@ -88,7 +88,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         }
         [Tooltip("The number of the GameItem we are referencing.")]
         [SerializeField]
-        int _number;
+        string _number;
 
 
         /// <summary>
@@ -129,7 +129,14 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 if (ReferencedGameItemContextBase == null && !Application.isPlaying) return ContextModeType.Reference;
                 Assert.IsNotNull(ReferencedGameItemContextBase, "If you are using a GameItemContext of Reference then ensure that the ReferencedGameItem is setup.");
-                return ReferencedGameItemContextBase.Context.GetReferencedContextMode();
+                if (ReferencedGameItemContextBase != null && ReferencedGameItemContextBase.Context != this)
+                {
+                    return ReferencedGameItemContextBase.Context.GetReferencedContextMode();
+                }
+                else
+                {
+                    return ContextMode;
+                }
             }
             else
             {

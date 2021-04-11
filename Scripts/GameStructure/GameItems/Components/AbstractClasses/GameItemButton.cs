@@ -590,7 +590,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
                 if (SelectionMode == GameItemButton.SelectionModeType.Select && HighlightGameObject != null)
                 {
-                    HighlightGameObject.SetActive(GetGameItemManager().Selected.Number == GameItem.Number);
+                    HighlightGameObject.SetActive(GetGameItemManager().Selected.Id == GameItem.Id);
                 }
             }
         }
@@ -629,7 +629,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
             if (SelectionMode == GameItemButton.SelectionModeType.ClickThrough && !string.IsNullOrEmpty(ClickUnlockedSceneToLoad))
             {
-                GameManager.LoadSceneWithTransitions(string.Format(ClickUnlockedSceneToLoad, GameItem.Number));
+                GameManager.LoadSceneWithTransitions(string.Format(ClickUnlockedSceneToLoad, GameItem.Id));
             }
         }
 
@@ -864,16 +864,16 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         }
 
 
-        protected void UnlockIfNumberMatches(int number)
+        protected void UnlockIfNumberMatches(string number)
         {
-            if (number == GameItem.Number)
+            if (number == GameItem.Id)
                 Unlock();
         }
 
    
         protected void UnlockIfGameItemMatches(T gameItem)
         {
-            if (gameItem.Number == GameItem.Number)
+            if (gameItem.Id == GameItem.Id)
                 Unlock();
         }
 

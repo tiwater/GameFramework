@@ -31,9 +31,9 @@ namespace GameFramework.Billing.Messages
         /// <summary>
         /// The number of the character that was purchased
         /// </summary>
-        public readonly int CharacterNumber;
+        public readonly string CharacterNumber;
 
-        public CharacterPurchasedMessage(int characterNumber)
+        public CharacterPurchasedMessage(string characterNumber)
         {
             CharacterNumber = characterNumber;
         }

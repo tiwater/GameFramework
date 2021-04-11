@@ -165,7 +165,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// <param name="gameItem"></param>
         void Unlocked(T gameItem)
         {
-            if (gameItem.Number == GameItem.Number)
+            if (gameItem.Id == GameItem.Id)
                 RunMethod(false);
         }
 

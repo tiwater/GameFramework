@@ -42,14 +42,38 @@ namespace GameFramework.Display.Placement.Components
 
         public UnityEvent OnArrivedTarget = new UnityEvent();
 
+        private Rigidbody rigidbody;
+
         private void Awake()
         {
             transform.position = Target.position;
         }
 
+        protected void Start()
+        {
+            rigidbody = GetComponent<Rigidbody>();
+        }
+
         protected void Update()
         {
             //TODO: Support Rigidbody
+            if (rigidbody == null)
+            {
+                UpdatePosition();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (rigidbody != null)
+            {
+                UpdatePosition();
+            }
+        }
+
+        private void UpdatePosition()
+        {
+
             Vector3 targetVector = Target.position - transform.position;
             if (targetVector.sqrMagnitude > StopDistance * 1.2 && !isMoving)
             {
@@ -60,7 +84,6 @@ namespace GameFramework.Display.Placement.Components
                 isMoving = false;
                 //Notify the listeners
                 OnArrivedTarget.Invoke();
-                GameObject fish = transform.GetChild(0).gameObject;
             }
             if (isMoving)
             {
@@ -75,7 +98,14 @@ namespace GameFramework.Display.Placement.Components
             Vector3 movement = targetVector;
             //Normalize the speed, then calculate the movement by delta time
             movement = movement.normalized * Speed * Time.deltaTime;
-            transform.position = transform.position + movement;
+            if (rigidbody == null)
+            {
+                transform.position = transform.position + movement;
+            }
+            else
+            {
+                rigidbody.MovePosition(transform.position + movement);
+            }
         }
 
 
@@ -189,7 +219,14 @@ namespace GameFramework.Display.Placement.Components
                 float t = turnSpeed * Time.deltaTime;
                 newRotation = Quaternion.Lerp(transform.rotation, newRotation, t);
             }
-            transform.rotation = newRotation;
+            if (rigidbody == null)
+            {
+                transform.rotation = newRotation;
+            }
+            else
+            {
+                rigidbody.MoveRotation(newRotation);
+            }
         }
 
     }

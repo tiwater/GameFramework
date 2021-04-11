@@ -1147,7 +1147,7 @@ namespace GameFramework.GameStructure
         /// <param name="playerNumber">player number 0 being the first player</param>
         /// <returns></returns>
         [Obsolete("GetPlayer(number) is deprecated - use Players.GetItem(number)")]
-        public Player GetPlayer(int playerNumber)
+        public Player GetPlayer(string playerNumber)
         {
             return Players.GetItem(playerNumber);
         }
@@ -1157,7 +1157,7 @@ namespace GameFramework.GameStructure
         /// </summary>
         /// <param name="playerNumber"></param>
         [Obsolete("SetPlayerByNumber(number) is deprecated - use Players.SetSelected(playerNumber);")]
-        public void SetPlayerByNumber(int playerNumber)
+        public void SetPlayerByNumber(string playerNumber)
         {
             Players.SetSelected(playerNumber);
         }

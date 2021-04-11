@@ -57,7 +57,7 @@ namespace GameFramework.GameStructure.Levels.Messages
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("Level {0}, New Stars Won {1}, Old Stars Won {2}", Level.Number, NewStarsWon, OldStarsWon);
+            return string.Format("Level {0}, New Stars Won {1}, Old Stars Won {2}", Level.Id, NewStarsWon, OldStarsWon);
         }
     }
 }

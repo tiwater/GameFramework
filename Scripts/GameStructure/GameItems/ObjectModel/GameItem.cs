@@ -72,7 +72,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// (private) Localisable name for this GameItem. See also Name for easier access.
         /// </summary>
-        LocalisableText LocalisableName
+        public LocalisableText LocalisableName
         {
             get
             {
@@ -91,7 +91,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// (private) Localisable description for this GameItem. See also Description for easier access.
         /// </summary>
-        LocalisableText LocalisableDescription
+        public LocalisableText LocalisableDescription
         {
             get
             {
@@ -274,7 +274,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// A number that represents this game item that is unique for this class of GameItem
         /// </summary>
-        public int Number { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// The name of this gameitem (localised if so configured). 
@@ -289,7 +289,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 if (LocalisableName.IsLocalisedWithNoKey())
                 {
                     var value = GlobalLocalisation.GetText(FullKey("Name"));
-                    if (value == null) return IdentifierBase + " " + Number;
+                    if (value == null) return IdentifierBase + " " + Id;
                     return value;
                 }
                 return LocalisableName.GetValue();
@@ -318,7 +318,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 if (_sprite == null && !_spriteTriedLoading)
                 {
-                    _sprite = GameManager.LoadResource<Sprite>(IdentifierBase + "\\" + IdentifierBase + "_" + Number);
+                    _sprite = GameManager.LoadResource<Sprite>(IdentifierBase + "\\" + IdentifierBase + "_" + Id);
                     _spriteTriedLoading = true;
                 }
                 return _sprite;
@@ -480,11 +480,11 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Loaded GameItems will have these values set and configured via the editor.
         /// This will invoke InitialiseNonScriptableObjectValues() via that CustomInitialisation() 
         /// which you can override if you want to provide your own custom initialisation.
-        public void Initialise(GameConfiguration gameConfiguration, Player player, Messenger messenger, int number, LocalisableText name = null, LocalisableText description = null, Sprite sprite = null, int valueToUnlock = -1, string identifierBase = "", string identifierBasePrefs = "")
+        public void Initialise(GameConfiguration gameConfiguration, Player player, Messenger messenger, string id, LocalisableText name = null, LocalisableText description = null, Sprite sprite = null, int valueToUnlock = -1, string identifierBase = "", string identifierBasePrefs = "")
         {
             IdentifierBase = identifierBase;
             IdentifierBasePrefs = identifierBasePrefs;
-            Number = number;
+            Id = id;
             LocalisableName = name ?? LocalisableText.CreateNonLocalised();
             LocalisableDescription = description ?? LocalisableText.CreateNonLocalised();
             Sprite = sprite;
@@ -513,7 +513,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             if (!_isPlayer)
                 Assert.IsNotNull(Player, "Currently non Player GameItems have to have a valid Player specified.");
 
-            _prefsPrefix = IdentifierBasePrefs + Number + ".";
+            _prefsPrefix = IdentifierBasePrefs + Id + ".";
             _prefsPrefixPlayer = _isPlayer ? _prefsPrefix : Player.FullKey(_prefsPrefix);
 
             HighScoreLocalPlayers = PreferencesFactory.GetInt(FullKey("HSLP"), 0);	                // saved at global level rather than per player.
@@ -574,13 +574,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="number"></param>
-        public static T LoadFromResources<T>(string typeName, int number) where T: GameItem
+        public static T LoadFromResources<T>(string typeName, string number) where T: GameItem
         {
             var gameItem = GameManager.LoadResource<T>(typeName + "\\" + typeName + "_" + number);
             if (gameItem != null)
             {
                 gameItem = Instantiate(gameItem);  // create a copy so we don't overwrite values.
-                gameItem.Number = number;
+                gameItem.Id = number;
             }
             return gameItem;
         }
@@ -641,7 +641,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 LoadGameItemExtension();
 
             if (JsonData == null && GameItemExtensionData == null)
-                MyDebug.LogWarning("When loading game item from resources, corresponding JSON or GameItemExtension should be present. Either disable the Load From Resources option or check the file exists : " + IdentifierBase + "\\" + IdentifierBase + "_" + Number + "[_Extension]");
+                MyDebug.LogWarning("When loading game item from resources, corresponding JSON or GameItemExtension should be present. Either disable the Load From Resources option or check the file exists : " + IdentifierBase + "\\" + IdentifierBase + "_" + Id + "[_Extension]");
         }
 
         /// <summary>
@@ -650,7 +650,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// The file loaded must be placed in the resources folder as a json file under [IdentifierBase]\[IdentifierBase]_[Number].json
         public void LoadJsonData()
         {
-            var path = string.Format("{0}\\{0}_{1}", IdentifierBase, Number);
+            var path = string.Format("{0}\\{0}_{1}", IdentifierBase, Id);
             if (JsonData == null)
                 JsonData = LoadJsonDataFile(path);
             if (JsonData != null)
@@ -685,7 +685,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// use this method to selectively load such data.
         public JSONObject LoadJsonGameData()
         {
-            var path = string.Format("{0}\\{0}_GameData_{1}", IdentifierBase, Number);
+            var path = string.Format("{0}\\{0}_GameData_{1}", IdentifierBase, Id);
             if (JsonGameData == null)
                 JsonGameData = LoadJsonDataFile(path);
             if (JsonGameData != null)
@@ -733,7 +733,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         public void LoadGameItemExtension()
         {
-            GameItemExtensionData = GameManager.LoadResource<GameItemExtension>(IdentifierBase + "\\" + IdentifierBase + "_" + Number + "_Extension");
+            GameItemExtensionData = GameManager.LoadResource<GameItemExtension>(IdentifierBase + "\\" + IdentifierBase + "_" + Id + "_Extension");
         }
 
 

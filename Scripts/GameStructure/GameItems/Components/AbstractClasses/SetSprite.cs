@@ -80,9 +80,9 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
             if (sprite == null)
             {
                 sprite = GameItem.Sprite;
-                MyDebug.Log(string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Number));
+                MyDebug.Log(string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Id));
             }
-            Assert.IsNotNull(sprite, string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Number));
+            Assert.IsNotNull(sprite, string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Id));
             AssignSprite(_component, sprite);
         }
 
