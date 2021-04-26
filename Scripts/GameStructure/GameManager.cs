@@ -1204,18 +1204,21 @@ namespace GameFramework.GameStructure
         /// </summary>
         public override void SaveState()
         {
-            MyDebug.Log("GameManager: SaveState");
+            if (IsInitialised)
+            {
+                MyDebug.Log("GameManager: SaveState");
 
-            PreferencesFactory.SetInt("TimesPlayedForRatingPrompt", TimesPlayedForRatingPrompt);
-            PreferencesFactory.SetInt("TimesGamePlayed", TimesGamePlayed);
-            PreferencesFactory.SetInt("TimesLevelsPlayed", TimesLevelsPlayed);
+                PreferencesFactory.SetInt("TimesPlayedForRatingPrompt", TimesPlayedForRatingPrompt);
+                PreferencesFactory.SetInt("TimesGamePlayed", TimesGamePlayed);
+                PreferencesFactory.SetInt("TimesLevelsPlayed", TimesLevelsPlayed);
 
-            PreferencesFactory.SetFloat("BackGroundAudioVolume", BackGroundAudioVolume, false);
-            PreferencesFactory.SetFloat("EffectAudioVolume", EffectAudioVolume, false);
+                PreferencesFactory.SetFloat("BackGroundAudioVolume", BackGroundAudioVolume, false);
+                PreferencesFactory.SetFloat("EffectAudioVolume", EffectAudioVolume, false);
 
-            Variables.UpdatePlayerPrefs(VariablesPrefix, SecurePreferences);
+                Variables.UpdatePlayerPrefs(VariablesPrefix, SecurePreferences);
 
-            PreferencesFactory.Save();
+                PreferencesFactory.Save();
+            }
         }
         #endregion Save State
 

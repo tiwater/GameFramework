@@ -397,7 +397,7 @@ namespace GameFramework.GameStructure.Game.Editor
             EditorGUILayout.LabelField("Global Variables", EditorStyles.boldLabel);
             EditorGUILayout.BeginVertical("Box");
 #if !PREFS_EDITOR
-            if (_gameManager.Variables.BoolVariables.Length > 0 || _gameManager.Variables.Vector2Variables.Length > 0 || _gameManager.Variables.Vector3Variables.Length > 0)
+            if (_gameManager.Variables.BoolVariables.Count > 0 || _gameManager.Variables.Vector2Variables.Count > 0 || _gameManager.Variables.Vector3Variables.Count > 0)
                 EditorGUILayout.HelpBox("Note: Persisting of runtime changes to Bool, Vector2 and Vector3 variables is only supported with the PlayerPrefs integration. For more details see: Main Menu | Window | Game Framework | Integrations Window", MessageType.Info);
 #endif
             EditorGUI.indentLevel++;

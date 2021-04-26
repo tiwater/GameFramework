@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameFramework.Debugging;
 using GameFramework.GameStructure;
 using GameFramework.GameStructure.Variables.ObjectModel;
@@ -62,10 +64,13 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void DeleteAll()
         {
-            foreach(var variable in storage.BoolVariables)
-            {
-                variable.Value = variable.DefaultValue;
-            }
+            storage.BoolVariables.Clear();
+            storage.ColorVariables.Clear();
+            storage.FloatVariables.Clear();
+            storage.IntVariables.Clear();
+            storage.StringVariables.Clear();
+            storage.Vector2Variables.Clear();
+            storage.Vector3Variables.Clear();
         }
 
         /// <summary>
@@ -73,7 +78,13 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void DeleteKey(string key, bool? useSecurePrefs = null)
         {
-            PlayerPrefs.DeleteKey(key);
+            storage.BoolVariables.RemoveAll(item => item.Tag == key);
+            storage.ColorVariables.RemoveAll(item => item.Tag == key);
+            storage.FloatVariables.RemoveAll(item => item.Tag == key);
+            storage.IntVariables.RemoveAll(item => item.Tag == key);
+            storage.Vector2Variables.RemoveAll(item => item.Tag == key);
+            storage.Vector3Variables.RemoveAll(item => item.Tag == key);
+            storage.StringVariables.RemoveAll(item => item.Tag == key);
         }
 
         /// <summary>
@@ -81,7 +92,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public float GetFloat(string key, float defaultValue = 0.0f, bool? useSecurePrefs = null)
         {
-            return PlayerPrefs.GetFloat(key, defaultValue);
+            var variable = storage.GetFloat(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -89,7 +101,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public int GetInt(string key, int defaultValue = 0, bool? useSecurePrefs = null)
         {
-            return PlayerPrefs.GetInt(key, defaultValue);
+            var variable = storage.GetInt(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -97,7 +110,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public string GetString(string key, string defaultValue = "", bool? useSecurePrefs = null)
         {
-            return PlayerPrefs.GetString(key, defaultValue);
+            var variable = storage.GetString(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -105,8 +119,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public bool GetBool(string key, bool defaultValue = false, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Boolean preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
-            return defaultValue;
+            var variable = storage.GetBool(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -114,8 +128,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public Vector2? GetVector2(string key, Vector2? defaultValue = null, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Vector2 preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
-            return defaultValue;
+            var variable = storage.GetVector2(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -123,8 +137,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public Vector3? GetVector3(string key, Vector3? defaultValue = null, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Vector3 preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
-            return defaultValue;
+            var variable = storage.GetVector3(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -132,8 +146,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public Color? GetColor(string key, Color? defaultValue = null, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Color preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
-            return defaultValue;
+            var variable = storage.GetColor(key);
+            return variable == null ? defaultValue : variable.Value;
         }
 
         /// <summary>
@@ -141,7 +155,13 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public bool HasKey(string key, bool? useSecurePrefs = null)
         {
-            return PlayerPrefs.HasKey(key);
+            return (storage.BoolVariables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.ColorVariables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.FloatVariables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.IntVariables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.Vector2Variables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.Vector3Variables.Where(item => item.Tag == key).Count() > 0) ||
+                (storage.StringVariables.Where(item => item.Tag == key).Count() > 0);
         }
 
         /// <summary>
@@ -149,7 +169,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void Save()
         {
-            PlayerPrefs.Save();
+            PlayerGameItemService.Instance.UpdatePlayer();
         }
 
         /// <summary>
@@ -157,7 +177,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetFloat(string key, float value, bool? useSecurePrefs = null)
         {
-            PlayerPrefs.SetFloat(key, value);
+            storage.SetFloat(key, value);
         }
 
         /// <summary>
@@ -165,7 +185,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetInt(string key, int value, bool? useSecurePrefs = null)
         {
-            PlayerPrefs.SetInt(key, value);
+            storage.SetInt(key, value);
         }
 
         /// <summary>
@@ -173,7 +193,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetString(string key, string value, bool? useSecurePrefs = null)
         {
-            PlayerPrefs.SetString(key, value);
+            storage.SetString(key, value);
         }
 
         /// <summary>
@@ -181,7 +201,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetBool(string key, bool value, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("bool preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
+            storage.SetBool(key, value);
         }
 
         /// <summary>
@@ -189,7 +209,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetVector2(string key, Vector2 value, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Vector2 preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
+
+            storage.SetVector2(key, value);
         }
 
         /// <summary>
@@ -197,7 +218,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetVector3(string key, Vector3 value, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Vector3 preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
+
+            storage.SetVector3(key, value);
         }
 
         /// <summary>
@@ -205,7 +227,8 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         /// </summary>
         public void SetColor(string key, Color value, bool? useSecurePrefs = null)
         {
-            MyDebug.LogWarning("Color preferences are only supported with the PlayerPrefs integration. See Main Menu | Window | Game Framework | Integrations Window for more details.");
+
+            storage.SetColor(key, value);
         }
     }
 }

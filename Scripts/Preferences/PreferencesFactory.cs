@@ -19,6 +19,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefsIntegration;
 using GameFramework.Debugging;
 using GameFramework.Preferences.PlayerPrefsIntegration;
 using UnityEngine;
@@ -51,7 +52,8 @@ namespace GameFramework.Preferences
                     _instance = new PrefsEditorHandler();
 #else
                 if (_instance == null)
-                    _instance = new PlayerPrefsHandler();
+                    //_instance = new PlayerPrefsHandler();
+                    _instance = new PlayerDtoPrefsHandler();
 #endif
                 return _instance;
             }

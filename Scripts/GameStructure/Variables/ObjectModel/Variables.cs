@@ -20,6 +20,7 @@
 //----------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using GameFramework.Localisation.ObjectModel;
 using GameFramework.Preferences;
 using UnityEngine;
@@ -48,136 +49,7 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         /// <summary>
         /// An array of BoolVariables
         /// </summary>
-        //public BoolVariable[] BoolVariables
-        //{
-        //    get
-        //    {
-        //        return _boolVariables;
-        //    }
-        //    set
-        //    {
-        //        _boolVariables = value;
-        //    }
-        //}
-        //[Tooltip("An array of BoolVariables.")]
-        //[SerializeField]
-        //BoolVariable[] _boolVariables = new BoolVariable[0];
-
-        ///// <summary>
-        ///// An array of IntVariables
-        ///// </summary>
-        //public IntVariable[] IntVariables
-        //{
-        //    get
-        //    {
-        //        return _intVariables;
-        //    }
-        //    set
-        //    {
-        //        _intVariables = value;
-        //    }
-        //}
-        //[Tooltip("An array of IntVariables.")]
-        //[SerializeField]
-        //IntVariable[] _intVariables = new IntVariable[0];
-
-        ///// <summary>
-        ///// An array of FloatVariables
-        ///// </summary>
-        //public FloatVariable[] FloatVariables
-        //{
-        //    get
-        //    {
-        //        return _floatVariables;
-        //    }
-        //    set
-        //    {
-        //        _floatVariables = value;
-        //    }
-        //}
-        //[Tooltip("An array of FloatVariables.")]
-        //[SerializeField]
-        //FloatVariable[] _floatVariables = new FloatVariable[0];
-
-        ///// <summary>
-        ///// An array of StringVariables
-        ///// </summary>
-        //public StringVariable[] StringVariables
-        //{
-        //    get
-        //    {
-        //        return _stringVariables;
-        //    }
-        //    set
-        //    {
-        //        _stringVariables = value;
-        //    }
-        //}
-        //[Tooltip("An array of StringVariables.")]
-        //[SerializeField]
-        //StringVariable[] _stringVariables = new StringVariable[0];
-
-        ///// <summary>
-        ///// An array of Vector2Variables
-        ///// </summary>
-        //public Vector2Variable[] Vector2Variables
-        //{
-        //    get
-        //    {
-        //        return _Vector2Variables;
-        //    }
-        //    set
-        //    {
-        //        _Vector2Variables = value;
-        //    }
-        //}
-        //[Tooltip("An array of Vector2Variables.")]
-        //[SerializeField]
-        //Vector2Variable[] _Vector2Variables = new Vector2Variable[0];
-
-        ///// <summary>
-        ///// An array of Vector3Variables
-        ///// </summary>
-        //public Vector3Variable[] Vector3Variables
-        //{
-        //    get
-        //    {
-        //        return _Vector3Variables;
-        //    }
-        //    set
-        //    {
-        //        _Vector3Variables = value;
-        //    }
-        //}
-        //[Tooltip("An array of Vector3Variables.")]
-        //[SerializeField]
-        //Vector3Variable[] _Vector3Variables = new Vector3Variable[0];
-
-        ///// <summary>
-        ///// An array of ColorVariables
-        ///// </summary>
-        //public ColorVariable[] ColorVariables
-        //{
-        //    get
-        //    {
-        //        return _colorVariables;
-        //    }
-        //    set
-        //    {
-        //        _colorVariables = value;
-        //    }
-        //}
-        //[Tooltip("An array of ColorVariables.")]
-        //[SerializeField]
-        //ColorVariable[] _colorVariables = new ColorVariable[0];
-
-
-
-        //=============================
-        /// <summary>
-        /// An array of BoolVariables
-        /// </summary>
-        public BoolVariable[] BoolVariables
+        public List<BoolVariable> BoolVariables
         {
             get
             {
@@ -190,12 +62,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of BoolVariables.")]
         [SerializeField]
-        BoolVariable[] _boolVariables = new BoolVariable[0];
+        List<BoolVariable> _boolVariables = new List<BoolVariable>();
 
         /// <summary>
         /// An array of IntVariables
         /// </summary>
-        public IntVariable[] IntVariables
+        public List<IntVariable> IntVariables
         {
             get
             {
@@ -208,12 +80,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of IntVariables.")]
         [SerializeField]
-        IntVariable[] _intVariables = new IntVariable[0];
+        List<IntVariable> _intVariables = new List<IntVariable>();
 
         /// <summary>
         /// An array of FloatVariables
         /// </summary>
-        public FloatVariable[] FloatVariables
+        public List<FloatVariable> FloatVariables
         {
             get
             {
@@ -226,12 +98,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of FloatVariables.")]
         [SerializeField]
-        FloatVariable[] _floatVariables = new FloatVariable[0];
+        List<FloatVariable> _floatVariables = new List<FloatVariable>();
 
         /// <summary>
         /// An array of StringVariables
         /// </summary>
-        public StringVariable[] StringVariables
+        public List<StringVariable> StringVariables
         {
             get
             {
@@ -244,12 +116,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of StringVariables.")]
         [SerializeField]
-        StringVariable[] _stringVariables = new StringVariable[0];
+        List<StringVariable> _stringVariables = new List<StringVariable>();
 
         /// <summary>
         /// An array of Vector2Variables
         /// </summary>
-        public Vector2Variable[] Vector2Variables
+        public List<Vector2Variable> Vector2Variables
         {
             get
             {
@@ -262,12 +134,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of Vector2Variables.")]
         [SerializeField]
-        Vector2Variable[] _Vector2Variables = new Vector2Variable[0];
+        List<Vector2Variable> _Vector2Variables = new List<Vector2Variable>();
 
         /// <summary>
         /// An array of Vector3Variables
         /// </summary>
-        public Vector3Variable[] Vector3Variables
+        public List<Vector3Variable> Vector3Variables
         {
             get
             {
@@ -280,12 +152,12 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of Vector3Variables.")]
         [SerializeField]
-        Vector3Variable[] _Vector3Variables = new Vector3Variable[0];
+        List<Vector3Variable> _Vector3Variables = new List<Vector3Variable>();
 
         /// <summary>
         /// An array of ColorVariables
         /// </summary>
-        public ColorVariable[] ColorVariables
+        public List<ColorVariable> ColorVariables
         {
             get
             {
@@ -298,17 +170,14 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
         [Tooltip("An array of ColorVariables.")]
         [SerializeField]
-        ColorVariable[] _colorVariables = new ColorVariable[0];
-
-
-
-        //==============================
+        List<ColorVariable> _colorVariables = new List<ColorVariable>();
 
         #endregion Editor Parameters
 
         #region Load / Save
         /// <summary>
-        /// Load saved values from preferences or set to default if not found. 
+        /// Load saved values from preferences or set to default if not found.
+        /// This method should only be called on the GameItem metas, shouldn't be called against the PlayerGameItem
         /// </summary>
         /// <param name="prefix"></param>
         /// <param name="useSecurePrefs"></param>
@@ -367,6 +236,7 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
 
         /// <summary>
         /// Update PlayerPrefs with values that should be saved.
+        /// This method should only be called on the GameItem metas, shouldn't be called against the PlayerGameItem
         /// </summary>
         /// Note: This does not call PreferencesFactory.Save()
         /// <param name="prefix"></param>
@@ -504,6 +374,167 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         }
 
         #endregion get
+
+        /// <summary>
+        /// Set a BoolVariable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetBool(string tag, bool value)
+        {
+            foreach (var variable in BoolVariables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new BoolVariable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            BoolVariables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set an FloatVariable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetFloat(string tag, float value)
+        {
+            foreach (var variable in FloatVariables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new FloatVariable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            FloatVariables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set an IntVariable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetInt(string tag, int value)
+        {
+            foreach (var variable in IntVariables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new IntVariable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            IntVariables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set an StringVariable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetString(string tag, string value)
+        {
+            foreach (var variable in StringVariables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new StringVariable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            StringVariables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set an Vector2Variable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetVector2(string tag, Vector2 value)
+        {
+            foreach (var variable in Vector2Variables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new Vector2Variable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            Vector2Variables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set an Vector3Variable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetVector3(string tag, Vector3 value)
+        {
+            foreach (var variable in Vector3Variables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new Vector3Variable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            Vector3Variables.Add(newVariable);
+        }
+
+        /// <summary>
+        /// Set a ColorVariable with the given tag.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void SetColor(string tag, Color value)
+        {
+            foreach (var variable in ColorVariables)
+            {
+                if (variable.Tag == tag)
+                {
+                    variable.Value = value;
+                    return;
+                }
+            }
+            //Not found
+            var newVariable = new ColorVariable();
+            newVariable.Tag = tag;
+            newVariable.Value = value;
+            ColorVariables.Add(newVariable);
+        }
     }
 
 
@@ -609,7 +640,8 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         /// <summary>
         /// The current value of this item
         /// </summary>
-        public T Value { get; set; }
+        [SerializeField]
+        public T Value;
 
     }
 

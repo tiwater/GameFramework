@@ -57,13 +57,16 @@ namespace GameFramework.GameStructure.Players.ObjectModel
             // Create the player meta.
             var player = ScriptableObject.CreateInstance<Player>();
             Items.Add(player);
-            player.Initialise(GameConfiguration.Instance, null, GameManager.Messenger,
-                        playerDto.Id, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: -1);
+
+            //Player is a special case, because other config keys are stored under player variables,
+            //so we have to set the selected player first
             player.PlayerDto = playerDto;
 
             Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
+            Selected = player;
 
-            SetupSelectedItem();
+            player.Initialise(GameConfiguration.Instance, null, GameManager.Messenger,
+                        playerDto.Id, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: -1);
             _isLoaded = true;
         }
     }

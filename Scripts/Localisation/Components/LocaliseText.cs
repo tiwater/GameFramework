@@ -25,6 +25,9 @@ using UnityEngine;
 using GameFramework.Localisation.Messages;
 using UnityEngine.Events;
 using GameFramework.Debugging;
+using System.Collections;
+using GameFramework.GameStructure;
+using System.Threading.Tasks;
 
 namespace GameFramework.Localisation.Components
 {
@@ -131,47 +134,77 @@ namespace GameFramework.Localisation.Components
         /// </summary>
         public override void Start()
         {
-            Localise();
+            StartCoroutine(Localise());
+            //Localise();
             base.Start();
+        }
+
+        /// <summary>
+        ///  Register the listener if RunOnMessage attribute has SubscribeType of EnableDisable or is not present.
+        ///  
+        /// If you override this method then be sure to call the base function
+        /// </summary>
+        public override void OnEnable()
+        {
+            StartCoroutine(LateEnable());
+        }
+
+        protected IEnumerator LateEnable()
+        {
+
+            while (!GameManager.Instance.IsInitialised)
+            {
+                yield return Task.Yield();
+            }
+            base.OnEnable();
         }
 
         /// <summary>
         /// Update the display with the localise text
         /// </summary>
-        void Localise()
+        IEnumerator Localise()
         {
-            // If we don't have a key then don't change the value
-            if (string.IsNullOrEmpty(Key)) return;
-
-            PreLocaliseValue = GlobalLocalisation.GetText(Key);
-
-            // Run any callback to modify the value.
-            OnPreLocalise.Invoke(this);
-
-            // apply any modifier
-            if (!string.IsNullOrEmpty(PreLocaliseValue))
+            while (!GameManager.Instance.IsInitialised)
             {
-                switch (Modifier)
-                {
-                    case ModifierType.LowerCase:
-                        PreLocaliseValue = PreLocaliseValue.ToLower();
-                        break;
-                    case ModifierType.UpperCase:
-                        PreLocaliseValue = PreLocaliseValue.ToUpper();
-                        break;
-                    case ModifierType.Title:
-                        CultureInfo.CurrentCulture.TextInfo.ToTitleCase(PreLocaliseValue);
-                        break;
-                    case ModifierType.FirstCapital:
-                        var characters = PreLocaliseValue.ToLower().ToCharArray();
-                        characters[0] = char.ToUpper(PreLocaliseValue[0]);
-                        PreLocaliseValue = new string(characters);
-                        break;
-                }
+                yield return Task.Yield();
             }
+            // If we don't have a key then don't change the value
+            if (string.IsNullOrEmpty(Key))
+            {   //Do nothing;
+            }
+            else
+            {
 
-            // set the value
-            Value = PreLocaliseValue;
+                PreLocaliseValue = GlobalLocalisation.GetText(Key);
+
+                // Run any callback to modify the value.
+                OnPreLocalise.Invoke(this);
+
+                // apply any modifier
+                if (!string.IsNullOrEmpty(PreLocaliseValue))
+                {
+                    switch (Modifier)
+                    {
+                        case ModifierType.LowerCase:
+                            PreLocaliseValue = PreLocaliseValue.ToLower();
+                            break;
+                        case ModifierType.UpperCase:
+                            PreLocaliseValue = PreLocaliseValue.ToUpper();
+                            break;
+                        case ModifierType.Title:
+                            CultureInfo.CurrentCulture.TextInfo.ToTitleCase(PreLocaliseValue);
+                            break;
+                        case ModifierType.FirstCapital:
+                            var characters = PreLocaliseValue.ToLower().ToCharArray();
+                            characters[0] = char.ToUpper(PreLocaliseValue[0]);
+                            PreLocaliseValue = new string(characters);
+                            break;
+                    }
+                }
+
+                // set the value
+                Value = PreLocaliseValue;
+            }
         }
 
 
@@ -182,7 +215,7 @@ namespace GameFramework.Localisation.Components
         /// <returns></returns>
         public override bool RunMethod(LocalisationChangedMessage message)
         {
-            Localise();
+            StartCoroutine(Localise());
             return true;
         }
     }
