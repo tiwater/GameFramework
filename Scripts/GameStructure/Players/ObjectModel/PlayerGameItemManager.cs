@@ -19,8 +19,14 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Players.Messages;
+using GameFramework.Localisation.ObjectModel;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace GameFramework.GameStructure.Players.ObjectModel
 {
@@ -37,7 +43,28 @@ namespace GameFramework.GameStructure.Players.ObjectModel
         /// You may want to override this in your derived classes to send custom messages.
         public override void OnSelectedChanged(Player newSelection, Player oldSelection)
         {
-                GameManager.SafeQueueMessage(new PlayerChangedMessage(newSelection, oldSelection));
+            GameManager.SafeQueueMessage(new PlayerChangedMessage(newSelection, oldSelection));
+        }
+
+        public override async Task LoadFromStorage()
+        {
+            if (Items == null)
+            {
+                Items = new List<Player>();
+            }
+
+            var playerDto = await PlayerGameItemService.Instance.GetPlayer();
+            // Create the player meta.
+            var player = ScriptableObject.CreateInstance<Player>();
+            Items.Add(player);
+            player.Initialise(GameConfiguration.Instance, null, GameManager.Messenger,
+                        playerDto.Id, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: -1);
+            player.PlayerDto = playerDto;
+
+            Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
+
+            SetupSelectedItem();
+            _isLoaded = true;
         }
     }
 }

@@ -41,6 +41,10 @@ namespace GameFramework.GameStructure.GameItems.Editor
         SerializedProperty _giLocalisablePrefabsProperty;
         SerializedProperty _giLocalisableSpritesProperty;
         SerializedProperty _giVariablesProperty;
+        SerializedProperty _giPackageProperty;
+
+        SerializedProperty _giConsumable;
+        SerializedProperty _giDistinguishInstance;
 
         Rect _prefabDropRect;
         Rect _spriteDropRect;
@@ -58,6 +62,9 @@ namespace GameFramework.GameStructure.GameItems.Editor
             _giLocalisablePrefabsProperty = serializedObject.FindProperty("_localisablePrefabs");
             _giLocalisableSpritesProperty = serializedObject.FindProperty("_localisableSprites");
             _giVariablesProperty = serializedObject.FindProperty("_variables");
+            _giPackageProperty = serializedObject.FindProperty("_package");
+            _giConsumable = serializedObject.FindProperty("Consumable");
+            _giDistinguishInstance = serializedObject.FindProperty("DistinguishInstance");
         }
 
         public override void OnInspectorGUI()
@@ -105,6 +112,9 @@ namespace GameFramework.GameStructure.GameItems.Editor
             EditorGUILayout.LabelField("Basic Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_giNameProperty, new GUIContent("Name"));
             EditorGUILayout.PropertyField(_giDescriptionProperty, new GUIContent("Description"));
+            EditorGUILayout.PropertyField(_giPackageProperty, new GUIContent("Package"));
+            EditorGUILayout.PropertyField(_giConsumable, new GUIContent("Consumable"));
+            EditorGUILayout.PropertyField(_giDistinguishInstance, new GUIContent("Distinguish Instance"));
             EditorGUILayout.PropertyField(_startUnlockedProperty);
             if (!_startUnlockedProperty.boolValue)
             {
@@ -137,6 +147,8 @@ namespace GameFramework.GameStructure.GameItems.Editor
                     var arrayProperty = _giLocalisablePrefabsProperty.GetArrayElementAtIndex(i);
                     var nameProperty = arrayProperty.FindPropertyRelative("Name");
                     var typeProperty = arrayProperty.FindPropertyRelative("LocalisablePrefabType");
+                    var labelProperty = arrayProperty.FindPropertyRelative("Label");
+                    var isAddressableProperty = arrayProperty.FindPropertyRelative("IsAddressable");
 
                     var deleted = false;
                     // indent
@@ -162,11 +174,19 @@ namespace GameFramework.GameStructure.GameItems.Editor
                         var defaultPrefabProperty = arrayProperty.FindPropertyRelative("LocalisablePrefab");
 
                         EditorGUILayout.PropertyField(typeProperty, new GUIContent("Type", typeProperty.tooltip));
-                        if (typeProperty.enumValueIndex == (int)GameItem.LocalisablePrefabType.Custom)
+                        EditorGUILayout.PropertyField(isAddressableProperty, new GUIContent("IsAddressable", isAddressableProperty.tooltip));
+                        if (typeProperty.enumValueIndex == (int)GameItem.LocalisablePrefabType.Custom || isAddressableProperty.boolValue)
                         {
                             EditorGUILayout.PropertyField(nameProperty, new GUIContent("Name", nameProperty.tooltip));
                         }
-                        EditorGUILayout.PropertyField(defaultPrefabProperty, new GUIContent("Prefab", defaultPrefabProperty.tooltip));
+                        if (isAddressableProperty.boolValue)
+                        {
+                            EditorGUILayout.PropertyField(labelProperty, new GUIContent("Label", labelProperty.tooltip));
+                        }
+                        else
+                        {
+                            EditorGUILayout.PropertyField(defaultPrefabProperty, new GUIContent("Prefab", defaultPrefabProperty.tooltip));
+                        }
                     }
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();

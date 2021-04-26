@@ -46,7 +46,7 @@ namespace GameFramework.GameStructure.GameItems
 
             //// Assert
             Assert.IsNotNull(gameItemmanager.Items, "The items array should be initialised.");
-            Assert.AreEqual(gameItemmanager.Items.Length, 0, "The items array should be empty on initialisation.");
+            Assert.AreEqual(gameItemmanager.Items.Count, 0, "The items array should be empty on initialisation.");
         }
 
         [Test]

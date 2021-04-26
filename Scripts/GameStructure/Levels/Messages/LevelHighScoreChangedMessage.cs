@@ -57,7 +57,7 @@ namespace GameFramework.GameStructure.Levels.Messages
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("Level {0}, New High Score {1}, Old High Score {2}", Level.Id, NewHighScore, OldHighScore);
+            return string.Format("Level {0}, New High Score {1}, Old High Score {2}", Level.GiId, NewHighScore, OldHighScore);
         }
     }
 }

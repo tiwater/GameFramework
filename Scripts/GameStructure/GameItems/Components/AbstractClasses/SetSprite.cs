@@ -19,6 +19,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Threading.Tasks;
 using GameFramework.Debugging;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using UnityEngine;
@@ -73,16 +74,16 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// Called by the base class from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             var sprite = GameItem.GetSprite(SpriteType, Name);
             // if not set then for legacy reasons we fallback to the default sprite loaded from resources.
             if (sprite == null)
             {
                 sprite = GameItem.Sprite;
-                MyDebug.Log(string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Id));
+                MyDebug.Log(string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.GiId));
             }
-            Assert.IsNotNull(sprite, string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.Id));
+            Assert.IsNotNull(sprite, string.Format("The Sprite you are trying to instantiate is not setup. Please add it to the target GameItem {0}_{1} or put a default sprint in the resources folder.", GameItem.IdentifierBase, GameItem.GiId));
             AssignSprite(_component, sprite);
         }
 

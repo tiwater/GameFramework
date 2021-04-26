@@ -19,6 +19,8 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using GameFramework.GameStructure.Characters.Messages;
+using GameFramework.GameStructure.Characters.ObjectModel;
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Players.Messages;
@@ -43,6 +45,9 @@ namespace GameFramework.GameStructure.Players.ObjectModel
         /// A unique shortened version of IdentifierBase to save memory.
         /// </summary>
         public override string IdentifierBasePrefs { get { return "P"; } }
+
+
+        public PlayerDto PlayerDto { get; set; }
 
         /// <summary>
         /// Override in subclasses to return a list of custom counter configuration entries that should also
@@ -113,6 +118,49 @@ namespace GameFramework.GameStructure.Players.ObjectModel
             }
         }
         bool _isGameWon;
+
+        /// <summary>
+        /// Whether the current player has won the whole game.
+        /// GameWonMessage is sent whenever this value is set to true outside of initialisation.
+        /// </summary>
+        public string SelectedCharacterId
+        {
+            get { return _selectedCharacter; }
+            set
+            {
+                var oldValue = SelectedCharacterId;
+                _selectedCharacter = value;
+                //If changed
+                if (IsInitialised && oldValue != SelectedCharacterId)
+                {
+                    var Characters = GameManager.Instance.Characters;
+                    if (Characters != null)
+                    {
+                        Character oldCharacter = null;
+                        if (oldValue != null)
+                        {
+                            oldCharacter = Characters.GetItem(oldValue);
+                        }
+                        //Send out message
+                        Messenger.QueueMessage(new CharacterChangedMessage(Characters.GetItem(SelectedCharacterId), oldCharacter));
+                    }
+                }
+            }
+        }
+        string _selectedCharacter;
+
+        public Character SelectedCharacter
+        {
+            get
+            {
+                var Characters = GameManager.Instance.Characters;
+                if (Characters != null && SelectedCharacterId!=null)
+                {
+                    return Characters.GetItem(SelectedCharacterId);
+                }
+                return null;
+            }
+        }
 
 
         public int MaximumWorld { get; set; }

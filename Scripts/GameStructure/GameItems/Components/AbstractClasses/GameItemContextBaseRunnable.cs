@@ -19,6 +19,8 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Collections;
+using System.Threading.Tasks;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
@@ -34,6 +36,16 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// </summary>
         protected virtual void Start()
         {
+            StartCoroutine(LateStart());
+        }
+
+        private IEnumerator LateStart()
+        {
+            while (!GameManager.Instance.IsInitialised)
+            {
+                yield return Task.Yield();
+            }
+
             if (Context.GetReferencedContextMode() == ObjectModel.GameItemContext.ContextModeType.Selected)
                 GetGameItemManager().SelectedChanged += SelectedChanged;
             RunMethod(true);
@@ -82,6 +94,6 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// You should implement this method which is called from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public abstract void RunMethod(bool isStart = true);
+        public abstract Task RunMethod(bool isStart = true);
     }
 }

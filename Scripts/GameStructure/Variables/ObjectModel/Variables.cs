@@ -48,6 +48,135 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         /// <summary>
         /// An array of BoolVariables
         /// </summary>
+        //public BoolVariable[] BoolVariables
+        //{
+        //    get
+        //    {
+        //        return _boolVariables;
+        //    }
+        //    set
+        //    {
+        //        _boolVariables = value;
+        //    }
+        //}
+        //[Tooltip("An array of BoolVariables.")]
+        //[SerializeField]
+        //BoolVariable[] _boolVariables = new BoolVariable[0];
+
+        ///// <summary>
+        ///// An array of IntVariables
+        ///// </summary>
+        //public IntVariable[] IntVariables
+        //{
+        //    get
+        //    {
+        //        return _intVariables;
+        //    }
+        //    set
+        //    {
+        //        _intVariables = value;
+        //    }
+        //}
+        //[Tooltip("An array of IntVariables.")]
+        //[SerializeField]
+        //IntVariable[] _intVariables = new IntVariable[0];
+
+        ///// <summary>
+        ///// An array of FloatVariables
+        ///// </summary>
+        //public FloatVariable[] FloatVariables
+        //{
+        //    get
+        //    {
+        //        return _floatVariables;
+        //    }
+        //    set
+        //    {
+        //        _floatVariables = value;
+        //    }
+        //}
+        //[Tooltip("An array of FloatVariables.")]
+        //[SerializeField]
+        //FloatVariable[] _floatVariables = new FloatVariable[0];
+
+        ///// <summary>
+        ///// An array of StringVariables
+        ///// </summary>
+        //public StringVariable[] StringVariables
+        //{
+        //    get
+        //    {
+        //        return _stringVariables;
+        //    }
+        //    set
+        //    {
+        //        _stringVariables = value;
+        //    }
+        //}
+        //[Tooltip("An array of StringVariables.")]
+        //[SerializeField]
+        //StringVariable[] _stringVariables = new StringVariable[0];
+
+        ///// <summary>
+        ///// An array of Vector2Variables
+        ///// </summary>
+        //public Vector2Variable[] Vector2Variables
+        //{
+        //    get
+        //    {
+        //        return _Vector2Variables;
+        //    }
+        //    set
+        //    {
+        //        _Vector2Variables = value;
+        //    }
+        //}
+        //[Tooltip("An array of Vector2Variables.")]
+        //[SerializeField]
+        //Vector2Variable[] _Vector2Variables = new Vector2Variable[0];
+
+        ///// <summary>
+        ///// An array of Vector3Variables
+        ///// </summary>
+        //public Vector3Variable[] Vector3Variables
+        //{
+        //    get
+        //    {
+        //        return _Vector3Variables;
+        //    }
+        //    set
+        //    {
+        //        _Vector3Variables = value;
+        //    }
+        //}
+        //[Tooltip("An array of Vector3Variables.")]
+        //[SerializeField]
+        //Vector3Variable[] _Vector3Variables = new Vector3Variable[0];
+
+        ///// <summary>
+        ///// An array of ColorVariables
+        ///// </summary>
+        //public ColorVariable[] ColorVariables
+        //{
+        //    get
+        //    {
+        //        return _colorVariables;
+        //    }
+        //    set
+        //    {
+        //        _colorVariables = value;
+        //    }
+        //}
+        //[Tooltip("An array of ColorVariables.")]
+        //[SerializeField]
+        //ColorVariable[] _colorVariables = new ColorVariable[0];
+
+
+
+        //=============================
+        /// <summary>
+        /// An array of BoolVariables
+        /// </summary>
         public BoolVariable[] BoolVariables
         {
             get
@@ -170,6 +299,10 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
         [Tooltip("An array of ColorVariables.")]
         [SerializeField]
         ColorVariable[] _colorVariables = new ColorVariable[0];
+
+
+
+        //==============================
 
         #endregion Editor Parameters
 

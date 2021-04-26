@@ -57,7 +57,7 @@ namespace GameFramework.GameStructure.Levels.Messages
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("Level {0}, New Coins {1}, Old Coins {2}", Level.Id, NewCoins, OldCoins);
+            return string.Format("Level {0}, New Coins {1}, Old Coins {2}", Level.GiId, NewCoins, OldCoins);
         }
     }
 }

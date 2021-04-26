@@ -31,6 +31,10 @@ using GameFramework.Localisation.ObjectModel;
 using GameFramework.Preferences;
 using Random = UnityEngine.Random;
 using GameFramework.GameStructure.Game.ObjectModel;
+using GameFramework.GameStructure.Worlds.Messages;
+using GameFramework.GameStructure.Levels.Messages;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -73,11 +77,11 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         GameItem BaseEnumeratorCurrent { get; }
 
         /// <summary>
-        /// Get the item with the specified number
+        /// Get the item with the specified giId
         /// </summary>
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
-        GameItem BaseGetItem(string number);
+        GameItem BaseGetItem(string giId);
     }
 
     /// <summary>
@@ -107,7 +111,12 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// An array of items of type T
         /// </summary>
-        public T[] Items { get; set; }
+        public List<T> Items { get; set; }
+
+        /// <summary>
+        /// An array of instances of type T
+        /// </summary>
+        public List<T> ItemInstances { get; set; }
 
         /// <summary>
         /// The currently selected item
@@ -120,7 +129,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 T oldItem = Selected;
                 _selected = value;
-                if (_isLoaded && oldItem.Id != _selected.Id)
+                if (_isLoaded && oldItem.GiId != _selected.GiId)
                 {
                     if (SelectedChanged != null)
                         SelectedChanged(oldItem, Selected);
@@ -128,10 +137,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                         BaseSelectedChanged(oldItem, Selected);
                     OnSelectedChanged(Selected, oldItem);
 
-                    if (_holdsPlayers)
-                        PreferencesFactory.SetString("Selected" + TypeName, Selected.Id);
+                    if (_isRootItem)
+                        PreferencesFactory.SetString("Selected" + TypeName, Selected.GiId);
                     else
-                        GameManager.Instance.Player.SetSetting(_baseKey + "Selected" + TypeName, Selected.Id);
+                        GameManager.Instance.Player.SetSetting(_baseKey + "Selected" + TypeName, Selected.GiId);
                 }
             }
         }
@@ -162,8 +171,8 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         #endregion Callbacks
 
         readonly string _baseKey;
-        readonly bool _holdsPlayers;
-        bool _isLoaded;
+        readonly bool _isRootItem;
+        protected bool _isLoaded;
 
 
         public GameItemManager() : this(null) { }
@@ -172,13 +181,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         {
             MyDebug.Log(TypeNameFull + ": Constructor");
             Parent = parent;
-            Items = new T[0];
+            Items = new List<T>();
 
             // get the base key to use for any general settings for this item. If parent object we place it on that to avoid conflict if we have multiple instances of this
             _baseKey = parent == null ? "" : Parent.FullKey("");
 
             // determine if holding players - if so we need to handle setting selected at global level.
-            _holdsPlayers = TypeNameFull == typeof (Player).FullName;
+            _isRootItem = TypeNameFull == typeof (Player).FullName;
 
         }
 
@@ -187,13 +196,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Load method that will setup the Items collection using GameItem configuration files from the resources folder
         /// </summary>
         /// If any items are not able to be loaded then we will create a default item and show a warning.
-        public void Load(int startNumber, int lastNumber, int valueToUnlock = -1, bool loadFromResources = false)
+        public async Task Load(int startNumber, int lastNumber, int valueToUnlock = -1, bool loadFromResources = false)
         {
             if (loadFromResources) Debug.LogWarning("Obsolete in v4.4: The Load() loadFromResources parameter no longer does anything. Either subclass the GameItems if you need custom data or call LoadData() on the GameItem manually.");
             if (valueToUnlock != -1) Debug.LogWarning("Obsolete in v4.4: The Load() valueToUnlock parameter no longer does anything as the value is loaded from the GameItem configuration files. Either call LoadAutomatic() or specify in configuration files instead.");
 
             var count = (lastNumber + 1) - startNumber;     // e.g. if start == 1 and last == 1 then we still want to create item number 1
-            Items = new T[count];
+            Items = new List<T>(count);
 
 #if UNITY_EDITOR
             // aggregate messages up to avoid spamming to log
@@ -205,7 +214,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 var loadedItem = GameItem.LoadFromResources<T>(TypeName, (startNumber + i).ToString());
                 if (loadedItem != null)
                 {
-                    Items[i] = loadedItem;
+                    Items.Add(loadedItem);
                     Items[i].InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
                 }
                 else
@@ -215,13 +224,15 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                     containsCreatedGameItemsCount++;
                     containsCreatedGameItemsMessage += TypeName + "\\" + TypeName + "_" + (startNumber + i) + "\n";
 #endif
-                    Items[i] = ScriptableObject.CreateInstance<T>();
+                    Items.Add(ScriptableObject.CreateInstance<T>());
                     Items[i].Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger,
                         (startNumber + i).ToString(), LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: 10);
                     Items[i].UnlockWithCoins = true;
                 }
             }
-            Assert.AreNotEqual(Items.Length, 0, "You need to create 1 or more items in GameItemManager.Load()");
+            await LoadAddressableResourcesAsync();
+
+            Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
 
 #if UNITY_EDITOR
             if (containsCreatedGameItemsMessage.Length > 0)
@@ -236,20 +247,22 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// Load method that will setup the GameItems using common defaults before standard selection and unlock setup. 
         /// </summary>
-        public void LoadAutomatic(int startNumber, int lastNumber, int valueToUnlock = -1, bool unlockWithCompletion = false, bool unlockWithCoins = false)
+        public async Task LoadAutomatic(int startNumber, int lastNumber, int valueToUnlock = -1, bool unlockWithCompletion = false, bool unlockWithCoins = false)
         {
             var count = (lastNumber + 1) - startNumber;     // e.g. if start == 1 and last == 1 then we still want to create item number 1
             Assert.AreNotEqual(count, 0, "You need to create 1 or more items in GameItemManager.LoadAutomatic()");
 
-            Items = new T[count];
+            Items = new List<T>(count);
             for (var i = 0; i < count; i++)
             {
-                Items[i] = ScriptableObject.CreateInstance<T>();
+                Items.Add(ScriptableObject.CreateInstance<T>());
                 Items[i].Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger,
                     (startNumber + i).ToString(), LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: valueToUnlock);
                 Items[i].UnlockWithCompletion = unlockWithCompletion;
                 Items[i].UnlockWithCoins = unlockWithCoins;
             }
+
+            await LoadAddressableResourcesAsync();
 
             SetupSelectedItem();
 
@@ -263,6 +276,76 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             _isLoaded = true;
         }
 
+        /// <summary>
+        /// Load the adressable GameItems
+        /// </summary>
+        //protected void LoadAddressableResources()
+        //{
+        //    string label = typeof(T).Name;
+        //    if (label == "AddressableGameItem")
+        //    {
+        //        //For AddressableGameItem, use a short label
+        //        label = "AGI";
+        //    }
+        //    //Load the GameItems under the type label
+        //    AddressableResService.GetInstance().LoadResourcesAsync<T>(label, (name, resource) =>
+        //    {
+        //        //Instantia the resource to avoid change the source data
+        //        resource = GameItem.Instantiate(resource);
+        //        string[] names = name.Split('_');
+        //        resource.GiId = names[names.Count() - 1];
+        //        resource.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
+        //        Items.Add(resource);
+        //    });
+        //}
+
+
+
+        /// <summary>
+        /// Load the adressable GameItems
+        /// </summary>
+        protected async Task LoadAddressableResourcesAsync()
+        {
+            string label = typeof(T).Name;
+            if (label == "AddressableGameItem")
+            {
+                //For AddressableGameItem, use a short label
+                label = "AGI";
+            }
+            //Load the GameItems under the type label
+            var resources = await AddressableResService.GetInstance().LoadResourcesAsync<T>(label);
+            foreach (var resource in resources)
+            {
+                //Instantia the resource to avoid change the source data
+                T newResource = GameItem.Instantiate(resource);
+                newResource.name = resource.name;
+                newResource.GiId = resource.name.Substring(resource.name.IndexOf('_') + 1);
+                newResource.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
+                Items.Add(newResource);
+            }
+        }
+
+
+        /// <summary>
+        /// Load an instance of GameItem under the specified GiId
+        /// </summary>
+        public void LoadInstance(string GiId, string InstanceId, Player player)
+        {
+            if(ItemInstances == null)
+            {
+                ItemInstances = new List<T>();
+            }
+            T instance = GameItem.Instantiate(this.GetItem(GiId));
+
+            ItemInstances.Add(instance);
+            instance.InstanceId = InstanceId;
+            instance.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, player, GameManager.Messenger);
+        }
+
+        public virtual async Task LoadFromStorage()
+        {
+        }
+
 
         /// <summary>
         /// Load method that will setup the GameItems using a master with overrides for specific levels. 
@@ -273,7 +356,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             Assert.AreNotEqual(count, 0, "You need to create 1 or more items in GameItemManager.LoadMasterWithOverrides()");
             Assert.IsNotNull(master, "You must specify a master GameItem of type " + TypeName);
 
-            Items = new T[count];
+            Items = new List<T>(count);
             for (var i = 1; i <= count; i++)
             {
                 // check for any override
@@ -288,9 +371,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 }
                 var gameItem = UnityEngine.Object.Instantiate(instance) as T; // create a copy so we don't overwrite values.
                 Assert.IsNotNull(gameItem, "The gameItem for item " + i + " is not of type " + TypeName);
-                gameItem.Id = i.ToString();
+                gameItem.GiId = i.ToString();
                 gameItem.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
-                Items[i-1] = gameItem;
+                Items.Add(gameItem);
             }
 
             SetupSelectedItem();
@@ -309,16 +392,16 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// Set the selected item from prefs if found, if not then the first item.
         /// </summary>
-        void SetupSelectedItem()
+        protected void SetupSelectedItem()
         {
             // get the previously selected item or default to the first - for player type we need to get setting at global level.
-            var selectedNumber = _holdsPlayers ? 
+            var selectedNumber = _isRootItem ? 
                 PreferencesFactory.GetString("Selected" + TypeName, "-1") : 
                 GameManager.Instance.Player.GetSettingString(_baseKey + "Selected" + TypeName, "-1");
 
             foreach (T item in Items)
             {
-                if (item.Id == selectedNumber)
+                if (item.GiId == selectedNumber)
                     Selected = item;
             }
             if (Selected == null)
@@ -346,8 +429,8 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <returns>index or -1 if not found</returns>
         int GetItemIndex(string number)
         {
-            for (var i = 0; i < Items.Length; i++)
-                if (Items[i].Id.Equals(number))
+            for (var i = 0; i < Items.Count; i++)
+                if (Items[i].GiId.Equals(number))
                     return i;
             return -1;
         }
@@ -381,7 +464,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <returns>A GameItem or null</returns>
         public T GetNextItem(T item)
         {
-            return GetNextItem(item.Id);
+            return GetNextItem(item.GiId);
         }
 
 
@@ -394,7 +477,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         {
             var i = GetItemIndex(number);
             if (i == -1) return null;
-            return i + 1 < Items.Length ? Items[i + 1] : null;
+            return i + 1 < Items.Count ? Items[i + 1] : null;
         }
 
 
@@ -415,7 +498,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <returns>A GameItem or null</returns>
         public T GetPreviousItem(T item)
         {
-            return GetPreviousItem(item.Id);
+            return GetPreviousItem(item.GiId);
         }
 
 

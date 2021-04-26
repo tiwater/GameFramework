@@ -62,7 +62,7 @@ namespace GameFramework.GameStructure.Characters
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.GiId, "Number not set correctly");
             //TODO: Verify if we can test the below, or if localisation setup will interfere?
             //Assert.AreEqual("Name", gameItem.Name, "Name not set correctly");
             //Assert.AreEqual("Desc", gameItem.Description, "Description not set correctly");
@@ -96,7 +96,7 @@ namespace GameFramework.GameStructure.Characters
 
             //// Assert
             Assert.IsNotNull(gameItem, "GameItem not setup.");
-            Assert.AreEqual(number, gameItem.Id, "Number not set correctly");
+            Assert.AreEqual(number, gameItem.GiId, "Number not set correctly");
             Assert.AreEqual(name, gameItem.Name, "Name not set correctly");
             Assert.AreEqual(desc, gameItem.Description, "Description not set correctly");
             Assert.AreEqual("Character", gameItem.IdentifierBase, "IdentifierBase not set correctly");

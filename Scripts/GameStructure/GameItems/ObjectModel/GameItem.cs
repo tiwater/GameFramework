@@ -32,6 +32,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.Messaging;
+using System.Threading.Tasks;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -54,7 +55,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// The different types of prefab we have
         /// </summary>
-        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview, Baby, Young, Adult }
+        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview, Stage1, Stage2, Stage3, Stage4 }
 
         /// <summary>
         /// The different types of sprites we have
@@ -206,6 +207,32 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         [SerializeField]
         int _valueToUnlock;
 
+        /// <summary>
+        /// Package of the GameItem, it should be the same as the addressable group name
+        /// </summary>
+        public string Package
+        {
+            get
+            {
+                return _package;
+            }
+            set
+            {
+                _package = value;
+            }
+        }
+        [Tooltip("Package of the GameItem, it should be the same as the addressable group name.")]
+        [SerializeField]
+        string _package;
+
+        [Tooltip("Whether this GameItem is consumable.")]
+        [SerializeField]
+        public bool Consumable;
+
+        [Tooltip("Whether need to distinguish the instances of the GameItem. For the GameItems need to keep persistent status for each instance, set it to true")]
+        [SerializeField]
+        public bool DistinguishInstance;
+
         [SerializeField]
         List<LocalisablePrefabEntry> _localisablePrefabs = new List<LocalisablePrefabEntry>();
 
@@ -230,7 +257,23 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         [SerializeField]
         Variables.ObjectModel.Variables _variables = new Variables.ObjectModel.Variables();
 
-
+        /// <summary>
+        /// The index of the GameItem in its type.
+        /// </summary>
+        public long Index
+        {
+            get
+            {
+                return _index;
+            }
+            set
+            {
+                _index = value;
+            }
+        }
+        [Tooltip("The index of the GameItem in its type.")]
+        [SerializeField]
+        long _index = 0;
         #endregion Editor Parameters
 
         #region General Variables
@@ -274,7 +317,21 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// A number that represents this game item that is unique for this class of GameItem
         /// </summary>
-        public string Id { get; set; }
+        public string GiId { get; set; }
+
+        /// <summary>
+        /// A number that represents an instance of this game item
+        /// </summary>
+        public string InstanceId
+        {
+            get
+            { return _instanceId; }
+            set
+            {
+                _instanceId = value;
+            }
+        }
+        private string _instanceId = "";
 
         /// <summary>
         /// The name of this gameitem (localised if so configured). 
@@ -289,7 +346,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 if (LocalisableName.IsLocalisedWithNoKey())
                 {
                     var value = GlobalLocalisation.GetText(FullKey("Name"));
-                    if (value == null) return IdentifierBase + " " + Id;
+                    if (value == null) return IdentifierBase + " " + GiId;
                     return value;
                 }
                 return LocalisableName.GetValue();
@@ -318,7 +375,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             {
                 if (_sprite == null && !_spriteTriedLoading)
                 {
-                    _sprite = GameManager.LoadResource<Sprite>(IdentifierBase + "\\" + IdentifierBase + "_" + Id);
+                    _sprite = GameManager.LoadResource<Sprite>(IdentifierBase + "\\" + IdentifierBase + "_" + GiId);
                     _spriteTriedLoading = true;
                 }
                 return _sprite;
@@ -453,7 +510,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         #endregion Extension Data
 
         // whether this represents a player GameItem
-        bool _isPlayer;
+        bool _isRootItem;
 
         // A prefix that will be used for preferences entries for this item that can be shared across all players. [IdentifierBasePrefs][Number].
         string _prefsPrefix { get; set; }
@@ -484,7 +541,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         {
             IdentifierBase = identifierBase;
             IdentifierBasePrefs = identifierBasePrefs;
-            Id = id;
+            GiId = id;
             LocalisableName = name ?? LocalisableText.CreateNonLocalised();
             LocalisableDescription = description ?? LocalisableText.CreateNonLocalised();
             Sprite = sprite;
@@ -509,12 +566,19 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             Player = player;
             Messenger = messenger;
 
-            _isPlayer = IdentifierBase == "Player";
-            if (!_isPlayer)
+            _isRootItem = IdentifierBase == "Player" || IdentifierBase == "User";
+            if (!_isRootItem)
                 Assert.IsNotNull(Player, "Currently non Player GameItems have to have a valid Player specified.");
 
-            _prefsPrefix = IdentifierBasePrefs + Id + ".";
-            _prefsPrefixPlayer = _isPlayer ? _prefsPrefix : Player.FullKey(_prefsPrefix);
+            if (InstanceId != null && InstanceId != "")
+            {
+                _prefsPrefix = IdentifierBasePrefs + GiId + "_" + InstanceId + ".";
+            }
+            else
+            {
+                _prefsPrefix = IdentifierBasePrefs + GiId + ".";
+            }
+            _prefsPrefixPlayer = _isRootItem ? _prefsPrefix : Player.FullKey(_prefsPrefix);
 
             HighScoreLocalPlayers = PreferencesFactory.GetInt(FullKey("HSLP"), 0);	                // saved at global level rather than per player.
             HighScoreLocalPlayersPlayerNumber = PreferencesFactory.GetInt(FullKey("HSLPN"), -1);	// saved at global level rather than per player.
@@ -580,7 +644,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             if (gameItem != null)
             {
                 gameItem = Instantiate(gameItem);  // create a copy so we don't overwrite values.
-                gameItem.Id = number;
+                gameItem.GiId = number;
             }
             return gameItem;
         }
@@ -641,7 +705,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 LoadGameItemExtension();
 
             if (JsonData == null && GameItemExtensionData == null)
-                MyDebug.LogWarning("When loading game item from resources, corresponding JSON or GameItemExtension should be present. Either disable the Load From Resources option or check the file exists : " + IdentifierBase + "\\" + IdentifierBase + "_" + Id + "[_Extension]");
+                MyDebug.LogWarning("When loading game item from resources, corresponding JSON or GameItemExtension should be present. Either disable the Load From Resources option or check the file exists : " + IdentifierBase + "\\" + IdentifierBase + "_" + GiId + "[_Extension]");
         }
 
         /// <summary>
@@ -650,7 +714,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// The file loaded must be placed in the resources folder as a json file under [IdentifierBase]\[IdentifierBase]_[Number].json
         public void LoadJsonData()
         {
-            var path = string.Format("{0}\\{0}_{1}", IdentifierBase, Id);
+            var path = string.Format("{0}\\{0}_{1}", IdentifierBase, GiId);
             if (JsonData == null)
                 JsonData = LoadJsonDataFile(path);
             if (JsonData != null)
@@ -685,7 +749,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// use this method to selectively load such data.
         public JSONObject LoadJsonGameData()
         {
-            var path = string.Format("{0}\\{0}_GameData_{1}", IdentifierBase, Id);
+            var path = string.Format("{0}\\{0}_GameData_{1}", IdentifierBase, GiId);
             if (JsonGameData == null)
                 JsonGameData = LoadJsonDataFile(path);
             if (JsonGameData != null)
@@ -733,7 +797,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         public void LoadGameItemExtension()
         {
-            GameItemExtensionData = GameManager.LoadResource<GameItemExtension>(IdentifierBase + "\\" + IdentifierBase + "_" + Id + "_Extension");
+            GameItemExtensionData = GameManager.LoadResource<GameItemExtension>(IdentifierBase + "\\" + IdentifierBase + "_" + GiId + "_Extension");
         }
 
 
@@ -763,9 +827,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public GameObject GetPrefab(string name)
+        public async Task<GameObject> GetPrefab(string name)
         {
-            var localisablePrefab = GetLocalisablePrefab(name);
+            var localisablePrefab = await GetLocalisablePrefab(name);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab();
         }
 
@@ -777,9 +841,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefab(string name, SystemLanguage language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefab(string name, SystemLanguage language, bool fallbackToDefault = true)
         {
-            var localisablePrefab = GetLocalisablePrefab(name);
+            var localisablePrefab = await GetLocalisablePrefab(name);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab(language, fallbackToDefault);
         }
 
@@ -791,9 +855,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefab(string name, string language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefab(string name, string language, bool fallbackToDefault = true)
         {
-            var localisablePrefab = GetLocalisablePrefab(name);
+            var localisablePrefab = await GetLocalisablePrefab(name);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab(language, fallbackToDefault);
         }
 
@@ -802,9 +866,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Get a selection menu prefab that corresponds to the currently set language
         /// </summary>
         /// <returns></returns>
-        public GameObject GetPrefabSelectionMenu()
+        public async Task<GameObject> GetPrefabSelectionMenu()
         {
-            return GetPrefab(LocalisablePrefabType.SelectionMenu);
+            return await GetPrefab(LocalisablePrefabType.SelectionMenu);
         }
 
 
@@ -814,9 +878,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefabSelectionMenu(SystemLanguage language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefabSelectionMenu(SystemLanguage language, bool fallbackToDefault = true)
         {
-            return GetPrefab(LocalisablePrefabType.SelectionMenu, language, fallbackToDefault);
+            return await GetPrefab(LocalisablePrefabType.SelectionMenu, language, fallbackToDefault);
         }
 
 
@@ -826,9 +890,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefabSelectionMenu(string language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefabSelectionMenu(string language, bool fallbackToDefault = true)
         {
-            return GetPrefab(LocalisablePrefabType.SelectionMenu, language, fallbackToDefault);
+            return await GetPrefab(LocalisablePrefabType.SelectionMenu, language, fallbackToDefault);
         }
 
 
@@ -836,9 +900,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Get an in game prefab that corresponds to the currently set language
         /// </summary>
         /// <returns></returns>
-        public GameObject GetPrefabInGame()
+        public async Task<GameObject> GetPrefabInGame()
         {
-            return GetPrefab(LocalisablePrefabType.InGame);
+            return await GetPrefab(LocalisablePrefabType.InGame);
         }
 
 
@@ -848,9 +912,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefabInGame(SystemLanguage language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefabInGame(SystemLanguage language, bool fallbackToDefault = true)
         {
-            return GetPrefab(LocalisablePrefabType.InGame, language, fallbackToDefault);
+            return await GetPrefab(LocalisablePrefabType.InGame, language, fallbackToDefault);
         }
 
 
@@ -860,9 +924,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        public GameObject GetPrefabInGame(string language, bool fallbackToDefault = true)
+        public async Task<GameObject> GetPrefabInGame(string language, bool fallbackToDefault = true)
         {
-            return GetPrefab(LocalisablePrefabType.InGame, language, fallbackToDefault);
+            return await GetPrefab(LocalisablePrefabType.InGame, language, fallbackToDefault);
         }
 
 
@@ -870,9 +934,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Get a prefab with the given type that corresponds to the currently set language
         /// </summary>
         /// <returns></returns>
-        GameObject GetPrefab(LocalisablePrefabType prefabType)
+        async Task<GameObject> GetPrefab(LocalisablePrefabType prefabType)
         {
-            var localisablePrefab = GetLocalisablePrefab(prefabType);
+            var localisablePrefab = await GetLocalisablePrefab(prefabType);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab();
         }
 
@@ -884,9 +948,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        GameObject GetPrefab(LocalisablePrefabType prefabType, SystemLanguage language, bool fallbackToDefault = true)
+        async Task<GameObject> GetPrefab(LocalisablePrefabType prefabType, SystemLanguage language, bool fallbackToDefault = true)
         {
-            var localisablePrefab = GetLocalisablePrefab(prefabType);
+            var localisablePrefab = await GetLocalisablePrefab(prefabType);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab(language, fallbackToDefault);
         }
 
@@ -898,9 +962,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="language"></param>
         /// <param name="fallbackToDefault"></param>
         /// <returns></returns>
-        GameObject GetPrefab(LocalisablePrefabType prefabType, string language, bool fallbackToDefault = true)
+        async Task<GameObject> GetPrefab(LocalisablePrefabType prefabType, string language, bool fallbackToDefault = true)
         {
-            var localisablePrefab = GetLocalisablePrefab(prefabType);
+            var localisablePrefab = await GetLocalisablePrefab(prefabType);
             return localisablePrefab == null ? null : localisablePrefab.GetPrefab(language, fallbackToDefault);
         }
 
@@ -910,11 +974,24 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        LocalisablePrefab GetLocalisablePrefab(string name)
+        async Task<LocalisablePrefab> GetLocalisablePrefab(string name)
         {
             foreach (var prefabEntry in _localisablePrefabs)
             {
-                if (prefabEntry.Name == name) return prefabEntry.LocalisablePrefab;
+                if (prefabEntry.Name == name)
+                {
+                    if (prefabEntry.IsAddressable)
+                    {
+                        //Load the addressable prefab
+                        prefabEntry.LocalisablePrefab.Default =
+                            await AddressableResService.GetInstance().LoadResourceAsync<GameObject>(prefabEntry.Name, prefabEntry.Label);
+                        return prefabEntry.LocalisablePrefab;
+                    }
+                    else
+                    {
+                        return prefabEntry.LocalisablePrefab;
+                    }
+                }
             }
             return null;
         }
@@ -925,11 +1002,24 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="localisablePrefabTypeEnum"></param>
         /// <returns></returns>
-        LocalisablePrefab GetLocalisablePrefab(LocalisablePrefabType localisablePrefabTypeEnum)
+        async Task<LocalisablePrefab> GetLocalisablePrefab(LocalisablePrefabType localisablePrefabTypeEnum)
         {
             foreach (var prefabEntry in _localisablePrefabs)
             {
-                if (prefabEntry.LocalisablePrefabType == localisablePrefabTypeEnum) return prefabEntry.LocalisablePrefab;
+                if (prefabEntry.LocalisablePrefabType == localisablePrefabTypeEnum)
+                {
+                    if (prefabEntry.IsAddressable)
+                    {
+                        //Load the addressable prefab
+                        prefabEntry.LocalisablePrefab.Default =
+                            await AddressableResService.GetInstance().LoadResourceAsync<GameObject>(prefabEntry.Name, prefabEntry.Label);
+                        return prefabEntry.LocalisablePrefab;
+                    }
+                    else
+                    {
+                        return prefabEntry.LocalisablePrefab;
+                    }
+                }
             }
             return null;
         }
@@ -944,9 +1034,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name = "worldPositionStays" > If true, the parent-relative position, scale and rotation is modified such that the object keeps the same world space position, rotation and scale as before.</param>
         /// <returns></returns>
         [Obsolete("Use the InstantiatePrefab method and pass a type of LocalisablePrefabType.SelectionMenu")]
-        public GameObject InstantiatePrefabSelectionMenu(Transform parent = null, bool worldPositionStays = true)
+        public async Task<GameObject> InstantiatePrefabSelectionMenu(Transform parent = null, bool worldPositionStays = true)
         {
-            return InstantiatePrefab(LocalisablePrefabType.SelectionMenu, parent, worldPositionStays);
+            return await InstantiatePrefab(LocalisablePrefabType.SelectionMenu, parent, worldPositionStays);
         }
 
 
@@ -957,9 +1047,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name = "worldPositionStays" > If true, the parent-relative position, scale and rotation is modified such that the object keeps the same world space position, rotation and scale as before.</param>
         /// <returns></returns>
         [Obsolete("Use the InstantiatePrefab method and pass a type of LocalisablePrefabType.InGame")]
-        public GameObject InstantiatePrefabInGame(Transform parent = null, bool worldPositionStays = true)
+        public async Task<GameObject> InstantiatePrefabInGame(Transform parent = null, bool worldPositionStays = true)
         {
-            return InstantiatePrefab(LocalisablePrefabType.InGame, parent, worldPositionStays);
+            return await InstantiatePrefab(LocalisablePrefabType.InGame, parent, worldPositionStays);
         }
 
 
@@ -971,10 +1061,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="parent"></param>
         /// <param name = "worldPositionStays" >If true, the parent-relative position, scale and rotation is modified such that the object keeps the same world space position, rotation and scale as before.</param>
         /// <returns></returns>
-        public GameObject InstantiatePrefab(LocalisablePrefabType localisablePrefabType, string customName = null, Transform parent = null, bool worldPositionStays = true)
+        public async Task<GameObject> InstantiatePrefab(LocalisablePrefabType localisablePrefabType, string customName = null, Transform parent = null, bool worldPositionStays = true)
         {
             return localisablePrefabType == GameItem.LocalisablePrefabType.Custom ? 
-                InstantiatePrefab(customName, parent, worldPositionStays) : InstantiatePrefab(localisablePrefabType, parent, worldPositionStays);
+                await InstantiatePrefab(customName, parent, worldPositionStays) : await InstantiatePrefab(localisablePrefabType, parent, worldPositionStays);
         }
 
 
@@ -985,9 +1075,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="parent"></param>
         /// <param name = "worldPositionStays" > If true, the parent-relative position, scale and rotation is modified such that the object keeps the same world space position, rotation and scale as before.</param>
         /// <returns></returns>
-        public GameObject InstantiatePrefab(string name, Transform parent = null, bool worldPositionStays = true)
+        public async Task<GameObject> InstantiatePrefab(string name, Transform parent = null, bool worldPositionStays = true)
         {
-            var localisablePrefab = GetPrefab(name);
+            var localisablePrefab = await GetPrefab(name);
             return localisablePrefab == null ? null : InstantiatePrefab(localisablePrefab, parent, worldPositionStays);
         }
 
@@ -999,9 +1089,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="parent"></param>
         /// <param name = "worldPositionStays" >If true, the parent-relative position, scale and rotation is modified such that the object keeps the same world space position, rotation and scale as before.</param>
         /// <returns></returns>
-        GameObject InstantiatePrefab(LocalisablePrefabType localisablePrefabType, Transform parent = null, bool worldPositionStays = true)
+        async Task<GameObject> InstantiatePrefab(LocalisablePrefabType localisablePrefabType, Transform parent = null, bool worldPositionStays = true)
         {
-            var localisablePrefab = GetPrefab(localisablePrefabType);
+            var localisablePrefab = await GetPrefab(localisablePrefabType);
             return localisablePrefab == null ? null : InstantiatePrefab(localisablePrefab, parent, worldPositionStays);
         }
 
@@ -1535,7 +1625,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public void SetSetting(string key, string value, string defaultValue = null)
         {
-            if (_isPlayer)
+            if (_isRootItem)
             {
                 // only set or keep values that aren't the default
                 if (value != defaultValue)
@@ -1561,7 +1651,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public void SetSetting(string key, bool value, bool defaultValue = false)
         {
-            if (_isPlayer)
+            if (_isRootItem)
             {
                 // only set or keep values that aren't the default
                 if (value != defaultValue)
@@ -1587,7 +1677,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public void SetSetting(string key, int value, int defaultValue = 0)
         {
-            if (_isPlayer) {
+            if (_isRootItem) {
                 // only set or keep values that aren't the default
                 if (value != defaultValue)
                 {
@@ -1613,7 +1703,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public void SetSettingFloat(string key, float value, float defaultValue = 0)
         {
-            if (_isPlayer)
+            if (_isRootItem)
             {
                 // only set or keep values that aren't the default
                 if (!Mathf.Approximately(value, defaultValue))
@@ -1639,7 +1729,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public string GetSettingString(string key, string defaultValue)
         {
-            if (_isPlayer)
+            if (_isRootItem)
                return PreferencesFactory.GetString(FullKey(key), defaultValue);
             //else if (Parent != null)
             //    return Parent.GetSettingString(FullKey(key), defaultValue);
@@ -1655,7 +1745,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public int GetSettingInt(string key, int defaultValue)
         {
-            if (_isPlayer)
+            if (_isRootItem)
                 return PreferencesFactory.GetInt(FullKey(key), defaultValue);
             //else if (Parent != null)
             //    return Parent.GetSettingInt(FullKey(key), defaultValue);
@@ -1671,7 +1761,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public bool GetSettingBool(string key, bool defaultValue)
         {
-            if (_isPlayer)
+            if (_isRootItem)
                 return PreferencesFactory.GetInt(FullKey(key), defaultValue ? 1 : 0) == 1;
             //else if (Parent != null)
             //    return Parent.GetSettingInt(FullKey(key), defaultValue);
@@ -1687,7 +1777,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="defaultValue"></param>
         public float GetSettingFloat(string key, float defaultValue)
         {
-            if (_isPlayer)
+            if (_isRootItem)
                 return PreferencesFactory.GetFloat(FullKey(key), defaultValue);
             //else if (Parent != null)
             //    return Parent.GetSettingInt(FullKey(key), defaultValue);
@@ -1716,6 +1806,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             public LocalisablePrefabType LocalisablePrefabType;
             [Tooltip("A unique name that identifies this prefab that you can later use for accessing it.")]
             public string Name;
+            [Tooltip("Whether the prefab is addressable.")]
+            public bool IsAddressable;
+            [Tooltip("The label for addressable prefab.")]
+            public string Label;
             [Tooltip("The prefab that will be used for this type unless overridden for a particular language.")]
             public LocalisablePrefab LocalisablePrefab;
         }

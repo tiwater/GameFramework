@@ -57,6 +57,9 @@ namespace GameFramework.GameStructure.Game.Editor
 
         SerializedProperty _variablesProperty;
 
+        SerializedProperty _allowOfflineProperty;
+        SerializedProperty _allowOfflineBootProperty;
+
         SerializedProperty _playerSetupModeProperty;
         SerializedProperty _playerCountProperty;
 
@@ -100,6 +103,9 @@ namespace GameFramework.GameStructure.Game.Editor
             _displayChangeCheckDelayProperty = serializedObject.FindProperty("DisplayChangeCheckDelay");
 
             _variablesProperty = serializedObject.FindProperty("Variables");
+
+            _allowOfflineProperty = serializedObject.FindProperty("AllowOffline");
+            _allowOfflineBootProperty = serializedObject.FindProperty("AllowOfflineBoot");
 
             _playerSetupModeProperty = serializedObject.FindProperty("PlayerSetupMode");
             _playerCountProperty = serializedObject.FindProperty("PlayerCount");
@@ -228,13 +234,19 @@ namespace GameFramework.GameStructure.Game.Editor
             // Player setup
             EditorGUILayout.BeginVertical("Box");
             EditorGUILayout.PropertyField(_playerSetupModeProperty, new GUIContent("Player Setup"));
-            if (_playerSetupModeProperty.enumValueIndex == 1 || _playerSetupModeProperty.enumValueIndex == 2)
+            if (_playerSetupModeProperty.enumValueIndex == 1 || _playerSetupModeProperty.enumValueIndex == 2 || _playerSetupModeProperty.enumValueIndex == 5)
             {
                 EditorGUI.indentLevel += 1;
                 _showPlayerAdvanced = EditorGUILayout.Foldout(_showPlayerAdvanced, "Advanced");
                 if (_showPlayerAdvanced)
                 {
                     EditorGUILayout.PropertyField(_playerCountProperty);
+                }
+
+                EditorGUILayout.PropertyField(_allowOfflineProperty, new GUIContent("Allow Offline"));
+                if (_allowOfflineProperty.boolValue)
+                {
+                    EditorGUILayout.PropertyField(_allowOfflineBootProperty, new GUIContent("Allow Offline Boot"));
                 }
                 EditorGUI.indentLevel -= 1;
             }

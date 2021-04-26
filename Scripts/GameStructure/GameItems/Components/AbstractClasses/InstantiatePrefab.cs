@@ -108,7 +108,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         public override void RunMethod()
         {
             var newInstance = CurrentItem.InstantiatePrefab(PrefabType, Name, Parent == null ? transform : Parent.transform, WorldPositionStays);
-            Assert.IsNotNull(newInstance, string.Format("The Prefab you are trying to instantiate is not setup. Please ensure the add it to the target GameItem {0}_{1}.", CurrentItem.IdentifierBase, CurrentItem.Id));
+            Assert.IsNotNull(newInstance, string.Format("The Prefab you are trying to instantiate is not setup. Please ensure the add it to the target GameItem {0}_{1}.", CurrentItem.IdentifierBase, CurrentItem.GiId));
         }
     }
 }

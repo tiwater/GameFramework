@@ -20,6 +20,7 @@
 //----------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GameFramework.Animation.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using UnityEngine;
@@ -104,34 +105,40 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         [Tooltip("Settings for how to animate changes. This is used in cases when we are showing the selected item and the selection changes.")]
         public GameObjectToGameObjectAnimation GameObjectToGameObjectAnimation;
 
-        readonly Dictionary<string, GameObject> _cachedPrefabInstances = new Dictionary<string, GameObject>();
-        GameObject _selectedPrefabInstance;
+        protected readonly Dictionary<string, GameObject> _cachedPrefabInstances = new Dictionary<string, GameObject>();
+        protected GameObject _selectedPrefabInstance;
 
 
         /// <summary>
         /// Show the actual prefab
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
+            await InstantiateAndShowPrefab(isStart);
+        }
+
+        protected async Task InstantiateAndShowPrefab(bool isStart = true)
+        {
+
             GameObject newPrefabInstance;
-            _cachedPrefabInstances.TryGetValue(GameItem.Id, out newPrefabInstance);
+            _cachedPrefabInstances.TryGetValue(GameItem.GiId, out newPrefabInstance);
             if (newPrefabInstance == null)
             {
-                newPrefabInstance = GameItem.InstantiatePrefab(PrefabType, Name,
+                newPrefabInstance = await GameItem.InstantiatePrefab(PrefabType, Name,
                     Parent == null ? transform : Parent.transform, WorldPositionStays);
                 if (newPrefabInstance != null)
                 {
                     newPrefabInstance.transform.position -= _offset;
                     newPrefabInstance.SetActive(false); // start inactive so we don't run transitions immediately
-                    _cachedPrefabInstances.Add(GameItem.Id, newPrefabInstance);
+                    _cachedPrefabInstances.Add(GameItem.GiId, newPrefabInstance);
                 }
             }
 
             Assert.IsNotNull(newPrefabInstance,
                 string.Format(
                     "The Prefab you are trying to instantiate is not setup. Please ensure the add it to the target GameItem {0}_{1}.",
-                    GameItem.IdentifierBase, GameItem.Id));
+                    GameItem.IdentifierBase, GameItem.GiId));
 
             if (isStart)
                 GameObjectToGameObjectAnimation.SwapImmediately(_selectedPrefabInstance, newPrefabInstance);

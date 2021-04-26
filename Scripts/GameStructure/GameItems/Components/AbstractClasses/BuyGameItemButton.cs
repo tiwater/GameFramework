@@ -22,6 +22,7 @@
 #if UNITY_PURCHASING
 using GameFramework.Billing.Components;
 #endif
+using System.Threading.Tasks;
 using GameFramework.Debugging;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.Localisation.ObjectModel;
@@ -165,7 +166,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// <param name="gameItem"></param>
         void Unlocked(T gameItem)
         {
-            if (gameItem.Id == GameItem.Id)
+            if (gameItem.GiId == GameItem.GiId)
                 RunMethod(false);
         }
 
@@ -174,7 +175,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// Called by the base class from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             var canBuy = !GameItem.IsUnlocked && GameItem.UnlockWithPayment;
 

@@ -19,6 +19,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Threading.Tasks;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -48,7 +49,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// Called by the base class from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             var vector3Variable = GameItem.Variables.GetVector3(Tag);
             Assert.IsNotNull(vector3Variable, string.Format("A variable with tag '{0}' was not found. Please check that it exists.", Tag));

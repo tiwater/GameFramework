@@ -38,6 +38,7 @@ using GameFramework.Messaging;
 using GameFramework.Localisation.Messages;
 using GameFramework.Localisation.ObjectModel;
 using GameFramework.Preferences;
+using System.Threading.Tasks;
 
 namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 {
@@ -548,7 +549,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         }
 
 
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             SetupDisplay();
         }
@@ -590,7 +591,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
                 if (SelectionMode == GameItemButton.SelectionModeType.Select && HighlightGameObject != null)
                 {
-                    HighlightGameObject.SetActive(GetGameItemManager().Selected.Id == GameItem.Id);
+                    HighlightGameObject.SetActive(GetGameItemManager().Selected.GiId == GameItem.GiId);
                 }
             }
         }
@@ -629,7 +630,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
             if (SelectionMode == GameItemButton.SelectionModeType.ClickThrough && !string.IsNullOrEmpty(ClickUnlockedSceneToLoad))
             {
-                GameManager.LoadSceneWithTransitions(string.Format(ClickUnlockedSceneToLoad, GameItem.Id));
+                GameManager.LoadSceneWithTransitions(string.Format(ClickUnlockedSceneToLoad, GameItem.GiId));
             }
         }
 
@@ -866,14 +867,14 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
         protected void UnlockIfNumberMatches(string number)
         {
-            if (number == GameItem.Id)
+            if (number == GameItem.GiId)
                 Unlock();
         }
 
    
         protected void UnlockIfGameItemMatches(T gameItem)
         {
-            if (gameItem.Id == GameItem.Id)
+            if (gameItem.GiId == GameItem.GiId)
                 Unlock();
         }
 

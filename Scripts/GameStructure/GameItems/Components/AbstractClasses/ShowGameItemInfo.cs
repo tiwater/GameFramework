@@ -19,6 +19,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Threading.Tasks;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.Localisation.ObjectModel;
 using UnityEngine;
@@ -63,13 +64,13 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// You should implement this method which is called from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             Assert.IsNotNull(GameManager.Instance.Levels, "Levels are not setup when referenced from ShowLevelInfo");
 
             if (GameItem != null)
             {
-                _textComponent.text = Text.FormatValue(GameItem.Id, GameItem.Name, GameItem.Description, GameItem.ValueToUnlock);
+                _textComponent.text = Text.FormatValue(GameItem.GiId, GameItem.Name, GameItem.Description, GameItem.ValueToUnlock);
             }
         }
     }

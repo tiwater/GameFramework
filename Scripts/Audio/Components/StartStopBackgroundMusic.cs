@@ -19,6 +19,8 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Collections;
+using System.Threading.Tasks;
 using GameFramework.GameStructure;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -54,6 +56,17 @@ namespace GameFramework.Audio.Components
 
         void OnEnable()
         {
+            StartCoroutine(LateStart());
+        }
+
+        private IEnumerator LateStart()
+        {
+            while (!GameManager.Instance.IsInitialised)
+            {
+                yield return Task.Yield();
+            }
+
+
             Assert.IsTrue(GameManager.IsActive, "Please ensure that GameFramework.GameStructure.GameManager is added to Edit->ProjectSettings->ScriptExecution before 'Default Time'.\n" +
                                                 "GameFramework.GameStructure.Audio.Components.StartStopBackgroundMusic does not necessarily need to appear in this list, but if it does ensure GameManager comes first");
             Assert.IsNotNull(GameManager.Instance.BackGroundAudioSource, "To make use of the StartStopBackgroundMusic component you should add an AudioSource component to the same gameobject as the GameManager that will be used for playing background music.");

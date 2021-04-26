@@ -19,6 +19,7 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using System.Threading.Tasks;
 using GameFramework.Display.Other.Components;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using UnityEngine;
@@ -69,7 +70,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         /// Called by the base class from start and optionally if the selection chages.
         /// </summary>
         /// <param name="isStart"></param>
-        public override void RunMethod(bool isStart = true)
+        public override async Task RunMethod(bool isStart = true)
         {
             var topColorVariable = GameItem.Variables.GetColor(TagTopColor);
             var bottomColorVariable = GameItem.Variables.GetColor(TagBottomColor);

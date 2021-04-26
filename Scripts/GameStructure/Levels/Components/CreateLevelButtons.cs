@@ -21,6 +21,7 @@
 
 using GameFramework.GameStructure.GameItems.Components.AbstractClasses;
 using GameFramework.GameStructure.GameItems.ObjectModel;
+using GameFramework.GameStructure.Levels.Messages;
 using GameFramework.GameStructure.Levels.ObjectModel;
 using GameFramework.GameStructure.Worlds.Messages;
 using UnityEngine;
@@ -51,6 +52,7 @@ namespace GameFramework.GameStructure.Levels.Components
 
             // react to changes to world selection to recreate buttons
             GameManager.Messenger.AddListener<WorldChangedMessage>(OnMessageCreateButtons);
+            GameManager.Messenger.AddListener<AddressableGameItemLoadedMessage>(OnMessageCreateButtons);
         }
 
 
@@ -60,7 +62,10 @@ namespace GameFramework.GameStructure.Levels.Components
         protected override void OnDestroy()
         {
             if (GameManager.IsActive)
+            {
                 GameManager.Messenger.RemoveListener<WorldChangedMessage>(OnMessageCreateButtons);
+                GameManager.Messenger.RemoveListener<AddressableGameItemLoadedMessage>(OnMessageCreateButtons);
+            }
         }
 
         #endregion Unity Lifecycle
