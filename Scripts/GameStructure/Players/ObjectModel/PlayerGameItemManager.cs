@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Players.Messages;
+using GameFramework.GameStructure.Service;
 using GameFramework.Localisation.ObjectModel;
 using UnityEngine;
 using UnityEngine.Assertions;

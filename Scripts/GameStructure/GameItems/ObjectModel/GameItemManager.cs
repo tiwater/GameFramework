@@ -35,6 +35,7 @@ using GameFramework.GameStructure.Worlds.Messages;
 using GameFramework.GameStructure.Levels.Messages;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using GameFramework.GameStructure.Service;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {

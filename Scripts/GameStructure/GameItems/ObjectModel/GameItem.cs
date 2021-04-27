@@ -33,6 +33,8 @@ using UnityEngine.Assertions;
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.Messaging;
 using System.Threading.Tasks;
+using GameFramework.GameStructure.Util;
+using GameFramework.GameStructure.Service;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -471,6 +473,25 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Saved per player.
         public bool IsUnlockedAnimationShown { get; set; }
 
+        public LocalisablePrefabType SelectedPrefabType
+        {
+            get
+            {
+                var variable = Variables.GetInt(Constants.PROP_KEY_SELECTED_PREFAB_TYPE);
+                if (variable != null)
+                {
+                    return (LocalisablePrefabType)variable.Value;
+                } else
+                {
+                    return LocalisablePrefabType.Stage1;
+                }
+            }
+            set
+            {
+                Variables.SetInt(Constants.PROP_KEY_SELECTED_PREFAB_TYPE, (int)value);
+            }
+        }
+
         #endregion Per User Settings
 
         #region Extension Data
@@ -621,6 +642,19 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             CustomInitialisation();
 
             IsInitialised = true;
+        }
+
+        /// <summary>
+        /// Create an instance of this GameItem
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <returns></returns>
+        public T GenerateInstance<T>(string instanceId) where T : GameItem
+        {
+            T gameItem = (T)GameObject.Instantiate(this);
+            gameItem._instanceId = instanceId;
+            gameItem.InitialiseNonScriptableObjectValues(GameConfiguration, Player, Messenger);
+            return gameItem;
         }
 
 

@@ -21,6 +21,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using GameFramework.GameStructure.Util;
 
 namespace GameFramework.GameStructure.Game.ObjectModel
 {

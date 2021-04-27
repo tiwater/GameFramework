@@ -46,6 +46,8 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets.ResourceLocators;
 using System.Threading.Tasks;
+using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
+using GameFramework.GameStructure.Service;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS

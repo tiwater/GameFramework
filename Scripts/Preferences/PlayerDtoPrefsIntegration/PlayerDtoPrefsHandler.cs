@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameFramework.Debugging;
 using GameFramework.GameStructure;
+using GameFramework.GameStructure.Service;
 using GameFramework.GameStructure.Variables.ObjectModel;
 using GameFramework.Preferences;
 using UnityEngine;

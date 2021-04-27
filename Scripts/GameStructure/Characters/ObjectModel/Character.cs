@@ -21,6 +21,7 @@
 
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
+using GameFramework.GameStructure.Model;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,6 +42,8 @@ namespace GameFramework.GameStructure.Characters.ObjectModel
         /// A unique shortened version of IdentifierBase to save memory.
         /// </summary>
         public override string IdentifierBasePrefs { get { return "C"; } }
+
+        public List<GameItemEquipment> Equipments = new List<GameItemEquipment>();
 
         /// <summary>
         /// Override in subclasses to return a list of custom counter configuration entries that should also
