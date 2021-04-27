@@ -87,69 +87,6 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
 
         #endregion Editor Parameters
 
-        /// <summary>
-        /// The addressable resources the GameItem exported. Store in <name, label> format.
-        /// The combination of name and label should be able to locate the unique resource.
-        /// </summary>
-        public Dictionary<string, string> Resources
-        {
-            get
-            {
-                return _resources;
-            }
-        }
-        Dictionary<string, string> _resources = new Dictionary<string, string>();
-
-        private string NULL_LABEL = "NULL_LABEL";
-
-        /// <summary>
-        /// Group the keys by label
-        /// </summary>
-        /// <param name="names"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        private Dictionary<string, List<string>> filterResourceList(List<string> names, string label)
-        {
-            Dictionary<string, List<string>> res = new Dictionary<string, List<string>>();
-
-            if (Resources != null && Resources.Count > 0)
-            {
-                //Has limited resources
-                foreach (var content in Resources)
-                {
-                    if (((names == null || names.Contains(content.Key)) && label == content.Value) ||
-                        (names == null && label == null))
-                    {
-                        List<string> keys;
-                        string keyLabel = content.Value ?? NULL_LABEL;
-                        if (res.ContainsKey(keyLabel))
-                        {
-                            keys = res[keyLabel];
-                        }
-                        else
-                        {
-                            keys = new List<string>();
-                            res[keyLabel] = keys;
-                        }
-                        keys.Add(content.Key);
-                    }
-                }
-            }
-            else
-            {
-                if ((names == null || names.Count == 0) && label == null)
-                {
-                    //No limitation? Then default limit to package
-                    res[Package] = null;
-                    return res;
-                }
-                //Limited by the input field
-                string keyLabel = label ?? NULL_LABEL;
-                res[keyLabel] = names;
-            }
-            return res;
-
-        }
 
         /// <summary>
         /// For Texture, the default behavior is trying to replace the material has the same texture name on the target object or children
@@ -315,42 +252,38 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// <param name="callback"></param>
         public async Task Apply(GameObject target, Slot slot, List<string> names = null, string label = null, bool instantiateInWorldSpace = false, ResourceLoadedCallback callback = null)
         {
-            Dictionary<string, List<string>> applyResource = filterResourceList(names, label);
-            target = FindSlotTarget(target, slot) ?? target;
-            if (applyResource.Count > 0)
+            bool isEmptyName = StringUtil.IsListEmpty(names);
+            if (isEmptyName && string.IsNullOrEmpty(label))
             {
-                //Only apply the specified resources
-                foreach (var content in applyResource)
+                Debug.LogError("Names and Label must have at least one piece of valid data");
+            }
+            else
+            {
+
+                if (string.IsNullOrEmpty(label))
                 {
-                    if (content.Key == NULL_LABEL)
-                    {
-                        //Label is null
-                        foreach (string key in content.Value)
-                        {
-
-                            var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
-                            await Task.WhenAll(rls.Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
-                            {
-                                ApplyResource(target, name, resource, type, instantiateInWorldSpace, callback);
-                            })));
-                        }
-                    }
-                    else
+                    //Label is null
+                    foreach (string key in names)
                     {
 
-                        //Apply resources under same label as a batch
-                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(content.Key);
-                        await Task.WhenAll(rls.Where(rl => (content.Value == null || content.Value.Count() == 0 || content.Value.Contains(rl.PrimaryKey)))
-                            .Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
+                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
+                        await Task.WhenAll(rls.Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
                         {
                             ApplyResource(target, name, resource, type, instantiateInWorldSpace, callback);
                         })));
                     }
                 }
-            }
-            else
-            {
-                //No resources are allow to apply
+                else
+                {
+
+                    //Apply resources under same label as a batch
+                    var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(label);
+                    await Task.WhenAll(rls.Where(rl => (isEmptyName || names.Contains(rl.PrimaryKey)))
+                        .Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
+                        {
+                            ApplyResource(target, name, resource, type, instantiateInWorldSpace, callback);
+                        })));
+                }
             }
         }
 
@@ -367,46 +300,24 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// <param name="callback"></param>
         public async Task Apply<T>(GameObject target, Slot slot, List<string> names = null, string label = null, bool instantiateInWorldSpace = false, ResourceLoadedCallback<T> callback = null)
         {
-            Dictionary<string, List<string>> applyResource = filterResourceList(names, label);
-            target = FindSlotTarget(target, slot) ?? target;
-            if (applyResource.Count > 0)
+            bool isEmptyName = StringUtil.IsListEmpty(names);
+            if (isEmptyName && string.IsNullOrEmpty(label))
             {
-                //Only apply the specified resources
-                foreach (var content in applyResource)
-                {
-                    if (content.Key == NULL_LABEL)
-                    {
-                        //Label is null
-                        foreach (string key in content.Value)
-                        {
-                            var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
-                            Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
-                            foreach (var rl in rls)
-                            {
-                                if (rl.ResourceType == typeof(T))
-                                {
-                                    //Load resources
-                                    tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
-                                }
-                            }
-                            //Wait for completion
-                            await Task.WhenAll(tasks.Values);
-                            foreach (var pair in tasks)
-                            {
-                                //Apply
-                                ApplyResource<T>(target, pair.Key, await pair.Value, instantiateInWorldSpace, callback);
-                            }
-                        }
-                    }
-                    else
-                    {
+                Debug.LogError("Names and Label must have at least one piece of valid data");
+            }
+            else
+            {
 
-                        //Apply resources under same label as a batch
-                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(content.Key);
+                if (string.IsNullOrEmpty(label))
+                {
+                    //Label is null
+                    foreach (string key in names)
+                    {
+                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
                         Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
                         foreach (var rl in rls)
                         {
-                            if (rl.ResourceType == typeof(T) && content.Value.Contains(rl.PrimaryKey))
+                            if (rl.ResourceType == typeof(T))
                             {
                                 //Load resources
                                 tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
@@ -421,10 +332,29 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
                         }
                     }
                 }
-            }
-            else
-            {
-                //No resources are allow to apply
+                else
+                {
+
+
+                    //Apply resources under same label as a batch
+                    var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(label);
+                    Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
+                    foreach (var rl in rls)
+                    {
+                        if (rl.ResourceType == typeof(T) && (isEmptyName || names.Contains(rl.PrimaryKey)))
+                        {
+                            //Load resources
+                            tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
+                        }
+                    }
+                    //Wait for completion
+                    await Task.WhenAll(tasks.Values);
+                    foreach (var pair in tasks)
+                    {
+                        //Apply
+                        ApplyResource<T>(target, pair.Key, await pair.Value, instantiateInWorldSpace, callback);
+                    }
+                }
             }
         }
 
@@ -441,42 +371,37 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// <param name="callback"></param>
         public async Task Apply(GameObject target, Slot slot, Vector3 position, Quaternion rotation, List<string> names = null, string label = null, ResourceLoadedCallback callback = null)
         {
-            Dictionary<string, List<string>> applyResource = filterResourceList(names, label);
-            target = FindSlotTarget(target, slot) ?? target;
-            if (applyResource.Count > 0)
+            bool isEmptyName = StringUtil.IsListEmpty(names);
+            if (isEmptyName && string.IsNullOrEmpty(label))
             {
-                //Only apply the specified resources
-                foreach (var content in applyResource)
-                {
-                    if (content.Key == NULL_LABEL)
-                    {
-                        //Label is null
-                        foreach (string key in content.Value)
-                        {
-
-                            var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
-                            await Task.WhenAll(rls.Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
-                            {
-                                ApplyResource(target, position, rotation, name, resource, type, callback);
-                            })));
-                        }
-                    }
-                    else
-                    {
-
-                        //Apply resources under same label as a batch
-                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(content.Key);
-                        await Task.WhenAll(rls.Where(rl => content.Value.Contains(rl.PrimaryKey))
-                            .Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
-                            {
-                                ApplyResource(target, position, rotation, name, resource, type, callback);
-                            })));
-                    }
-                }
+                Debug.LogError("Names and Label must have at least one piece of valid data");
             }
             else
             {
-                //No resources are allow to apply
+                if (string.IsNullOrEmpty(label))
+                {
+                    //Label is null
+                    foreach (string key in names)
+                    {
+
+                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
+                        await Task.WhenAll(rls.Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
+                        {
+                            ApplyResource(target, position, rotation, name, resource, type, callback);
+                        })));
+                    }
+                }
+                else
+                {
+
+                    //Apply resources under same label as a batch
+                    var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(label);
+                    await Task.WhenAll(rls.Where(rl => isEmptyName || names.Contains(rl.PrimaryKey))
+                        .Select(rl => AddressableResService.GetInstance().LoadResourceByLocationAsync(rl, (name, resource, type) =>
+                        {
+                            ApplyResource(target, position, rotation, name, resource, type, callback);
+                        })));
+                }
             }
         }
 
@@ -495,46 +420,26 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         public async Task Apply<T>(GameObject target, Slot slot, Vector3 position, Quaternion rotation, List<string> names = null, string label = null, ResourceLoadedCallback<T> callback = null)
         {
 
-            Dictionary<string, List<string>> applyResource = filterResourceList(names, label);
-            target = FindSlotTarget(target, slot) ?? target;
-            if (applyResource.Count > 0)
-            {
-                //Only apply the specified resources
-                foreach (var content in applyResource)
-                {
-                    if (content.Key == NULL_LABEL)
-                    {
-                        //Label is null
-                        foreach (string key in content.Value)
-                        {
-                            var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
-                            Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
-                            foreach (var rl in rls)
-                            {
-                                if (rl.ResourceType == typeof(T))
-                                {
-                                    //Load resources
-                                    tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
-                                }
-                            }
-                            //Wait for completion
-                            await Task.WhenAll(tasks.Values);
-                            foreach (var pair in tasks)
-                            {
-                                //Apply
-                                ApplyResource<T>(target, position, rotation, pair.Key, await pair.Value, callback);
-                            }
-                        }
-                    }
-                    else
-                    {
 
-                        //Apply resources under same label as a batch
-                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(content.Key);
+            bool isEmptyName = StringUtil.IsListEmpty(names);
+            if (isEmptyName && string.IsNullOrEmpty(label))
+            {
+                Debug.LogError("Names and Label must have at least one piece of valid data");
+            }
+            else
+            {
+
+                if (string.IsNullOrEmpty(label))
+                {
+
+                    //Label is null
+                    foreach (string key in names)
+                    {
+                        var rls = await AddressableResService.GetInstance().LoadResourceLocationsAsync(key);
                         Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
                         foreach (var rl in rls)
                         {
-                            if (rl.ResourceType == typeof(T) && content.Value.Contains(rl.PrimaryKey))
+                            if (rl.ResourceType == typeof(T))
                             {
                                 //Load resources
                                 tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
@@ -549,10 +454,27 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
                         }
                     }
                 }
-            }
-            else
-            {
-                //No resources are allow to apply
+                else
+                {
+                    //Apply resources under same label as a batch
+                    var rls = await AddressableResService.GetInstance().LoadResourceLocationsForLabelAsync(label);
+                    Dictionary<string, Task<T>> tasks = new Dictionary<string, Task<T>>();
+                    foreach (var rl in rls)
+                    {
+                        if (rl.ResourceType == typeof(T) && (isEmptyName || names.Contains(rl.PrimaryKey)))
+                        {
+                            //Load resources
+                            tasks.Add(rl.PrimaryKey, AddressableResService.GetInstance().LoadResourceByLocationAsync<T>(rl));
+                        }
+                    }
+                    //Wait for completion
+                    await Task.WhenAll(tasks.Values);
+                    foreach (var pair in tasks)
+                    {
+                        //Apply
+                        ApplyResource<T>(target, position, rotation, pair.Key, await pair.Value, callback);
+                    }
+                }
             }
         }
 

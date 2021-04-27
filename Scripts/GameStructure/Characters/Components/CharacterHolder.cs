@@ -138,7 +138,16 @@ namespace GameFramework.GameStructure.Characters
                     if (equipment.equipment.GetType() == typeof(AddressableGameItem))
                     {
                         AddressableGameItem agi = (AddressableGameItem)equipment.equipment;
-                        tasks.Add(agi.Apply(gameObject, equipment.slot, null, agi.Package, true));
+                        if (string.IsNullOrEmpty(agi.AddressableName) && string.IsNullOrEmpty(agi.AddressableLabel))
+                        {
+                            //TODO: Should provide full info for the assets
+                            //If not supplied the Addressable info, fallback to Package
+                            tasks.Add(agi.Apply(gameObject, equipment.slot, null, agi.Package, true));
+                        }
+                        else
+                        {
+                            tasks.Add(agi.Apply(gameObject, equipment.slot, new List<string> { agi.AddressableName }, agi.AddressableLabel, true));
+                        }
                     }
                 }
                 await Task.WhenAll(tasks.ToArray());
