@@ -109,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cb24ed57bc0244e7bdc0e668fbfcdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ModuleName: NextTarget
   MinCorner: {x: -10, y: -5, z: -1.6}
   MaxCorner: {x: 10, y: 5, z: 5}
 --- !u!114 &392495032

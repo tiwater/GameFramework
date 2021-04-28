@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using Puerts;
+using PuertsExtension;
 using UnityEngine;
 
 namespace GameFramework.Display.Placement.Components
 {
-    public class RandomTarget : MonoBehaviour
+    public class RandomTarget : JsBehaviour//MonoBehaviour
     {
 
         /// <summary>
@@ -19,13 +20,35 @@ namespace GameFramework.Display.Placement.Components
         [Tooltip("The max to limit the random target.")]
         public Vector3 MaxCorner;
 
+        public GenericDelegate NextTarget;
+
+
+        //public Vector3 GenerateRandomTarget()
+        //{
+        //    Vector3 position = new Vector3(
+        //        UnityEngine.Random.Range(MinCorner.x, MaxCorner.x),
+        //        UnityEngine.Random.Range(MinCorner.y, MaxCorner.y),
+        //        UnityEngine.Random.Range(MinCorner.z, MaxCorner.z)
+        //        );
+        //    return position;
+        //}
+
+
+        /// <summary>
+        /// Demo the JS version
+        /// </summary>
+        /// <returns></returns>
         public Vector3 GenerateRandomTarget()
         {
-            Vector3 position = new Vector3(
-                Random.Range(MinCorner.x, MaxCorner.x),
-                Random.Range(MinCorner.y, MaxCorner.y),
-                Random.Range(MinCorner.z, MaxCorner.z)
-                );
+            Vector3 position;
+            if (NextTarget != null)
+            {
+                position = NextTarget.Func<Vector3, Vector3, Vector3>(MaxCorner, MinCorner);
+            }
+            else
+            {
+                position = Vector3.zero;
+            }
             return position;
         }
     }
