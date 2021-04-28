@@ -3264,6 +3264,8 @@ MonoBehaviour:
   AutoConvertUnsecurePrefs: 0
   ReferencePhysicalScreenHeightInInches: 4
   DisplayChangeCheckDelay: 0.5
+  AllowOffline: 0
+  AllowOfflineBoot: 0
   PlayerSetupMode: 1
   PlayerCount: 1
   WorldSetupMode: 0

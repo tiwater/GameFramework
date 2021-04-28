@@ -18,7 +18,7 @@ namespace GameFramework.Display.Placement.Components
         /// A transform that this gameobject will follow.
         /// </summary>
         [Tooltip("A transform that this gameobject will go to.")]
-        public Transform Target;
+        public Vector3 Target;
 
         protected bool isMoving = false;
 
@@ -46,7 +46,7 @@ namespace GameFramework.Display.Placement.Components
 
         private void Awake()
         {
-            transform.position = Target.position;
+            transform.position = Target;
         }
 
         protected void Start()
@@ -74,7 +74,7 @@ namespace GameFramework.Display.Placement.Components
         private void UpdatePosition()
         {
 
-            Vector3 targetVector = Target.position - transform.position;
+            Vector3 targetVector = Target - transform.position;
             if (targetVector.sqrMagnitude > StopDistance * 1.2 && !isMoving)
             {
                 isMoving = true;

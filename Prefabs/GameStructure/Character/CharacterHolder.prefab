@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 531278972902558107}
   - component: {fileID: 531278972902558106}
+  - component: {fileID: 392495033}
+  - component: {fileID: 392495032}
+  - component: {fileID: 392495031}
   m_Layer: 0
   m_Name: CharacterHolder
   m_TagString: Untagged
@@ -44,11 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _context:
-    _contextMode: 0
-    _number: 
+    _contextMode: 1
+    _number: hty
     _reactToChanges: 1
     _referencedGameItemContextBase: {fileID: 0}
-  _prefabType: 2
+  _prefabType: 5
   _name: 
   _parent: {fileID: 0}
   _worldPositionStays: 0
@@ -56,4 +59,93 @@ MonoBehaviour:
   GameObjectToGameObjectAnimation:
     _animationMode: 0
     _transitionOrder: 0
-  EquipmentInfos: []
+  PlayerGameItem:
+    Id: 
+    PlayerId: 
+    GameItem_name: 
+    GiType: 
+    Amount: 0
+    HostDeviceId: 
+    CreatedDeviceId: 
+    CharacterEquipments: []
+    PrefabType: 0
+    IsActive: 0
+    _variables:
+      _boolVariables: []
+      _intVariables: []
+      _floatVariables: []
+      _stringVariables: []
+      _Vector2Variables: []
+      _Vector3Variables:
+      - _tag: Position
+        _name:
+          _isLocalised: 0
+          _data: 
+        _category: 
+        _defaultValue: {x: 0, y: 0, z: 0}
+        _persistChanges: 0
+        Value: {x: 0, y: 0, z: 0}
+      - _tag: Rotation
+        _name:
+          _isLocalised: 0
+          _data: 
+        _category: 
+        _defaultValue: {x: 0, y: 0, z: 0}
+        _persistChanges: 0
+        Value: {x: -0, y: 0, z: 0}
+      _colorVariables: []
+  EquipmentInfos:
+  - slot: 2
+    equipment: {fileID: 11400000, guid: 67f03166480d84c75950115e444a703b, type: 2}
+--- !u!114 &392495033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531278972902558084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb24ed57bc0244e7bdc0e668fbfcdeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinCorner: {x: -10, y: -5, z: -1.6}
+  MaxCorner: {x: 10, y: 5, z: 5}
+--- !u!114 &392495032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531278972902558084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e0c9de8010a7419ea1e4868cec9704e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {x: 0, y: 0, z: 0}
+  Speed: 2
+  StopDistance: 0.15
+  ForwardDirection: 0
+  angel: 0
+  turnSpeed: 5
+  OnArrivedTarget:
+    m_PersistentCalls:
+      m_Calls: []
+  IdleDuration: 5
+--- !u!54 &392495031
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531278972902558084}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0.5
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

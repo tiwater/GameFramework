@@ -55,9 +55,14 @@ namespace GameFramework.GameStructure.Characters
                     GameObject characterHolder = GameObject.Instantiate(CharacterHolder, position,
                        Quaternion.Euler(rotation.x, rotation.y, rotation.z));
                     CharacterHolder holderComponent = characterHolder.GetComponent<CharacterHolder>();
-                    holderComponent.BindCharacterPGI(item, item.PrefabType);
+                    BindItem(holderComponent, item);
                 }
             }
+        }
+
+        public virtual async Task BindItem(CharacterHolder holderComponent, PlayerGameItem item)
+        {
+            await holderComponent.BindCharacterPGI(item, item.PrefabType);
         }
     }
 }
