@@ -134,7 +134,8 @@ namespace GameFramework.Localisation.Components
         /// </summary>
         public override void Start()
         {
-            StartCoroutine(Localise());
+            //StartCoroutine(Localise());
+            LocaliseSync();
             //Localise();
             base.Start();
         }
@@ -168,6 +169,14 @@ namespace GameFramework.Localisation.Components
             {
                 yield return Task.Yield();
             }
+            LocaliseSync();
+        }
+
+        /// <summary>
+        /// Update the display with the localise text
+        /// </summary>
+        void LocaliseSync()
+        {
             // If we don't have a key then don't change the value
             if (string.IsNullOrEmpty(Key))
             {   //Do nothing;

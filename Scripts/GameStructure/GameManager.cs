@@ -171,6 +171,11 @@ namespace GameFramework.GameStructure
         public bool AllowOfflineBoot = false;
 
         /// <summary>
+        /// Whether this app is bound with a hardware device
+        /// </summary>
+        public bool BindwithDevice = true;
+
+        /// <summary>
         /// How we want players to be setup.
         /// </summary>
         /// None - don't setup players.
@@ -693,11 +698,18 @@ namespace GameFramework.GameStructure
             DeviceId = "abcdef";
         }
 
+        public void Setup()
+        {
+            GameSetup();
+        }
+
         /// <summary>
         /// Main setup routine
         /// </summary>
         protected override void GameSetup()
         {
+            //Clear initialised flag
+            IsInitialised = false;
             base.GameSetup();
             GameSetupAysnc();
         }
@@ -711,6 +723,15 @@ namespace GameFramework.GameStructure
 
             sb.Append("GameManager: GameSetup()");
             sb.Append("\nApplication.systemLanguage: ").Append(Application.systemLanguage);
+
+
+            string token = PlayerGameItemService.Instance.LoadToken();
+
+            if (string.IsNullOrEmpty(token) && BindwithDevice)
+            {
+                //No token, need to proceed with device binding
+                return;
+            }
 
             // secure preferences
             PreferencesFactory.UseSecurePrefs = SecurePreferences;
@@ -737,24 +758,13 @@ namespace GameFramework.GameStructure
 
             await SetupPlayers();
 
-            IsUnlocked = PreferencesFactory.GetInt("IsUnlocked", 0) != 0;
-            IsUserInteractionEnabled = true;
-            IsSplashScreenShown = false;
-            TimesGamePlayed = PreferencesFactory.GetInt("TimesGamePlayed", 0);
-            TimesGamePlayed++;
-            TimesLevelsPlayed = PreferencesFactory.GetInt("TimesLevelsPlayed", 0);
-            TimesPlayedForRatingPrompt = PreferencesFactory.GetInt("TimesPlayedForRatingPrompt", 0);
-            TimesPlayedForRatingPrompt++;
-            sb.Append("\nTimesGamePlayed: ").Append(TimesGamePlayed);
-            sb.Append("\nTimesLevelsPlayed: ").Append(TimesLevelsPlayed);
-            sb.Append("\nTimesPlayedForRatingPrompt: ").Append(TimesPlayedForRatingPrompt);
-            sb.Append("\nApplication.PersistantDataPath: ").Append(Application.persistentDataPath);
+            if (PlayerInstanceAvailable())
+            {
 
-            MyDebug.Log(sb.ToString());
+                LoadPlayerConfigurations();
 
-            // Variables
-            Variables.Load(VariablesPrefix, SecurePreferences);
-
+            }
+            //Volume config is local
             // audio related properties
             BackGroundAudioVolume = 1;              // default if nothing else is set.
             EffectAudioVolume = 1;                  // default if nothing else is set.
@@ -771,14 +781,12 @@ namespace GameFramework.GameStructure
                 EffectAudioVolume = EffectAudioSources[0].volume;
             }
 
-            BackGroundAudioVolume = PreferencesFactory.GetFloat("BackGroundAudioVolume", BackGroundAudioVolume, false);
-            EffectAudioVolume = PreferencesFactory.GetFloat("EffectAudioVolume", EffectAudioVolume, false);
+            BackGroundAudioVolume = PlayerPrefs.GetFloat("BackGroundAudioVolume", BackGroundAudioVolume);
+            EffectAudioVolume = PlayerPrefs.GetFloat("EffectAudioVolume", EffectAudioVolume);
 
             Assert.IsNotNull(Camera.main, "You need a main camera in your scene!");
             // display related properties
             SetDisplayProperties();
-
-
 
             // setup of worlds and levels
             Worlds = new WorldGameItemManager();
@@ -871,8 +879,11 @@ namespace GameFramework.GameStructure
             //Load addressable GameItems
             await AddressableGameItems.Load();
 
-            //TODO: Exception handling
-            await LoadPlayerGameItems();
+            if (PlayerInstanceAvailable())
+            {
+                //TODO: Exception handling
+                await LoadPlayerGameItems();
+            }
 
             // coroutine to check for display changes (don't need to do this every frame)
             if (!Mathf.Approximately(DisplayChangeCheckDelay, 0))
@@ -880,6 +891,29 @@ namespace GameFramework.GameStructure
 
             // flag as initialised
             IsInitialised = true;
+
+        }
+
+        private async Task LoadPlayerConfigurations()
+        {
+            //var sb = new System.Text.StringBuilder();
+            //IsUnlocked = PreferencesFactory.GetInt("IsUnlocked", 0) != 0;
+            //IsUserInteractionEnabled = true;
+            //IsSplashScreenShown = false;
+            //TimesGamePlayed = PreferencesFactory.GetInt("TimesGamePlayed", 0);
+            //TimesGamePlayed++;
+            //TimesLevelsPlayed = PreferencesFactory.GetInt("TimesLevelsPlayed", 0);
+            //TimesPlayedForRatingPrompt = PreferencesFactory.GetInt("TimesPlayedForRatingPrompt", 0);
+            //TimesPlayedForRatingPrompt++;
+            //sb.Append("\nTimesGamePlayed: ").Append(TimesGamePlayed);
+            //sb.Append("\nTimesLevelsPlayed: ").Append(TimesLevelsPlayed);
+            //sb.Append("\nTimesPlayedForRatingPrompt: ").Append(TimesPlayedForRatingPrompt);
+            //sb.Append("\nApplication.PersistantDataPath: ").Append(Application.persistentDataPath);
+
+            //MyDebug.Log(sb.ToString());
+
+            //// Variables
+            //Variables.Load(VariablesPrefix, SecurePreferences);
         }
 
 
@@ -1078,37 +1112,74 @@ namespace GameFramework.GameStructure
             {
                 await Players.LoadFromStorage();
 
-                if (Players.Items.Count == 0)
+                if (Players.Selected.PlayerGameItem == null)
                 {
-                    if (AllowOfflineBoot)
+                    //TODO: Get network status
+                    bool IsNetworkConnected = true;
+                    if (IsNetworkConnected)
                     {
-                        await Players.LoadAutomatic(1, 1);
+                        //Need the client to create a new player account
+                        //Or wait for setup user later
                     }
                     else
                     {
-                        //Didn't get player, which means we cannot proceed with the game until we connect to the web and create the account
-                        //TODO: Show warning and hold the process
-                        return;
+                        if (AllowOfflineBoot)
+                        {
+                            await Players.LoadAutomatic(0, 0);
+                            //If no PlayerGameItem in offline mode, create one
+                            Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance();
+                        }
+                        else
+                        {
+                            //Didn't get player, which means we cannot proceed with the game until we connect to the web and create the account
+                            //TODO: Show warning and hold the process
+                            return;
+                        }
                     }
 
                 }
             }
-            if(Players.Selected.PlayerDto == null)
+            if(PlayerSetupMode != GameItemSetupMode.FromServer)
             {
-                //If no PlayerDTO in offline mode, create one
-                Players.Selected.PlayerDto = new PlayerDto();
-                Players.Selected.PlayerDto.Id = Players.Selected.GiId;
+                //If no PlayerGameItem in offline mode, create one
+                Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance(Players.Selected.GiId);
             }
+        }
+
+        /// <summary>
+        /// Create a new Player instance
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public async Task CreatePlayerInstance(PlayerGameItem item)
+        {
+            PlayerGameItem instance = await Players.CreateGameItemInstance(item);
+            SetupPlayerInstance(instance);
+        }
+
+        public async Task SetupPlayerInstance(PlayerGameItem item)
+        {
+            Player.PlayerGameItem = item;
+            await LoadPlayerGameItems();
+        }
+
+        /// <summary>
+        /// Check whether we have a player instance available
+        /// </summary>
+        /// <returns></returns>
+        public bool PlayerInstanceAvailable()
+        {
+            return Players.Selected.PlayerGameItem != null;
         }
 
         /// <summary>
         /// Load the player owns GameItems
         /// </summary>
         private async Task LoadPlayerGameItems()
-        {
+        
             //Load Player owned GameItems
-            var items = await PlayerGameItemService.Instance.LoadPlayerGameItems(Players.Selected.GiId);
-            Players.Selected.PlayerDto.OwnedItems = items;
+            var items = await PlayerGameItemService.Instance.LoadPlayerGameItems(Players.Selected.InstanceId);
+            Players.Selected.PlayerGameItem.Children = items;
         }
 
         #endregion Setup

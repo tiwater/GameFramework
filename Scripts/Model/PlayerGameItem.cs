@@ -28,6 +28,12 @@ public class PlayerGameItem
     [SerializeField]
     public List<GameItemEquipment> CharacterEquipments = new List<GameItemEquipment>();
 
+    /// <summary>
+    /// The children PlayerGameItem
+    /// </summary>
+    [SerializeField]
+    public List<PlayerGameItem> Children = new List<PlayerGameItem>();
+
     public LocalisablePrefabType PrefabType;
     public bool IsActive;
 

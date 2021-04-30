@@ -8,7 +8,7 @@ using static GameFramework.GameStructure.Model.GameItemEquipment;
 
 namespace GameFramework.GameStructure.Service
 {
-    public class PlayerGameItemService
+    public class PlayerGameItemService : BaseService
     {
         //The callback when get the ExtGameItem list
         public delegate void PlayerGameItemHandler(List<PlayerGameItem> gameItems);
@@ -20,6 +20,8 @@ namespace GameFramework.GameStructure.Service
         private static string MOCK_SKIN_ID2 = "sk2";
         private static string MOCK_STICK_ID1 = "stick1";
 
+
+        public static string DUMMY_TOKEN_KEY = "PlayerToken";
         public static string DUMMY_PREFS_KEY = "Overall_data";
 
         private static PlayerGameItemService _instance = new PlayerGameItemService();
@@ -29,30 +31,73 @@ namespace GameFramework.GameStructure.Service
             get { return _instance; }
         }
 
-        public string GetToken()
+        public string LoadToken()
         {
             //TODO: get token from system
-            return "ddfwa4324543d";
+            if (string.IsNullOrEmpty(Token))
+            {
+                _token = PlayerPrefs.GetString(DUMMY_TOKEN_KEY, null);
+            }
+            return Token;
         }
 
-        public async Task<PlayerDto> GetPlayer()
+        public void StoreToken(string token)
+        {
+            PlayerPrefs.SetString(DUMMY_TOKEN_KEY, token);
+        }
+
+        public async Task<PlayerGameItem> GetPlayerInstance()
         {
             //TODO:Get player profile by token
-            string token = GetToken();
+            string token = LoadToken();
             string playerId = GameManager.Instance.UserId;
 
-            PlayerDto player = await HttpUtil.GetDummyAsync<PlayerDto>(GlobalConstants.SERVER_TISVC_PREFIX + "/Player");
+            PlayerGameItem player = await HttpUtil.GetDummyAsync<PlayerGameItem>(GlobalConstants.SERVER_TISVC_PREFIX + "/Player");
             string playerString = PlayerPrefs.GetString(DUMMY_PREFS_KEY + playerId);
-            if (playerString == null || playerString == "")
+            if (string.IsNullOrEmpty(playerString))
             //if (true)
             {
+                player = null;
+                //Commented as we want to trigger the new account creation in client
                 //Create the default one
-                playerString = JsonUtility.ToJson(MockPlayer());
-                PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
+                //playerString = JsonUtility.ToJson(MockPlayerInstance());
+                //PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
             }
-            player = JsonUtility.FromJson<PlayerDto>(playerString);
+            player = JsonUtility.FromJson<PlayerGameItem>(playerString);
 
             return player;
+        }
+
+        //public async Task<PlayerGameItem> GetPlayer()
+        //{
+        //    //TODO:Get player profile by token
+        //    string token = LoadToken();
+        //    string playerId = GameManager.Instance.UserId;
+
+        //    PlayerGameItem player = await HttpUtil.GetDummyAsync<PlayerGameItem>(GlobalConstants.SERVER_TISVC_PREFIX + "/Player");
+        //    string playerString = PlayerPrefs.GetString(DUMMY_PREFS_KEY + playerId);
+        //    if (playerString == null || playerString == "")
+        //    //if (true)
+        //    {
+        //        //Create the default one
+        //        playerString = JsonUtility.ToJson(MockPlayerInstance());
+        //        PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
+        //    }
+        //    player = JsonUtility.FromJson<PlayerGameItem>(playerString);
+
+        //    return player;
+        //}
+
+        public PlayerGameItem MockPlayerInstance()
+        {
+
+            PlayerGameItem p = new PlayerGameItem();
+            p.Id = GameManager.Instance.UserId;
+            //p.OwnedItems = MockGameItems();
+            //p.OwnedItems = MockItems();
+            //p.CharacterEquipments = MockEquipments();
+
+            return p;
         }
 
         public PlayerDto MockPlayer()
@@ -244,6 +289,13 @@ namespace GameFramework.GameStructure.Service
                 GameManager.Instance.Players.Selected.PlayerDto.OwnedItems = playerGameItems;
             }
             Debug.Log("PopulatePlayerGameItems Done");
+        }
+
+        public async Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
+        {
+            var playerString = JsonUtility.ToJson(item);
+            PlayerPrefs.SetString(DUMMY_PREFS_KEY + item.Id, playerString);
+            return JsonUtility.FromJson<PlayerGameItem>(playerString);
         }
     }
 }

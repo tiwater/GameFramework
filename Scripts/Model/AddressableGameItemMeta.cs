@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.Game.ObjectModel;
 using static GameFramework.GameStructure.Model.GameItemEquipment;
 
 namespace GameFramework.GameStructure.Model
 {
-    public class AddressableGameItemMeta
+    public class AddressableGameItemMeta : GameItemMeta
     {
         public enum ContentType { All, Entity, Wearables, Weapon, Accessories, Scene, Level, World }
 
@@ -18,18 +19,6 @@ namespace GameFramework.GameStructure.Model
         /// The Id array of the apps the GameItem supports
         /// </summary>
         public string[] AppIds { get; set; }
-
-        //TODO: I18N
-        /// <summary>
-        /// The name of the GameItem
-        /// </summary>
-        public string Name { get; set; }
-
-        //TODO: I18N
-        /// <summary>
-        /// The name of the GameItem
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// The thumbnail of the GameItem to display in eshop
@@ -47,7 +36,7 @@ namespace GameFramework.GameStructure.Model
         public ContentType Type { get; set; }
 
         /// <summary>
-        /// For the wearable items, the equipment slot which support
+        /// For the wearable items, the equipment slot it supports
         /// </summary>
         public List<Slot> Slots { get; set; }
 
@@ -57,20 +46,13 @@ namespace GameFramework.GameStructure.Model
         public bool Consumable { get; set; }
 
         /// <summary>
-        /// The addressable resources the character constains. Store in <name , labels> format.
-        /// The combination of name and labels should be able to locate the unique resource.
+        /// The resources this addressable GameItem constains.
         /// </summary>
-        public Dictionary<string, string> Resources { get; set; }
+        public List<ResourceInfo> Resources { get; set; }
 
         /// <summary>
-        /// The GameItem this item supports. Store in <GameItemType, GameItemId> format, e.g. <Character, "Fish1">
-        /// <GameItemType, null> means support all GameItems under the given type.
+        /// The GameItem this item supports.
         /// </summary>
-        public Dictionary<GameConfiguration.GameItemType, string> SupportItems { get; set; }
-
-        /// <summary>
-        /// The equipment slot this item supports if it is equipable.
-        /// </summary>
-        public List<Slot> SupportSlots { get; set; }
+        public List<SupportItemInfo> SupportItems { get; set; }
     }
 }

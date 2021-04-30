@@ -322,18 +322,25 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         public string GiId { get; set; }
 
         /// <summary>
-        /// A number that represents an instance of this game item
+        /// The PlayerGameItem this GameItem attached to. If the meta may have multiple instances in the game, then it points to the selected/active one.
+        /// </summary>
+        public PlayerGameItem PlayerGameItem { get; set; }
+
+        /// <summary>
+        /// A number that represents an instance of this game item, only avilable for the game items which only have one instance or default instance in the game,
+        /// such as Player, World, Level, Character.
         /// </summary>
         public string InstanceId
         {
             get
-            { return _instanceId; }
-            set
             {
-                _instanceId = value;
+                if (PlayerGameItem != null)
+                {
+                    return PlayerGameItem.Id;
+                }
+                return null;
             }
         }
-        private string _instanceId = "";
 
         /// <summary>
         /// The name of this gameitem (localised if so configured). 
@@ -537,7 +544,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         string _prefsPrefix { get; set; }
 
         // A prefix that will be used for preferences entries for this item on a per player basis. P[PlayerNumber].[IdentifierBasePrefs][Number].
-        string _prefsPrefixPlayer { get; set; }
+        //string _prefsPrefixPlayer { get; set; }
 
         #region Initialisation
 
@@ -558,7 +565,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// Loaded GameItems will have these values set and configured via the editor.
         /// This will invoke InitialiseNonScriptableObjectValues() via that CustomInitialisation() 
         /// which you can override if you want to provide your own custom initialisation.
-        public void Initialise(GameConfiguration gameConfiguration, Player player, Messenger messenger, string id, LocalisableText name = null, LocalisableText description = null, Sprite sprite = null, int valueToUnlock = -1, string identifierBase = "", string identifierBasePrefs = "")
+        public async Task Initialise(GameConfiguration gameConfiguration, Player player, Messenger messenger, string id, LocalisableText name = null, LocalisableText description = null, Sprite sprite = null, int valueToUnlock = -1, string identifierBase = "", string identifierBasePrefs = "")
         {
             IdentifierBase = identifierBase;
             IdentifierBasePrefs = identifierBasePrefs;
@@ -568,7 +575,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             Sprite = sprite;
             ValueToUnlock = valueToUnlock;
 
-            InitialiseNonScriptableObjectValues(gameConfiguration, player, messenger);
+            await InitialiseNonScriptableObjectValues(gameConfiguration, player, messenger);
         }
 
 
@@ -581,62 +588,66 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="messenger">Messenger for sending notifications of changes etc.</param>
         /// This method will invoke CustomInitialisation() which you can override if you 
         /// want to provide your own custom initialisation.
-        public void InitialiseNonScriptableObjectValues(GameConfiguration gameConfiguration, Player player, Messenger messenger)
+        public async Task InitialiseNonScriptableObjectValues(GameConfiguration gameConfiguration, Player player, Messenger messenger)
         {
             GameConfiguration = gameConfiguration;
             Player = player;
             Messenger = messenger;
 
-            _isRootItem = IdentifierBase == "Player" || IdentifierBase == "User";
+            _isRootItem = IdentifierBase == "Player";
             if (!_isRootItem)
                 Assert.IsNotNull(Player, "Currently non Player GameItems have to have a valid Player specified.");
 
-            if (InstanceId != null && InstanceId != "")
-            {
-                _prefsPrefix = IdentifierBasePrefs + GiId + "_" + InstanceId + ".";
-            }
-            else
-            {
-                _prefsPrefix = IdentifierBasePrefs + GiId + ".";
-            }
-            _prefsPrefixPlayer = _isRootItem ? _prefsPrefix : Player.FullKey(_prefsPrefix);
+            //TODO: Config after player is setup
+            //if (InstanceId != null && InstanceId != "")
+            //{
+            //    _prefsPrefix = IdentifierBasePrefs + GiId + "_" + InstanceId + ".";
+            //}
+            //else
+            //{
+            _prefsPrefix = IdentifierBasePrefs + GiId + ".";
+            //}
+            //_prefsPrefixPlayer = _isRootItem ? _prefsPrefix : Player.FullKey(_prefsPrefix);
 
-            HighScoreLocalPlayers = PreferencesFactory.GetInt(FullKey("HSLP"), 0);	                // saved at global level rather than per player.
-            HighScoreLocalPlayersPlayerNumber = PreferencesFactory.GetInt(FullKey("HSLPN"), -1);	// saved at global level rather than per player.
-            OldHighScoreLocalPlayers = HighScoreLocalPlayers;
+            //HighScoreLocalPlayers = PreferencesFactory.GetInt(FullKey("HSLP"), 0);	                // saved at global level rather than per player.
+            //HighScoreLocalPlayersPlayerNumber = PreferencesFactory.GetInt(FullKey("HSLPN"), -1);	// saved at global level rather than per player.
+            //OldHighScoreLocalPlayers = HighScoreLocalPlayers;
 
             //TODO: Load!!
             //HighScore = GetSettingInt("HS", 0);
             //OldHighScore = HighScore;
 
             // Setup counters.
-            var counterConfigurationEntries = GetCounterConfiguration();
-            var numberOfCounterEntries = counterConfigurationEntries == null ? 0 : counterConfigurationEntries.Count;
-            _counterEntries = new Counter[numberOfCounterEntries];
-            for (var counterEntryCount = 0; counterEntryCount < numberOfCounterEntries; counterEntryCount++)
-            {
-                var counterEntry = new Counter(counterConfigurationEntries[counterEntryCount], _prefsPrefixPlayer, counterEntryCount, this);
-                counterEntry.LoadFromPrefs();
-                _counterEntries[counterEntryCount] = counterEntry;
-            }
-            _coinsCounter = GetCounter("Coins");
-            _scoreCounter = GetCounter("Score");
-            Assert.IsNotNull(_coinsCounter, "All GameItems must have a counter defined with the Key 'Coins'");
-            Assert.IsNotNull(_scoreCounter, "All GamItems must have a counter defined with the Key 'Score'");
+            //var counterConfigurationEntries = GetCounterConfiguration();
+            //var numberOfCounterEntries = counterConfigurationEntries == null ? 0 : counterConfigurationEntries.Count;
+            //_counterEntries = new Counter[numberOfCounterEntries];
+            //for (var counterEntryCount = 0; counterEntryCount < numberOfCounterEntries; counterEntryCount++)
+            //{
+            //    var counterEntry = new Counter(counterConfigurationEntries[counterEntryCount], _prefsPrefixPlayer, counterEntryCount, this);
+            //    counterEntry.LoadFromPrefs();
+            //    _counterEntries[counterEntryCount] = counterEntry;
+            //}
+            //_coinsCounter = GetCounter("Coins");
+            //_scoreCounter = GetCounter("Score");
+            //Assert.IsNotNull(_coinsCounter, "All GameItems must have a counter defined with the Key 'Coins'");
+            //Assert.IsNotNull(_scoreCounter, "All GamItems must have a counter defined with the Key 'Score'");
 
             // If the default state is unlocked then default to animation shown also, otherwise we check for bought / unlocked in prefs.
-            if (StartUnlocked) {
-                IsUnlocked = IsUnlockedAnimationShown = true;
-            }
-            else {
-                // saved at global level rather than per player.
-                IsBought = PreferencesFactory.GetInt(FullKey("IsB"), 0) == 1;
-                if (IsBought || GetSettingInt("IsU", 0) == 1)
-                    IsUnlocked = true;
-                IsUnlockedAnimationShown = GetSettingInt("IsUAS", 0) == 1;
-            }
+            //if (StartUnlocked) {
+            //    IsUnlocked = IsUnlockedAnimationShown = true;
+            //}
+            //else {
+            //    // saved at global level rather than per player.
+            //    IsBought = PreferencesFactory.GetInt(FullKey("IsB"), 0) == 1;
+            //    if (IsBought || GetSettingInt("IsU", 0) == 1)
+            //        IsUnlocked = true;
+            //    IsUnlockedAnimationShown = GetSettingInt("IsUAS", 0) == 1;
+            //}
 
-            Variables.Load(_prefsPrefixPlayer);
+            //Load data from server to update the GameItem
+            await GameItemMetaService.Instance.PopulateGameItem(this);
+
+            //Variables.Load(_prefsPrefixPlayer);
 
             // allow for any custom game item specific initialisation
             CustomInitialisation();
@@ -645,16 +656,45 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         }
 
         /// <summary>
+        /// Attach this meta to a default/selected instance
+        /// </summary>
+        /// <param name="instance"></param>
+        public virtual void AttachInstance(PlayerGameItem instance)
+        {
+            PlayerGameItem = instance;
+        }
+
+        /// <summary>
+        /// Create an instance of this GameItem with specified Id
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <returns></returns>
+        public virtual PlayerGameItem GenerateGameItemInstance(string id)
+        {
+            PlayerGameItem pgi = new PlayerGameItem();
+            pgi.Id = id;
+            pgi.GiType = this.GetType().Name;
+            pgi.GameItem_name = name;
+            if (_localisablePrefabs != null && _localisablePrefabs.Count > 0)
+            {
+                //Default set to the first prefab
+                pgi.PrefabType = _localisablePrefabs[0].LocalisablePrefabType;
+            }
+            pgi.IsActive = true;
+            //Duplicate the meta's variables
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(Variables), pgi.Props);
+            return pgi;
+        }
+
+
+        /// <summary>
         /// Create an instance of this GameItem
         /// </summary>
         /// <param name="instanceId"></param>
         /// <returns></returns>
-        public T GenerateInstance<T>(string instanceId) where T : GameItem
+        public virtual PlayerGameItem GenerateGameItemInstance()
         {
-            T gameItem = (T)GameObject.Instantiate(this);
-            gameItem._instanceId = instanceId;
-            gameItem.InitialiseNonScriptableObjectValues(GameConfiguration, Player, Messenger);
-            return gameItem;
+            return GenerateGameItemInstance(Guid.NewGuid().ToString());
         }
 
 
@@ -704,21 +744,22 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// If overriding from a base class be sure to call base.ParseGameData()
         public virtual void UpdatePlayerPrefs()
         {
-            SetSetting("IsU", IsUnlocked ? 1 : 0);
-            SetSetting("IsUAS", IsUnlockedAnimationShown ? 1 : 0);
-            //SetSetting("HS", HighScore);
+            //SetSetting("IsU", IsUnlocked ? 1 : 0);
+            //SetSetting("IsUAS", IsUnlockedAnimationShown ? 1 : 0);
+            ////SetSetting("HS", HighScore);
 
-            if (IsBought)
-                PreferencesFactory.SetInt(FullKey("IsB"), 1);                                  // saved at global level rather than per player.
-            if (HighScoreLocalPlayers != 0)
-                PreferencesFactory.SetInt(FullKey("HSLP"), HighScoreLocalPlayers);	            // saved at global level rather than per player.
-            if (HighScoreLocalPlayersPlayerNumber != -1)
-                PreferencesFactory.SetInt(FullKey("HSLPN"), HighScoreLocalPlayersPlayerNumber); // saved at global level rather than per player.
+            //if (IsBought)
+            //    PreferencesFactory.SetInt(FullKey("IsB"), 1);                                  // saved at global level rather than per player.
+            //if (HighScoreLocalPlayers != 0)
+            //    PreferencesFactory.SetInt(FullKey("HSLP"), HighScoreLocalPlayers);	            // saved at global level rather than per player.
+            //if (HighScoreLocalPlayersPlayerNumber != -1)
+            //    PreferencesFactory.SetInt(FullKey("HSLPN"), HighScoreLocalPlayersPlayerNumber); // saved at global level rather than per player.
 
-            Variables.UpdatePlayerPrefs(_prefsPrefixPlayer);
+            //Variables.UpdatePlayerPrefs(_prefsPrefixPlayer);
 
-            foreach (var counterEntry in _counterEntries)
-                counterEntry.UpdatePlayerPrefs();
+            //foreach (var counterEntry in _counterEntries)
+            //    counterEntry.UpdatePlayerPrefs();
+            GameItemMetaService.Instance.UpdateGameItem(this);
         }
 
 

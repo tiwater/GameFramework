@@ -4,6 +4,9 @@ using static GameFramework.GameStructure.Model.AddressableGameItemMeta;
 
 namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
 {
+    /// <summary>
+    /// Represent the supported GameItem information
+    /// </summary>
     [Serializable]
     public class SupportItemInfo
     {

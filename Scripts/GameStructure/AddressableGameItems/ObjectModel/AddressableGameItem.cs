@@ -71,8 +71,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         AddressableGameItemMeta.ContentType _contentType;
 
         /// <summary>
-        /// The GameItem this character supports. Store in <GameItemType, GameItemId> format,
-        /// <GameItemType, null> means support all GameItems under the given type.
+        /// The GameItem this character supports.
         /// </summary>
         public List<SupportItemInfo> SupportItems
         {
@@ -84,6 +83,20 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         [Tooltip("The GameItems that this AddressGameItem supports.")]
         [SerializeField]
         List<SupportItemInfo> _supportItems = new List<SupportItemInfo>();
+
+        /// <summary>
+        /// The GameItem this character supports.
+        /// </summary>
+        public List<ResourceInfo> Resources
+        {
+            get
+            {
+                return _resources;
+            }
+        }
+        [Tooltip("The resources this AddressGameItem includes.")]
+        [SerializeField]
+        List<ResourceInfo> _resources = new List<ResourceInfo>();
 
         #endregion Editor Parameters
 

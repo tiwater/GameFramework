@@ -24,6 +24,7 @@ using GameFramework.GameStructure.Characters.ObjectModel;
 using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Players.Messages;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -297,6 +298,20 @@ namespace GameFramework.GameStructure.Players.ObjectModel
         }
 
         #endregion Cointer, Score and Coin Messaging Overrides
+
+        /// <summary>
+        /// Create an instance of this GameItem
+        /// </summary>
+        /// <param name="instanceId"></param>
+        /// <returns></returns>
+        public virtual PlayerDto GeneratePlayerDto()
+        {
+            PlayerDto dto = new PlayerDto();
+            dto.Id = Guid.NewGuid().ToString();
+            //Duplicate the meta's variables
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(Variables), dto.Props);
+            return dto;
+        }
 
     }
 }

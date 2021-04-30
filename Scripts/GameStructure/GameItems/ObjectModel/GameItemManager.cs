@@ -339,7 +339,6 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             T instance = GameItem.Instantiate(this.GetItem(GiId));
 
             ItemInstances.Add(instance);
-            instance.InstanceId = InstanceId;
             instance.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, player, GameManager.Messenger);
         }
 
@@ -418,6 +417,23 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// You may want to override this in your derived classes to send custom messages.
         public virtual void OnSelectedChanged(T newSelection, T oldSelection)
         {
+        }
+
+        /// <summary>
+        /// Create the PlayerGameItem to DB
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public virtual async Task<PlayerGameItem> CreateGameItemInstance(PlayerGameItem item)
+        {
+            if (item.GiType == typeof(T).Name)
+            {
+                return await PlayerGameItemService.Instance.CreatePlayerGameItem(item);
+            } else
+            {
+                Debug.LogError(string.Format("The supplied PlayerGameItem type {0} doesn't match the expected {1}", item.GiType, typeof(T).Name));
+                return null;
+            }
         }
 
 

@@ -5,7 +5,7 @@ namespace GameFramework.GameStructure.Model
     public class GameItemMeta
     {
         public string name;
-        public string Uid;
+        public string GiId;
         public int ValueToUnlock;
 
         public GameItemMeta()

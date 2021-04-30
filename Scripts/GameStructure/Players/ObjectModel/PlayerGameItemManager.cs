@@ -36,6 +36,8 @@ namespace GameFramework.GameStructure.Players.ObjectModel
     /// </summary>
     public class PlayerGameItemManager : GameItemManager<Player, GameItem>
     {
+
+        public static string DUMMY_PREFS_KEY = "Overall_data";
         /// <summary>
         /// Called when the current selection changes. Override this in any base class to provide further handling such as sending out messaging.
         /// </summary>
@@ -53,22 +55,37 @@ namespace GameFramework.GameStructure.Players.ObjectModel
             {
                 Items = new List<Player>();
             }
+            //Load default play schema from local
+            await Load(0, 0);
 
-            var playerDto = await PlayerGameItemService.Instance.GetPlayer();
-            // Create the player meta.
-            var player = ScriptableObject.CreateInstance<Player>();
-            Items.Add(player);
+            var player = await PlayerGameItemService.Instance.GetPlayerInstance();
 
-            //Player is a special case, because other config keys are stored under player variables,
-            //so we have to set the selected player first
-            player.PlayerDto = playerDto;
+            if (player == null)
+            {
+                //Simulate the server side created instance from meta of Player_0
+                //Selected.PlayerDto = Selected.GeneratePlayerDto();
+                //Selected.PlayerDto.Id = GameManager.Instance.UserId;
+                //string playerString = JsonUtility.ToJson(Selected.PlayerDto);
+                //PlayerPrefs.SetString(DUMMY_PREFS_KEY + Selected.PlayerDto.Id, playerString);
+                _isLoaded = true;
+            }
+            else
+            {
+                // Create the player meta.
+                //var player = ScriptableObject.CreateInstance<Player>();
+                //Items.Add(player);
 
-            Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
-            Selected = player;
+                //Player is a special case, because other config keys are stored under player variables,
+                //so we have to set the selected player first
+                Selected.PlayerGameItem = player;
 
-            player.Initialise(GameConfiguration.Instance, null, GameManager.Messenger,
-                        playerDto.Id, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: -1);
-            _isLoaded = true;
+                //Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
+                //Selected = player;
+
+                //player.Initialise(GameConfiguration.Instance, null, GameManager.Messenger,
+                //            playerDto.Id, LocalisableText.CreateLocalised(), LocalisableText.CreateLocalised(), valueToUnlock: -1);
+                _isLoaded = true;
+            }
         }
     }
 }

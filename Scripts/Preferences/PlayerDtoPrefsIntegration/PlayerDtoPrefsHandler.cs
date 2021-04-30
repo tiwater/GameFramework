@@ -24,7 +24,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -46,9 +46,29 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
         {
             get
             {
-                return GameManager.Instance.Players.Selected.PlayerDto.Props;
+                if (GameManager.Instance.Players == null || GameManager.Instance.Players.Selected == null)
+                {
+                    if (_storage == null)
+                    {
+                        _storage = new Variables();
+                    }
+                    HasOfflineConfig = true;
+                    return _storage;
+                }
+                else
+                {
+                    if (HasOfflineConfig)
+                    {
+                        //TODO: Sync Offline data to the player instance
+                    }
+                    return GameManager.Instance.Players.Selected.PlayerDto.Props;
+                }
             }
         }
+
+        private Variables _storage = null;
+
+        private bool HasOfflineConfig = false;
 
         /// <summary>
         /// The pass phrase that should be used. Be sure to override this with your own value.

@@ -52,8 +52,8 @@ namespace GameFramework.Preferences
                     _instance = new PrefsEditorHandler();
 #else
                 if (_instance == null)
-                    //_instance = new PlayerPrefsHandler();
-                    _instance = new PlayerDtoPrefsHandler();
+                    _instance = new PlayerPrefsHandler();
+                //_instance = new PlayerDtoPrefsHandler();
 #endif
                 return _instance;
             }
