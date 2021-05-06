@@ -42,12 +42,10 @@ using GameFramework.Preferences;
 using GameFramework.Audio.Messages;
 using GameFramework.GameStructure.GameItems.Messages;
 using GameFramework.GameStructure.Game.ObjectModel;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.AddressableAssets.ResourceLocators;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.Service;
+using GameFramework.Service;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS
@@ -725,7 +723,7 @@ namespace GameFramework.GameStructure
             sb.Append("\nApplication.systemLanguage: ").Append(Application.systemLanguage);
 
 
-            string token = PlayerGameItemService.Instance.LoadToken();
+            string token = await PlayerGameItemService.Instance.LoadToken();
 
             if (string.IsNullOrEmpty(token) && BindwithDevice)
             {
@@ -1176,10 +1174,41 @@ namespace GameFramework.GameStructure
         /// Load the player owns GameItems
         /// </summary>
         private async Task LoadPlayerGameItems()
-        
+        { 
             //Load Player owned GameItems
             var items = await PlayerGameItemService.Instance.LoadPlayerGameItems(Players.Selected.InstanceId);
             Players.Selected.PlayerGameItem.Children = items;
+            PopulatePlayerGameItems(items);
+        }
+
+
+        /// <summary>
+        /// Set the GameItem status based on the PlayerGameItem
+        /// </summary>
+        /// <param name="playerGameItems"></param>
+        /// <returns></returns>
+        private void PopulatePlayerGameItems(List<PlayerGameItem> playerGameItems)
+        {
+            foreach (PlayerGameItem playerGameItem in playerGameItems)
+            {
+                var gameItemManager = GameManager.Instance.GetIBaseGameItemManager(playerGameItem.GiType);
+                GameItem addrItem = gameItemManager.BaseGetItem(playerGameItem.GiId);
+                if (addrItem != null)
+                {
+                    addrItem.IsUnlocked = true;
+                    //if (addrItem.GetType() == typeof(AddressableGameItem))
+                    //{
+                    //    //Addressable Game Items may have quantity
+                    //    addrItem.GetCounter(Constants.QUANTITY_COUNTER).Set(playerGameItem.Amount);
+                    //}
+                }
+                else
+                {
+                    //Has GameItem not fetched, need to fetch again later
+                    Debug.LogWarning(string.Format("No GameItem available for {0} {1} of {2}", playerGameItem.GiType, playerGameItem.GiId, playerGameItem.Id));
+                }
+            }
+            Debug.Log("PopulatePlayerGameItems Done");
         }
 
         #endregion Setup
@@ -1281,16 +1310,17 @@ namespace GameFramework.GameStructure
             {
                 MyDebug.Log("GameManager: SaveState");
 
-                PreferencesFactory.SetInt("TimesPlayedForRatingPrompt", TimesPlayedForRatingPrompt);
-                PreferencesFactory.SetInt("TimesGamePlayed", TimesGamePlayed);
-                PreferencesFactory.SetInt("TimesLevelsPlayed", TimesLevelsPlayed);
+                //PreferencesFactory.SetInt("TimesPlayedForRatingPrompt", TimesPlayedForRatingPrompt);
+                //PreferencesFactory.SetInt("TimesGamePlayed", TimesGamePlayed);
+                //PreferencesFactory.SetInt("TimesLevelsPlayed", TimesLevelsPlayed);
 
-                PreferencesFactory.SetFloat("BackGroundAudioVolume", BackGroundAudioVolume, false);
-                PreferencesFactory.SetFloat("EffectAudioVolume", EffectAudioVolume, false);
+                PlayerPrefs.SetFloat("BackGroundAudioVolume", BackGroundAudioVolume);
+                PlayerPrefs.SetFloat("EffectAudioVolume", EffectAudioVolume);
 
-                Variables.UpdatePlayerPrefs(VariablesPrefix, SecurePreferences);
+                //Variables.UpdatePlayerPrefs(VariablesPrefix, SecurePreferences);
 
-                PreferencesFactory.Save();
+                //PreferencesFactory.Save();
+                PlayerPrefs.Save();
             }
         }
         #endregion Save State
@@ -1377,12 +1407,14 @@ namespace GameFramework.GameStructure
         public static T LoadResource<T>(string name, bool fallback = true) where T : UnityEngine.Object
         {
             T resource = null;
+            Debug.Log("Load " + name);
             if (GetIdentifierBase() != null)
                 resource = Resources.Load<T>(GetIdentifierBase() + "/" + name);
             if (resource == null && fallback)
                 resource = Resources.Load<T>(name);
             if (resource == null && fallback)
                 resource = Resources.Load<T>("Default/" + name);
+            Debug.Log("Load " + name + " Done");
             return resource;
         }
 

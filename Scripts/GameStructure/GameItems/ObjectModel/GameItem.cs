@@ -34,7 +34,7 @@ using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.Messaging;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
-using GameFramework.GameStructure.Service;
+using GameFramework.Service;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -324,7 +324,8 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// The PlayerGameItem this GameItem attached to. If the meta may have multiple instances in the game, then it points to the selected/active one.
         /// </summary>
-        public PlayerGameItem PlayerGameItem { get; set; }
+        [NonSerialized]
+        public PlayerGameItem PlayerGameItem;
 
         /// <summary>
         /// A number that represents an instance of this game item, only avilable for the game items which only have one instance or default instance in the game,
@@ -502,6 +503,21 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         #endregion Per User Settings
 
         #region Extension Data
+
+        /// <summary>
+        /// The Resources this GameItem contains.
+        /// </summary>
+        public List<ResourceInfo> Resources
+        {
+            get
+            {
+                return _resources;
+            }
+        }
+        [Tooltip("The resources this GameItem contains.")]
+        [SerializeField]
+        List<ResourceInfo> _resources = new List<ResourceInfo>();
+
         /// <summary>
         /// Stored json data from disk. 
         /// </summary>
@@ -633,9 +649,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             //Assert.IsNotNull(_scoreCounter, "All GamItems must have a counter defined with the Key 'Score'");
 
             // If the default state is unlocked then default to animation shown also, otherwise we check for bought / unlocked in prefs.
-            //if (StartUnlocked) {
-            //    IsUnlocked = IsUnlockedAnimationShown = true;
-            //}
+            if (StartUnlocked)
+            {
+                IsUnlocked = IsUnlockedAnimationShown = true;
+            }
             //else {
             //    // saved at global level rather than per player.
             //    IsBought = PreferencesFactory.GetInt(FullKey("IsB"), 0) == 1;
@@ -674,7 +691,11 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             PlayerGameItem pgi = new PlayerGameItem();
             pgi.Id = id;
             pgi.GiType = this.GetType().Name;
-            pgi.GameItem_name = name;
+            pgi.GiId = GiId;
+            if (Player!=null && Player.InstanceId != null)
+            {
+                pgi.PlayerId = Player.InstanceId;
+            }
             if (_localisablePrefabs != null && _localisablePrefabs.Count > 0)
             {
                 //Default set to the first prefab

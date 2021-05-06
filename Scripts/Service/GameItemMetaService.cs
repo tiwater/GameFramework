@@ -5,11 +5,12 @@ using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Levels.ObjectModel;
 using GameFramework.GameStructure.Model;
 using GameFramework.GameStructure.Util;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace GameFramework.GameStructure.Service
+namespace GameFramework.Service
 {
     public class GameItemMetaService
     {
@@ -26,6 +27,7 @@ namespace GameFramework.GameStructure.Service
         /// <returns></returns>
         public async Task PopulateGameItem(GameItem item)
         {
+            //TODO: Load data from server
             string strMeta = PlayerPrefs.GetString(item.GetType().Name.ToString() + item.GiId);
             JsonUtility.FromJsonOverwrite(strMeta, item);
 
@@ -36,6 +38,7 @@ namespace GameFramework.GameStructure.Service
         public async Task UpdateGameItem(GameItem item)
         {
             string json = JsonUtility.ToJson(item);
+            //string json = JsonConvert.SerializeObject(item);
             PlayerPrefs.SetString(item.GetType().Name.ToString() + item.GiId, json);
 
             return;

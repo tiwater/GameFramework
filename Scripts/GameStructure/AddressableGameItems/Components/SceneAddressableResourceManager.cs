@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using GameFramework.GameStructure.Levels.Components;
-using GameFramework.GameStructure.Service;
+using GameFramework.Service;
 
 namespace GameFramework.GameStructure.AddressableGameItems.Components
 {

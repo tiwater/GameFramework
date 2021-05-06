@@ -1,6 +1,6 @@
 using GameFramework.GameStructure.GameItems.ObjectModel;
+using GameFramework.Service;
 using System.Threading.Tasks;
-using GameFramework.GameStructure.Service;
 
 namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
 {

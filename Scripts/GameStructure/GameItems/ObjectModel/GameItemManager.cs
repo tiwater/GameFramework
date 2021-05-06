@@ -31,11 +31,8 @@ using GameFramework.Localisation.ObjectModel;
 using GameFramework.Preferences;
 using Random = UnityEngine.Random;
 using GameFramework.GameStructure.Game.ObjectModel;
-using GameFramework.GameStructure.Worlds.Messages;
-using GameFramework.GameStructure.Levels.Messages;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
-using GameFramework.GameStructure.Service;
+using GameFramework.Service;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -117,7 +114,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// An array of instances of type T
         /// </summary>
-        public List<T> ItemInstances { get; set; }
+        //public List<T> ItemInstances { get; set; }
 
         /// <summary>
         /// The currently selected item
@@ -328,19 +325,19 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
 
         /// <summary>
-        /// Load an instance of GameItem under the specified GiId
+        /// Instantiate an instance of GameItem under the specified GiId
         /// </summary>
-        public void LoadInstance(string GiId, string InstanceId, Player player)
-        {
-            if(ItemInstances == null)
-            {
-                ItemInstances = new List<T>();
-            }
-            T instance = GameItem.Instantiate(this.GetItem(GiId));
+        //public void InstantiateGameItem(string GiId, string InstanceId, Player player)
+        //{
+        //    if(ItemInstances == null)
+        //    {
+        //        ItemInstances = new List<T>();
+        //    }
+        //    T instance = GameItem.Instantiate(this.GetItem(GiId));
 
-            ItemInstances.Add(instance);
-            instance.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, player, GameManager.Messenger);
-        }
+        //    ItemInstances.Add(instance);
+        //    instance.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, player, GameManager.Messenger);
+        //}
 
         public virtual async Task LoadFromStorage()
         {
@@ -780,5 +777,17 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
         #endregion IBaseGameItemManager
 
+        /// <summary>
+        /// Get all GameItem instances (PlayerGameItem) in a specific type
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<PlayerGameItem>> GetOwnedItemInstances()
+        {
+            List<PlayerGameItem> items = await PlayerGameItemService.Instance.LoadPlayerGameItems(
+                GameManager.Instance.Player.PlayerGameItem.Id);
+            //Filter the type
+            items = new List<PlayerGameItem>( items.Where(item => item.GiType == typeof(T).Name));
+            return items;
+        }
     }
 }

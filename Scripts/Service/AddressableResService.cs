@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 
-namespace GameFramework.GameStructure.Service
+namespace GameFramework.Service
 {
     public class AddressableResService
     {
@@ -57,7 +57,8 @@ namespace GameFramework.GameStructure.Service
             {
                 //Get the ResourceLocations for the label first
                 var rls = await LoadResourceLocationsForLabelAsync(label);
-                var resourceSelector = rls.Where(rl => (names == null || names.Count() == 0 || names.Contains(rl.PrimaryKey))).Select(rl => LoadResourceByLocationAsync<T>(rl));
+                var resourceSelector = rls.Where(rl => (names == null || names.Count() == 0 || names.Contains(rl.PrimaryKey)))
+                    .Select(rl => LoadResourceByLocationAsync<T>(rl));
 
                 await Task.WhenAll(resourceSelector);
                 foreach (var result in resourceSelector)

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 
-namespace GameFramework.GameStructure.Service
+namespace GameFramework.Service
 {
     public class GameItemService
     {

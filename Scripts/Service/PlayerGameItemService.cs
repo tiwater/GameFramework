@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameFramework.GameStructure;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Model;
 using GameFramework.GameStructure.Util;
+using GameFramework.Repository;
 using UnityEngine;
 using static GameFramework.GameStructure.Model.GameItemEquipment;
 
-namespace GameFramework.GameStructure.Service
+namespace GameFramework.Service
 {
     public class PlayerGameItemService : BaseService
     {
@@ -20,10 +22,6 @@ namespace GameFramework.GameStructure.Service
         private static string MOCK_SKIN_ID2 = "sk2";
         private static string MOCK_STICK_ID1 = "stick1";
 
-
-        public static string DUMMY_TOKEN_KEY = "PlayerToken";
-        public static string DUMMY_PREFS_KEY = "Overall_data";
-
         private static PlayerGameItemService _instance = new PlayerGameItemService();
 
         public static PlayerGameItemService Instance
@@ -31,41 +29,30 @@ namespace GameFramework.GameStructure.Service
             get { return _instance; }
         }
 
-        public string LoadToken()
+        public async Task<string> LoadToken()
         {
-            //TODO: get token from system
-            if (string.IsNullOrEmpty(Token))
-            {
-                _token = PlayerPrefs.GetString(DUMMY_TOKEN_KEY, null);
-            }
-            return Token;
+            return await RepoFactory.PlayerGameItemRepository.LoadToken();
         }
 
-        public void StoreToken(string token)
+        public async Task StoreToken(string token)
         {
-            PlayerPrefs.SetString(DUMMY_TOKEN_KEY, token);
+            await RepoFactory.PlayerGameItemRepository.StoreToken(token);
         }
 
         public async Task<PlayerGameItem> GetPlayerInstance()
         {
             //TODO:Get player profile by token
-            string token = LoadToken();
+            string token = await LoadToken();
             string playerId = GameManager.Instance.UserId;
 
-            PlayerGameItem player = await HttpUtil.GetDummyAsync<PlayerGameItem>(GlobalConstants.SERVER_TISVC_PREFIX + "/Player");
-            string playerString = PlayerPrefs.GetString(DUMMY_PREFS_KEY + playerId);
-            if (string.IsNullOrEmpty(playerString))
-            //if (true)
-            {
-                player = null;
-                //Commented as we want to trigger the new account creation in client
-                //Create the default one
-                //playerString = JsonUtility.ToJson(MockPlayerInstance());
-                //PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
-            }
-            player = JsonUtility.FromJson<PlayerGameItem>(playerString);
+            PlayerGameItem player = await GetPlayerGameItem(playerId);
 
             return player;
+        }
+
+        public async Task<PlayerGameItem> GetPlayerGameItem(string itemId)
+        {
+            return await RepoFactory.PlayerGameItemRepository.GetPlayerGameItem(itemId);
         }
 
         //public async Task<PlayerGameItem> GetPlayer()
@@ -112,11 +99,14 @@ namespace GameFramework.GameStructure.Service
             return p;
         }
 
-        public void UpdatePlayer()
+        public async Task UpdatePlayer()
         {
-            string playerString = JsonUtility.ToJson(GameManager.Instance.Players.Selected.PlayerDto);
-            string playerId = GameManager.Instance.UserId;
-            PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
+            //We may not have such kind of save
+            //TODO: use throw to check where called this API
+
+            //string playerString = JsonUtility.ToJson(GameManager.Instance.Players.Selected.PlayerGameItem);
+            //string playerId = GameManager.Instance.UserId;
+            //PlayerPrefs.SetString(DUMMY_PREFS_KEY + playerId, playerString);
         }
 
 
@@ -124,7 +114,7 @@ namespace GameFramework.GameStructure.Service
         /// Load the GameItems the player owns from the server
         /// </summary>
         /// <param name="handler"></param>
-        public async Task<List<PlayerGameItem>> LoadPlayerGameItems(string playerId)
+        public async Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
         {
             //yield return (HttpUtil.Get(GlobalConstants.SERVER_TISVC_PREFIX + "/{AppId}/GameItemMeta", webRequest =>
             //{
@@ -133,9 +123,9 @@ namespace GameFramework.GameStructure.Service
 
             await (HttpUtil.GetDummyAsync(GlobalConstants.SERVER_TISVC_PREFIX + "/{AppId}/PlayerGameItem"));
             //TODO: Load form web then sync to local, or load from local if web is not available
-            List<PlayerGameItem> items = MockItems();
-            PopulatePlayerGameItems(playerId, items);
-            return items;
+            //List<PlayerGameItem> items = MockItems();
+            //PopulatePlayerGameItems(playerId, items);
+            return await RepoFactory.PlayerGameItemRepository.LoadPlayerGameItems(itemId);
         }
 
         //private Dictionary<string, List<CharacterEquipment>> MockEquipments()
@@ -195,7 +185,7 @@ namespace GameFramework.GameStructure.Service
 
             PlayerGameItem pgi = new PlayerGameItem();
             pgi.GiType = "Character";
-            pgi.GameItem_name = "Character_hty";
+            pgi.GiId = "hty";
             pgi.Id = MOCK_FISH2_ID;
             //pgi.Position = new Vector3(0, 0 , 0);
             //pgi.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
@@ -215,19 +205,19 @@ namespace GameFramework.GameStructure.Service
 
             PlayerGameItem pgi2 = new PlayerGameItem();
             pgi2.GiType = "Level";
-            pgi2.GameItem_name = "Level_forest";
+            pgi2.GiId = "forest";
             pgi2.Id = "abcd";
             items.Add(pgi2);
 
             PlayerGameItem pgi3 = new PlayerGameItem();
             pgi3.GiType = "AddressableGameItem";
-            pgi3.GameItem_name = "AGI_Fish1Skin1";
+            pgi3.GiId = "Fish1Skin1";
             pgi3.Id = MOCK_SKIN_ID1;
             items.Add(pgi3);
 
             PlayerGameItem pgi4 = new PlayerGameItem();
             pgi4.GiType = "Character";
-            pgi4.GameItem_name = "Character_Fish1";
+            pgi4.GiId = "Fish1";
             pgi4.Id = MOCK_FISH1_ID;
             //pgi4.Position = new Vector3(0, 1, 0);
             //pgi4.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
@@ -244,13 +234,13 @@ namespace GameFramework.GameStructure.Service
 
             PlayerGameItem pgi5 = new PlayerGameItem();
             pgi5.GiType = "AddressableGameItem";
-            pgi5.GameItem_name = "AGI_Fish2Skin1";
+            pgi5.GiId = "AGI_Fish2Skin1";
             pgi5.Id = MOCK_SKIN_ID2;
             items.Add(pgi5);
 
             PlayerGameItem pgi6 = new PlayerGameItem();
             pgi6.GiType = "AddressableGameItem";
-            pgi6.GameItem_name = "AGI_Stick1";
+            pgi6.GiId = "AGI_Stick1";
             pgi6.Id = MOCK_STICK_ID1;
             items.Add(pgi6);
 
@@ -263,39 +253,44 @@ namespace GameFramework.GameStructure.Service
         /// </summary>
         /// <param name="playerGameItems"></param>
         /// <returns></returns>
-        private void PopulatePlayerGameItems(string playerId, List<PlayerGameItem> playerGameItems)
-        {
-            foreach (PlayerGameItem playerGameItem in playerGameItems)
-            {
-                var gameItemManager = GameManager.Instance.GetIBaseGameItemManager(playerGameItem.GiType);
-                GameItem addrItem = gameItemManager.BaseGetItem(playerGameItem.GiId);
-                if (addrItem != null)
-                {
-                    addrItem.IsUnlocked = true;
-                    //if (addrItem.GetType() == typeof(AddressableGameItem))
-                    //{
-                    //    //Addressable Game Items may have quantity
-                    //    addrItem.GetCounter(Constants.QUANTITY_COUNTER).Set(playerGameItem.Amount);
-                    //}
-                }
-                else
-                {
-                    //Has GameItem not fetched, need to fetch again later
-                    Debug.LogWarning(string.Format("No GameItem available for {0}", playerGameItem.GameItem_name));
-                }
-            }
-            if (GameManager.Instance.Players.Selected.GiId == playerId)
-            {
-                GameManager.Instance.Players.Selected.PlayerDto.OwnedItems = playerGameItems;
-            }
-            Debug.Log("PopulatePlayerGameItems Done");
-        }
+        //private void PopulatePlayerGameItems(string playerId, List<PlayerGameItem> playerGameItems)
+        //{
+        //    foreach (PlayerGameItem playerGameItem in playerGameItems)
+        //    {
+        //        var gameItemManager = GameManager.Instance.GetIBaseGameItemManager(playerGameItem.GiType);
+        //        GameItem addrItem = gameItemManager.BaseGetItem(playerGameItem.GiId);
+        //        if (addrItem != null)
+        //        {
+        //            addrItem.IsUnlocked = true;
+        //            //if (addrItem.GetType() == typeof(AddressableGameItem))
+        //            //{
+        //            //    //Addressable Game Items may have quantity
+        //            //    addrItem.GetCounter(Constants.QUANTITY_COUNTER).Set(playerGameItem.Amount);
+        //            //}
+        //        }
+        //        else
+        //        {
+        //            //Has GameItem not fetched, need to fetch again later
+        //            Debug.LogWarning(string.Format("No GameItem available for {0}", playerGameItem.GameItem_name));
+        //        }
+        //    }
+        //    if (GameManager.Instance.Players.Selected.GiId == playerId)
+        //    {
+        //        GameManager.Instance.Players.Selected.PlayerDto.OwnedItems = playerGameItems;
+        //    }
+        //    Debug.Log("PopulatePlayerGameItems Done");
+        //}
 
         public async Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
         {
-            var playerString = JsonUtility.ToJson(item);
-            PlayerPrefs.SetString(DUMMY_PREFS_KEY + item.Id, playerString);
-            return JsonUtility.FromJson<PlayerGameItem>(playerString);
+            return await RepoFactory.PlayerGameItemRepository.CreatePlayerGameItem(item);
+        }
+
+        public async Task AddChild(string parentId, PlayerGameItem child)
+        {
+            //TODO: call the service to persistent child and update the parent-child relationship
+            child = await CreatePlayerGameItem(child);
+            await RepoFactory.PlayerGameItemRepository.UpdateParentChildRelation(parentId, child.Id, true);
         }
     }
 }

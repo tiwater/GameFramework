@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
-namespace GameFramework.Service
+namespace GameFramework.Repository
 {
-    public class BaseService
+    public abstract class BaseRepository
     {
+
         public string Token
         {
             get { return _token; }

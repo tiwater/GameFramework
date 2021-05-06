@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using static GameFramework.GameStructure.Model.GameItemEquipment;
 using GameFramework.GameStructure.Model;
-using static GameFramework.GameStructure.Service.AddressableResService;
-using GameFramework.GameStructure.Service;
 using GameFramework.GameStructure.Characters.ObjectModel;
+using static GameFramework.Service.AddressableResService;
+using GameFramework.Service;
 
 namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
 {
@@ -84,19 +84,6 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         [SerializeField]
         List<SupportItemInfo> _supportItems = new List<SupportItemInfo>();
 
-        /// <summary>
-        /// The GameItem this character supports.
-        /// </summary>
-        public List<ResourceInfo> Resources
-        {
-            get
-            {
-                return _resources;
-            }
-        }
-        [Tooltip("The resources this AddressGameItem includes.")]
-        [SerializeField]
-        List<ResourceInfo> _resources = new List<ResourceInfo>();
 
         #endregion Editor Parameters
 

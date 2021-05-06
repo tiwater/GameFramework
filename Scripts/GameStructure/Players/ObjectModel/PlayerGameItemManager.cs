@@ -19,15 +19,11 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameFramework.GameStructure.Game.ObjectModel;
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Players.Messages;
-using GameFramework.GameStructure.Service;
-using GameFramework.Localisation.ObjectModel;
+using GameFramework.Service;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace GameFramework.GameStructure.Players.ObjectModel
 {
@@ -51,10 +47,10 @@ namespace GameFramework.GameStructure.Players.ObjectModel
 
         public override async Task LoadFromStorage()
         {
-            if (Items == null)
-            {
-                Items = new List<Player>();
-            }
+            //if (Items == null)
+            //{
+            //    Items = new List<Player>();
+            //}
             //Load default play schema from local
             await Load(0, 0);
 

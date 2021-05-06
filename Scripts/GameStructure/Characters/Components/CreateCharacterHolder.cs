@@ -44,14 +44,16 @@ namespace GameFramework.GameStructure.Characters
         public virtual async Task CreateHolder()
         {
             //Get the game items under current player
-            var items = GameManager.Instance.Players.Selected.PlayerDto.OwnedItems;
+            var items = await GameManager.Instance.Characters.GetOwnedItemInstances();
             foreach (var item in items)
             {
                 //If it's character
                 if (item.GiType == typeof(Character).Name)
                 {
-                    Vector3 position = item.Props.GetVector3(Constants.PROP_KEY_POSITION).Value;
-                    Vector3 rotation = item.Props.GetVector3(Constants.PROP_KEY_ROTATION).Value;
+                    Vector3 position = item.Props.GetVector3(Constants.PROP_KEY_POSITION)!=null?
+                        item.Props.GetVector3(Constants.PROP_KEY_POSITION).Value : Vector3.zero;
+                    Vector3 rotation = item.Props.GetVector3(Constants.PROP_KEY_ROTATION) != null ?
+                        item.Props.GetVector3(Constants.PROP_KEY_ROTATION).Value: Vector3.zero;
                     GameObject characterHolder = GameObject.Instantiate(CharacterHolder, position,
                        Quaternion.Euler(rotation.x, rotation.y, rotation.z));
                     CharacterHolder holderComponent = characterHolder.GetComponent<CharacterHolder>();

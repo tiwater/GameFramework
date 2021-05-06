@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using GameFramework.GameStructure.Model;
-using GameFramework.GameStructure.Util;
 using GameFramework.GameStructure.Variables.ObjectModel;
+using GameFramework.Service;
 using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
@@ -12,11 +13,7 @@ public class PlayerGameItem
 {
     public string Id;
     public string PlayerId;
-    public string GiId { get {
-            return GameItem_name.Substring(GameItem_name.IndexOf('_') + 1);
-        }
-    }
-    public string GameItem_name;
+    public string GiId;
     public string GiType;
     public long Amount;
     public string HostDeviceId;
@@ -31,8 +28,8 @@ public class PlayerGameItem
     /// <summary>
     /// The children PlayerGameItem
     /// </summary>
-    [SerializeField]
-    public List<PlayerGameItem> Children = new List<PlayerGameItem>();
+    [NonSerialized]
+    public List<PlayerGameItem> Children;
 
     public LocalisablePrefabType PrefabType;
     public bool IsActive;
@@ -58,13 +55,25 @@ public class PlayerGameItem
     public PlayerGameItem()
     {
         //Add default properties
-        if (Props.GetVector3(Constants.PROP_KEY_POSITION) == null)
+        //if (Props.GetVector3(Constants.PROP_KEY_POSITION) == null)
+        //{
+        //    Props.SetVector3(Constants.PROP_KEY_POSITION, Vector3.zero);
+        //}
+        //if (Props.GetVector3(Constants.PROP_KEY_ROTATION) == null)
+        //{
+        //    Props.SetVector3(Constants.PROP_KEY_ROTATION, Quaternion.identity.eulerAngles);
+        //}
+    }
+
+    public async Task AddChild(PlayerGameItem child)
+    {
+        if (child != this)
         {
-            Props.SetVector3(Constants.PROP_KEY_POSITION, Vector3.zero);
-        }
-        if (Props.GetVector3(Constants.PROP_KEY_ROTATION) == null)
+            //Avoid loop
+            await PlayerGameItemService.Instance.AddChild(Id, child);
+        } else
         {
-            Props.SetVector3(Constants.PROP_KEY_ROTATION, Quaternion.identity.eulerAngles);
+            Debug.LogError("Cannot add self as child");
         }
     }
 }

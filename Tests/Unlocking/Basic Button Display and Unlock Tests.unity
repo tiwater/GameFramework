@@ -1278,6 +1278,7 @@ MonoBehaviour:
   DisplayChangeCheckDelay: 0.5
   AllowOffline: 0
   AllowOfflineBoot: 0
+  BindwithDevice: 1
   PlayerSetupMode: 1
   PlayerCount: 1
   WorldSetupMode: 0
