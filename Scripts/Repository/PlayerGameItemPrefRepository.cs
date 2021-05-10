@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameFramework.GameStructure;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Util;
 using UnityEngine;
 
@@ -11,13 +13,13 @@ namespace GameFramework.Repository
     public class PlayerGameItemPrefRepository : BaseRepository, IPlayerGameItemRepository
     {
 
-        public static string DUMMY_TOKEN_KEY = "PlayerToken";
-        public static string DUMMY_PREFS_KEY = "OverallData";
-        public static string DUMMY_PREFS_CHILDREN = "ChildrenId";
+        public static string PREFS_TOKEN_KEY = "PlayerToken";
+        public static string PREFS_GAMEITEM_KEY = "GameItem";
+        public static string PREFS_CHILDREN = "ChildrenId";
 
         public async Task UpdateParentChildRelation(string parentId, string childId, bool add)
         {
-            var childrenId = PlayerPrefs.GetString(DUMMY_PREFS_CHILDREN + parentId);
+            var childrenId = PlayerPrefs.GetString(PREFS_CHILDREN + parentId);
             if (string.IsNullOrEmpty(childrenId))
             {
                 if (add)
@@ -53,13 +55,13 @@ namespace GameFramework.Repository
                 childrenSb.Length = childrenSb.Length - 1;
                 childrenId = childrenSb.ToString();
             }
-            PlayerPrefs.SetString(DUMMY_PREFS_CHILDREN + parentId, childrenId);
+            PlayerPrefs.SetString(PREFS_CHILDREN + parentId, childrenId);
         }
 
         public async Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
         {
             var playerString = JsonUtility.ToJson(item);
-            PlayerPrefs.SetString(DUMMY_PREFS_KEY + item.Id, playerString);
+            PlayerPrefs.SetString(PREFS_GAMEITEM_KEY + item.Id, playerString);
             return JsonUtility.FromJson<PlayerGameItem>(playerString);
         }
         public async Task<string> LoadToken()
@@ -67,21 +69,21 @@ namespace GameFramework.Repository
             //TODO: get token from system
             if (string.IsNullOrEmpty(Token))
             {
-                _token = PlayerPrefs.GetString(DUMMY_TOKEN_KEY, null);
+                _token = PlayerPrefs.GetString(PREFS_TOKEN_KEY, null);
             }
             return Token;
         }
 
         public async Task StoreToken(string token)
         {
-            PlayerPrefs.SetString(DUMMY_TOKEN_KEY, token);
+            PlayerPrefs.SetString(PREFS_TOKEN_KEY, token);
         }
 
         public async Task<PlayerGameItem> GetPlayerGameItem(string itemId)
         {
 
             PlayerGameItem player = await HttpUtil.GetDummyAsync<PlayerGameItem>(GlobalConstants.SERVER_TISVC_PREFIX + "/Player");
-            string playerString = PlayerPrefs.GetString(DUMMY_PREFS_KEY + itemId);
+            string playerString = PlayerPrefs.GetString(PREFS_GAMEITEM_KEY + itemId);
             if (string.IsNullOrEmpty(playerString))
             //if (true)
             {
@@ -99,7 +101,7 @@ namespace GameFramework.Repository
         public async Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
         {
             List<PlayerGameItem> items = new List<PlayerGameItem>();
-            var childrenId = PlayerPrefs.GetString(DUMMY_PREFS_CHILDREN + itemId);
+            var childrenId = PlayerPrefs.GetString(PREFS_CHILDREN + itemId);
             if (!string.IsNullOrEmpty(childrenId))
             {
                 var childrenIdArray = childrenId.Split(',');
@@ -113,6 +115,16 @@ namespace GameFramework.Repository
                 }
             }
             return items;
+        }
+
+        public Task<PlayerGameItem> GetCurrentPlayerInstance()
+        {
+            return GetPlayerGameItem(GameManager.Instance.UserId);
+        }
+
+        public Task<PlayerGameItem> LoadCurrentScene()
+        {
+            throw new NotImplementedException();
         }
     }
 }

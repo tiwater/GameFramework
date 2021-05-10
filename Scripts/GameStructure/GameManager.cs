@@ -46,6 +46,8 @@ using System.Threading.Tasks;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.Service;
 using GameFramework.Service;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
+using GameFramework.GameStructure.PlayerGameItems;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS
@@ -66,7 +68,7 @@ namespace GameFramework.GameStructure
         /// <summary>
         ///  different ways that we can load the different GameItems
         /// </summary>
-        public enum GameItemSetupMode { None, Automatic, FromResources, Specified, MasterWithOverrides, FromServer }
+        public enum GameItemSetupMode { None, Automatic, FromResources, Specified, MasterWithOverrides, FromServer, Addressable }
 
         const string VariablesPrefix = "GV.";
 
@@ -167,6 +169,12 @@ namespace GameFramework.GameStructure
         /// </summary>
         [Tooltip("Do we allow user enter the app offline in the first time without a valid player")]
         public bool AllowOfflineBoot = false;
+
+        /// <summary>
+        /// Manager all GameItems in a scene as a tree
+        /// </summary>
+        [Tooltip("Manager all GameItems in a scene as a tree")]
+        public bool IsHandleGameItemInTree = true;
 
         /// <summary>
         /// Whether this app is bound with a hardware device
@@ -560,6 +568,41 @@ namespace GameFramework.GameStructure
         /// </summary>
         public AddressableGameItemManager AddressableGameItems { get; set; }
 
+        /// <summary>
+        /// GameItemManager containing the current Players
+        /// </summary>
+        public GameItemInstanceManager PlayerGameItems { get; set; }
+
+        /// <summary>
+        /// ScriptManager containing the addressable scripts
+        /// </summary>
+        public ScriptManager Scripts { get; set; }
+
+        /// <summary>
+        /// The root node of current scene
+        /// </summary>
+        public PlayerGameItem SceneRootNode
+        {
+            get
+            {
+                if (PlayerGameItems != null)
+                {
+                    return PlayerGameItems.Root;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                if (PlayerGameItems != null)
+                {
+                    PlayerGameItems.Root = value;
+                }
+            }
+        }
+
         public string UserId { get; set; }
         public string DeviceId { get; set; }
 
@@ -721,15 +764,15 @@ namespace GameFramework.GameStructure
 
             sb.Append("GameManager: GameSetup()");
             sb.Append("\nApplication.systemLanguage: ").Append(Application.systemLanguage);
+            Debug.Log(sb.ToString());
 
+            //string token = await PlayerGameItemService.Instance.LoadToken();
 
-            string token = await PlayerGameItemService.Instance.LoadToken();
-
-            if (string.IsNullOrEmpty(token) && BindwithDevice)
-            {
-                //No token, need to proceed with device binding
-                return;
-            }
+            //if (string.IsNullOrEmpty(token) && BindwithDevice)
+            //{
+            //    //No token, need to proceed with device binding
+            //    return;
+            //}
 
             // secure preferences
             PreferencesFactory.UseSecurePrefs = SecurePreferences;
@@ -791,96 +834,125 @@ namespace GameFramework.GameStructure
             Levels = new LevelGameItemManager();
             Characters = new CharacterGameItemManager();
             AddressableGameItems = new AddressableGameItemManager();
+            PlayerGameItems = new GameItemInstanceManager();
+            Scripts = new ScriptManager();
 
-            #region Workaround / warnings for upgraded values.
-            if (AutoCreateWorlds)
+            if (IsHandleGameItemInTree)
             {
-                Debug.LogWarning("GameManager World creation is improved and the AutoCreateWorlds property is replaced. In the GameManager component change the World Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
-                WorldSetupMode = GameItemSetupMode.FromResources;
-            }
-            if (AutoCreateLevels)
-            {
-                Debug.LogWarning("GameManager Level creation is improved and the AutoCreateLevel property is replaced. In the GameManager component change the Level Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
-                LevelSetupMode = GameItemSetupMode.FromResources;
-            }
-            if (AutoCreateCharacters)
-            {
-                Debug.LogWarning("GameManager Character creation is improved and the AutoCreateCharacters property is replaced. In the GameManager component change the Character Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
-                CharacterSetupMode = GameItemSetupMode.FromResources;
-            }
-            #endregion Workaround / warnings for upgraded values.
-
-            if (WorldSetupMode != GameItemSetupMode.None)
-            {
-                if (WorldSetupMode == GameItemSetupMode.Automatic)
-                    await Worlds.LoadAutomatic(1, NumberOfAutoCreatedWorlds, CoinsToUnlockWorlds, WorldUnlockMode == GameItem.UnlockModeType.Completion, WorldUnlockMode == GameItem.UnlockModeType.Coins);
-                else if (WorldSetupMode == GameItemSetupMode.FromResources)
-                    await Worlds.Load(1, NumberOfAutoCreatedWorlds);
-                else if (WorldSetupMode == GameItemSetupMode.Specified)
-                    Debug.LogError("World Specified setup mode is not currently implemented. Use one of the other modes for now.");
-
-                // if we have worlds then autocreate levels for each world.
-                if (LevelSetupMode == GameItemSetupMode.Automatic)
-                {
-                    for (var i = 0; i < NumberOfAutoCreatedWorlds; i++)
-                    {
-                        Worlds.Items[i].Levels = new LevelGameItemManager();
-                        await Worlds.Items[i].Levels.LoadAutomatic(
-                            WorldLevelNumbers[i].Min, WorldLevelNumbers[i].Max,
-                            CoinsToUnlockLevels,
-                            LevelUnlockMode == GameItem.UnlockModeType.Completion,
-                            LevelUnlockMode == GameItem.UnlockModeType.Coins);
-                    }
-                    // and assign the selected set of levels
-                    Levels = Worlds.Selected.Levels;
-                }
-                else if (LevelSetupMode == GameItemSetupMode.FromResources)
-                {
-                    for (var i = 0; i < NumberOfAutoCreatedWorlds; i++)
-                    {
-                        Worlds.Items[i].Levels = new LevelGameItemManager();
-                        await Worlds.Items[i].Levels.Load(WorldLevelNumbers[i].Min, WorldLevelNumbers[i].Max);
-                    }
-                    // and assign the selected set of levels
-                    Levels = Worlds.Selected.Levels;
-                }
-                else if (LevelSetupMode == GameItemSetupMode.Specified)
-                    Debug.LogError(
-                        "Level 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
+                Debug.Log("Load Scene");
+                await LoadCurrentScene();
+                Debug.Log("Load Scene Done");
+                await Scripts.PreloadScripts();
+                Debug.Log("Load PreloadScripts Done");
             }
             else
             {
-                // otherwise not automatically setting up worlds so setup any levels at root level.
-                if (LevelSetupMode == GameItemSetupMode.Automatic)
-                    await Levels.LoadAutomatic(1, NumberOfAutoCreatedLevels, CoinsToUnlockLevels,
-                        LevelUnlockMode == GameItem.UnlockModeType.Completion,
-                        LevelUnlockMode == GameItem.UnlockModeType.Coins);
-                else if (LevelSetupMode == GameItemSetupMode.FromResources)
-                    await Levels.Load(1, NumberOfAutoCreatedLevels);
-                else if (LevelSetupMode == GameItemSetupMode.Specified)
-                    Debug.LogError("Level 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
-                else if (LevelSetupMode == GameItemSetupMode.MasterWithOverrides)
-                    Levels.LoadMasterWithOverrides(1, NumberOfAutoCreatedLevels, LevelMaster, NumberedLevelReferences.ToArray());
-            }
+                #region Workaround / warnings for upgraded values.
+                if (AutoCreateWorlds)
+                {
+                    Debug.LogWarning("GameManager World creation is improved and the AutoCreateWorlds property is replaced. In the GameManager component change the World Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
+                    WorldSetupMode = GameItemSetupMode.FromResources;
+                }
+                if (AutoCreateLevels)
+                {
+                    Debug.LogWarning("GameManager Level creation is improved and the AutoCreateLevel property is replaced. In the GameManager component change the Level Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
+                    LevelSetupMode = GameItemSetupMode.FromResources;
+                }
+                if (AutoCreateCharacters)
+                {
+                    Debug.LogWarning("GameManager Character creation is improved and the AutoCreateCharacters property is replaced. In the GameManager component change the Character Setup to 'Automatic' or 'From Resources' (if using GameItem configuration files) to carry forward the existing behaviour (simulating this change for now).");
+                    CharacterSetupMode = GameItemSetupMode.FromResources;
+                }
+                #endregion Workaround / warnings for upgraded values.
+
+                if (WorldSetupMode != GameItemSetupMode.None)
+                {
+                    if (WorldSetupMode == GameItemSetupMode.Automatic)
+                        await Worlds.LoadAutomatic(1, NumberOfAutoCreatedWorlds, CoinsToUnlockWorlds, WorldUnlockMode == GameItem.UnlockModeType.Completion, WorldUnlockMode == GameItem.UnlockModeType.Coins);
+                    else if (WorldSetupMode == GameItemSetupMode.FromResources)
+                        await Worlds.Load(1, NumberOfAutoCreatedWorlds);
+                    else if (WorldSetupMode == GameItemSetupMode.Addressable)
+                        await Worlds.LoadAddressableResourcesAsync();
+                    else if (WorldSetupMode == GameItemSetupMode.Specified)
+                        Debug.LogError("World Specified setup mode is not currently implemented. Use one of the other modes for now.");
+
+                    // if we have worlds then autocreate levels for each world.
+                    if (LevelSetupMode == GameItemSetupMode.Automatic)
+                    {
+                        for (var i = 0; i < NumberOfAutoCreatedWorlds; i++)
+                        {
+                            Worlds.Items[i].Levels = new LevelGameItemManager();
+                            await Worlds.Items[i].Levels.LoadAutomatic(
+                                WorldLevelNumbers[i].Min, WorldLevelNumbers[i].Max,
+                                CoinsToUnlockLevels,
+                                LevelUnlockMode == GameItem.UnlockModeType.Completion,
+                                LevelUnlockMode == GameItem.UnlockModeType.Coins);
+                        }
+                        // and assign the selected set of levels
+                        Levels = Worlds.Selected.Levels;
+                    }
+                    else if (LevelSetupMode == GameItemSetupMode.FromResources)
+                    {
+                        for (var i = 0; i < NumberOfAutoCreatedWorlds; i++)
+                        {
+                            Worlds.Items[i].Levels = new LevelGameItemManager();
+                            await Worlds.Items[i].Levels.Load(WorldLevelNumbers[i].Min, WorldLevelNumbers[i].Max);
+                        }
+                        // and assign the selected set of levels
+                        Levels = Worlds.Selected.Levels;
+                    }
+                    else if (LevelSetupMode == GameItemSetupMode.Addressable)
+                    {
+                        for (var i = 0; i < NumberOfAutoCreatedWorlds; i++)
+                        {
+                            Worlds.Items[i].Levels = new LevelGameItemManager();
+                            await Worlds.Items[i].Levels.LoadAddressableResourcesAsync();
+                        }
+                        // and assign the selected set of levels
+                        Levels = Worlds.Selected.Levels;
+                    }
+                    else if (LevelSetupMode == GameItemSetupMode.Specified)
+                        Debug.LogError(
+                            "Level 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
+                }
+                else
+                {
+                    // otherwise not automatically setting up worlds so setup any levels at root level.
+                    if (LevelSetupMode == GameItemSetupMode.Automatic)
+                        await Levels.LoadAutomatic(1, NumberOfAutoCreatedLevels, CoinsToUnlockLevels,
+                            LevelUnlockMode == GameItem.UnlockModeType.Completion,
+                            LevelUnlockMode == GameItem.UnlockModeType.Coins);
+                    else if (LevelSetupMode == GameItemSetupMode.FromResources)
+                        await Levels.Load(1, NumberOfAutoCreatedLevels);
+                    else if (LevelSetupMode == GameItemSetupMode.Specified)
+                        Debug.LogError("Level 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
+                    else if (LevelSetupMode == GameItemSetupMode.MasterWithOverrides)
+                        Levels.LoadMasterWithOverrides(1, NumberOfAutoCreatedLevels, LevelMaster, NumberedLevelReferences.ToArray());
+                    else if (LevelSetupMode == GameItemSetupMode.Addressable)
+                        await Levels.LoadAddressableResourcesAsync();
+                }
 
 
-            // setup of characters
-            if (CharacterSetupMode == GameItemSetupMode.Automatic)
-                await Characters.LoadAutomatic(1, NumberOfAutoCreatedCharacters, CoinsToUnlockCharacters,
-                    CharacterUnlockMode == GameItem.UnlockModeType.Completion,
-                    CharacterUnlockMode == GameItem.UnlockModeType.Coins);
-            else if (CharacterSetupMode == GameItemSetupMode.FromResources)
-                await Characters.Load(1, NumberOfAutoCreatedCharacters);
-            else if (CharacterSetupMode == GameItemSetupMode.Specified || CharacterSetupMode == GameItemSetupMode.FromServer)
-                Debug.LogError("Character 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
+                // setup of characters
+                if (CharacterSetupMode == GameItemSetupMode.Automatic)
+                    await Characters.LoadAutomatic(1, NumberOfAutoCreatedCharacters, CoinsToUnlockCharacters,
+                        CharacterUnlockMode == GameItem.UnlockModeType.Completion,
+                        CharacterUnlockMode == GameItem.UnlockModeType.Coins);
+                else if (CharacterSetupMode == GameItemSetupMode.FromResources)
+                    await Characters.Load(1, NumberOfAutoCreatedCharacters);
+                else if (CharacterSetupMode == GameItemSetupMode.Specified || CharacterSetupMode == GameItemSetupMode.FromServer)
+                    Debug.LogError("Character 'Specified' setup mode is not currently implemented. Use one of the other modes for now.");
+                else if (CharacterSetupMode == GameItemSetupMode.Addressable)
+                    await Characters.LoadAddressableResourcesAsync();
 
-            //Load addressable GameItems
-            await AddressableGameItems.Load();
+                //Load addressable GameItems
+                await AddressableGameItems.LoadAddressableResourcesAsync();
 
-            if (PlayerInstanceAvailable())
-            {
-                //TODO: Exception handling
-                await LoadPlayerGameItems();
+                if (PlayerInstanceAvailable())
+                {
+                    //TODO: Exception handling
+                    await LoadPlayerGameItems();
+                }
             }
 
             // coroutine to check for display changes (don't need to do this every frame)
@@ -890,6 +962,12 @@ namespace GameFramework.GameStructure
             // flag as initialised
             IsInitialised = true;
 
+        }
+
+        public async Task LoadCurrentScene()
+        {
+            await PlayerGameItems.LoadItemInCurrentScene();
+            Levels.SelectSceneRoot();
         }
 
         private async Task LoadPlayerConfigurations()

@@ -35,6 +35,7 @@ using GameFramework.Messaging;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
 using GameFramework.Service;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -57,12 +58,19 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <summary>
         /// The different types of prefab we have
         /// </summary>
-        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview, Stage1, Stage2, Stage3, Stage4 }
+        public enum LocalisablePrefabType { Custom, SelectionMenu, InGame, UnlockWindow, SelectionPreview,
+            Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10 }
 
         /// <summary>
         /// The different types of sprites we have
         /// </summary>
         public enum LocalisableSpriteType { Custom, SelectionMenu, InGame, UnlockWindow }
+
+        /// <summary>
+        /// The different types of textures we have
+        /// </summary>
+        public enum LocalisableTextureType { Custom, SelectionMenu, InGame, UnlockWindow,
+            Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10}
 
         /// <summary>
         /// The axis directions
@@ -240,6 +248,9 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
         [SerializeField]
         List<LocalisableSpriteEntry> _localisableSprites = new List<LocalisableSpriteEntry>();
+
+        [SerializeField]
+        List<LocalisableTextureEntry> _localisableTextures = new List<LocalisableTextureEntry>();
 
         /// <summary>
         /// A list of custom variables for this game item.
@@ -491,7 +502,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                     return (LocalisablePrefabType)variable.Value;
                 } else
                 {
-                    return LocalisablePrefabType.Stage1;
+                    return LocalisablePrefabType.Type1;
                 }
             }
             set
@@ -1919,6 +1930,17 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             public string Name;
             [Tooltip("The sprite that will be used for this type unless overridden for a particular language.")]
             public LocalisableSprite LocalisableSprite;
+        }
+
+        [Serializable]
+        public class LocalisableTextureEntry
+        {
+            [Tooltip("The type that this sprite represents, either a standard type or a custom one for your own use.")]
+            public LocalisableTextureType LocalisableTextureType;
+            [Tooltip("A unique name that identifies this prefab that you can later use for accessing it.")]
+            public string Name;
+            [Tooltip("The sprite that will be used for this type unless overridden for a particular language.")]
+            public LocalisableTexture LocalisableTexture;
         }
 
         #endregion extra classes for configuration

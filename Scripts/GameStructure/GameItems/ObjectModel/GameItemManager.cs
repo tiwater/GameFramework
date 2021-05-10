@@ -33,6 +33,7 @@ using Random = UnityEngine.Random;
 using GameFramework.GameStructure.Game.ObjectModel;
 using System.Threading.Tasks;
 using GameFramework.Service;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -80,6 +81,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// <param name="number"></param>
         /// <returns>A GameItem or null</returns>
         GameItem BaseGetItem(string giId);
+
+        /// <summary>
+        /// Load addressable resource for the PlayerGameItem
+        /// </summary>
+        /// <param name="pgi"></param>
+        /// <returns></returns>
+        Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi);
     }
 
     /// <summary>
@@ -228,7 +236,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                     Items[i].UnlockWithCoins = true;
                 }
             }
-            await LoadAddressableResourcesAsync();
+            //await LoadAddressableResourcesAsync();
 
             Assert.AreNotEqual(Items.Count, 0, "You need to create 1 or more items in GameItemManager.Load()");
 
@@ -262,7 +270,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
             await LoadAddressableResourcesAsync();
 
-            SetupSelectedItem();
+            //SetupSelectedItem();
 
             // Ensure the first item is always unlocked.
             if (!Items[0].IsUnlocked)
@@ -275,34 +283,50 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         }
 
         /// <summary>
-        /// Load the adressable GameItems
+        /// Load the addressable resources for the PlayerGameItem
         /// </summary>
-        //protected void LoadAddressableResources()
-        //{
-        //    string label = typeof(T).Name;
-        //    if (label == "AddressableGameItem")
-        //    {
-        //        //For AddressableGameItem, use a short label
-        //        label = "AGI";
-        //    }
-        //    //Load the GameItems under the type label
-        //    AddressableResService.GetInstance().LoadResourcesAsync<T>(label, (name, resource) =>
-        //    {
-        //        //Instantia the resource to avoid change the source data
-        //        resource = GameItem.Instantiate(resource);
-        //        string[] names = name.Split('_');
-        //        resource.GiId = names[names.Count() - 1];
-        //        resource.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
-        //        Items.Add(resource);
-        //    });
-        //}
-
-
+        /// <param name="pgi"></param>
+        /// <returns></returns>
+        public virtual async Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi)
+        {
+            if (GetItem(pgi.GiId) == null)
+            {
+                //The GameItem is not loaded yet
+                string label = typeof(T).Name;
+                if (label == "AddressableGameItem")
+                {
+                    //For AddressableGameItem, use a short label
+                    label = "AGI";
+                }
+                //Load it
+                var resource = await AddressableResService.GetInstance().LoadResourceAsync<T>(pgi.GiId, label);
+                resource.Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger, pgi.GiId);
+                Items.Add(resource);
+            }
+            if (pgi.Children != null)
+            {
+                //Load children
+                foreach (var child in pgi.Children)
+                {
+                    await GameManager.Instance.GetIBaseGameItemManager(child.GiType).LoadAddressableResourceFromPlayerGameItem(child);
+                }
+            }
+            if (pgi.CharacterEquipments != null) {
+                //Load equipments
+                foreach (var equipment in pgi.CharacterEquipments)
+                {
+                    var equipItem = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(equipment.GameItemId);
+                    if (equipItem != null) {
+                        await GameManager.Instance.GetIBaseGameItemManager(equipItem.GiType).LoadAddressableResourceFromPlayerGameItem(equipItem);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Load the adressable GameItems
         /// </summary>
-        protected async Task LoadAddressableResourcesAsync()
+        public async Task LoadAddressableResourcesAsync()
         {
             string label = typeof(T).Name;
             if (label == "AddressableGameItem")
@@ -321,6 +345,8 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 newResource.InitialiseNonScriptableObjectValues(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger);
                 Items.Add(newResource);
             }
+
+            SetupSelectedItem();
         }
 
 

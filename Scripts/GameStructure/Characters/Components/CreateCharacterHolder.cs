@@ -1,12 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameFramework.GameStructure;
 using GameFramework.GameStructure.Characters.ObjectModel;
-using GameFramework.GameStructure.GameItems.Components.AbstractClasses;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Util;
 using UnityEngine;
-using static GameFramework.GameStructure.GameItems.ObjectModel.GameItemContext;
 
 namespace GameFramework.GameStructure.Characters
 {

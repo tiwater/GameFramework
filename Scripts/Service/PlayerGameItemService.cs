@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using GameFramework.GameStructure;
 using GameFramework.GameStructure.GameItems.ObjectModel;
-using GameFramework.GameStructure.Model;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Util;
 using GameFramework.Repository;
-using UnityEngine;
-using static GameFramework.GameStructure.Model.GameItemEquipment;
+using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.Service
 {
@@ -37,6 +36,13 @@ namespace GameFramework.Service
         public async Task StoreToken(string token)
         {
             await RepoFactory.PlayerGameItemRepository.StoreToken(token);
+        }
+
+
+        public async Task<PlayerGameItem> GetCurrentPlayerInstance()
+        {
+
+            return await RepoFactory.PlayerGameItemRepository.GetCurrentPlayerInstance();
         }
 
         public async Task<PlayerGameItem> GetPlayerInstance()
@@ -189,7 +195,7 @@ namespace GameFramework.Service
             pgi.Id = MOCK_FISH2_ID;
             //pgi.Position = new Vector3(0, 0 , 0);
             //pgi.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
-            pgi.PrefabType = GameItem.LocalisablePrefabType.Stage1;
+            pgi.PrefabType = GameItem.LocalisablePrefabType.Type1;
             pgi.IsActive = true;
             items.Add(pgi);
 
@@ -221,7 +227,7 @@ namespace GameFramework.Service
             pgi4.Id = MOCK_FISH1_ID;
             //pgi4.Position = new Vector3(0, 1, 0);
             //pgi4.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
-            pgi4.PrefabType = GameItem.LocalisablePrefabType.Stage1;
+            pgi4.PrefabType = GameItem.LocalisablePrefabType.Type1;
             pgi4.IsActive = true;
             items.Add(pgi4);
 
@@ -291,6 +297,11 @@ namespace GameFramework.Service
             //TODO: call the service to persistent child and update the parent-child relationship
             child = await CreatePlayerGameItem(child);
             await RepoFactory.PlayerGameItemRepository.UpdateParentChildRelation(parentId, child.Id, true);
+        }
+
+        public async Task<PlayerGameItem> LoadCurrentScene()
+        {
+            return await RepoFactory.PlayerGameItemRepository.LoadCurrentScene();
         }
     }
 }

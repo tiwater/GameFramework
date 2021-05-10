@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
-using GameFramework.GameStructure.Game.ObjectModel;
-using static GameFramework.GameStructure.Model.GameItemEquipment;
+using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.Model
 {
     public class AddressableGameItemMeta : GameItemMeta
     {
-        public enum ContentType { All, Entity, Wearables, Weapon, Accessories, Scene, Level, World }
+        public enum ContentType { All, Entity, Wearables, Weapon, Accessories, Skin, Scene, Level, World }
 
         /// <summary>
         /// Id of the GameItem

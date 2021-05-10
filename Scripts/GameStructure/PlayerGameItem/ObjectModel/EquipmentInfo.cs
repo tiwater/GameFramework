@@ -1,8 +1,8 @@
 ﻿using System;
 using GameFramework.GameStructure.GameItems.ObjectModel;
-using static GameFramework.GameStructure.Model.GameItemEquipment;
+using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
-namespace GameFramework.GameStructure.Model
+namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 {
     /// <summary>
     /// The equipment meta info

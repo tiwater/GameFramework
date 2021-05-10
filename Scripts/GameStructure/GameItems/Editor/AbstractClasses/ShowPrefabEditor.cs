@@ -33,7 +33,6 @@ namespace GameFramework.GameStructure.GameItems.Editor.AbstractClasses
         SerializedProperty _parentProperty;
         SerializedProperty _worldPositionStaysProperty;
         SerializedProperty _gameObjectToGameObjectAnimationProperty;
-        SerializedProperty _offset;
 
         public void OnEnable()
         {
@@ -43,7 +42,6 @@ namespace GameFramework.GameStructure.GameItems.Editor.AbstractClasses
             _parentProperty = serializedObject.FindProperty("_parent");
             _worldPositionStaysProperty = serializedObject.FindProperty("_worldPositionStays");
             _gameObjectToGameObjectAnimationProperty = serializedObject.FindProperty("GameObjectToGameObjectAnimation");
-            _offset = serializedObject.FindProperty("_offset");
         }
 
         public override void OnInspectorGUI()
@@ -56,7 +54,6 @@ namespace GameFramework.GameStructure.GameItems.Editor.AbstractClasses
                 EditorGUILayout.PropertyField(_nameProperty);
             EditorGUILayout.PropertyField(_parentProperty);
             EditorGUILayout.PropertyField(_worldPositionStaysProperty);
-            EditorGUILayout.PropertyField(_offset);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(new GUIContent("Animation", "Animate gameobject changes."), EditorStyles.boldLabel);

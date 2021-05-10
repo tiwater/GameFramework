@@ -74,5 +74,16 @@ namespace GameFramework.GameStructure.Levels.ObjectModel
                 return starsTotalCount;
             }
         }
+
+        /// <summary>
+        /// Set the scene root PlayerGameItem as the selected level
+        /// </summary>
+        public void SelectSceneRoot()
+        {
+
+            //Set the selected level (scene)
+            Selected = GetItem(GameManager.Instance.SceneRootNode.GiId);
+            Selected.PlayerGameItem = GameManager.Instance.SceneRootNode;
+        }
     }
 }

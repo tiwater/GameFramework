@@ -40,9 +40,11 @@ namespace GameFramework.GameStructure.GameItems.Editor
         SerializedProperty _giValueToUnlockProperty;
         SerializedProperty _giLocalisablePrefabsProperty;
         SerializedProperty _giLocalisableSpritesProperty;
+        SerializedProperty _giLocalisableTexturesProperty;
         SerializedProperty _giVariablesProperty;
         SerializedProperty _giPackageProperty;
 
+        SerializedProperty _giIndex;
         SerializedProperty _giConsumable;
         SerializedProperty _giDistinguishInstance;
 
@@ -61,10 +63,12 @@ namespace GameFramework.GameStructure.GameItems.Editor
             _giValueToUnlockProperty = serializedObject.FindProperty("_valueToUnlock");
             _giLocalisablePrefabsProperty = serializedObject.FindProperty("_localisablePrefabs");
             _giLocalisableSpritesProperty = serializedObject.FindProperty("_localisableSprites");
+            _giLocalisableTexturesProperty = serializedObject.FindProperty("_localisableTextures");
             _giVariablesProperty = serializedObject.FindProperty("_variables");
             _giPackageProperty = serializedObject.FindProperty("_package");
             _giConsumable = serializedObject.FindProperty("Consumable");
             _giDistinguishInstance = serializedObject.FindProperty("DistinguishInstance");
+            _giIndex = serializedObject.FindProperty("_index");
         }
 
         public override void OnInspectorGUI()
@@ -113,6 +117,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
             EditorGUILayout.PropertyField(_giNameProperty, new GUIContent("Name"));
             EditorGUILayout.PropertyField(_giDescriptionProperty, new GUIContent("Description"));
             EditorGUILayout.PropertyField(_giPackageProperty, new GUIContent("Package"));
+            EditorGUILayout.PropertyField(_giIndex, new GUIContent("Index"));
             EditorGUILayout.PropertyField(_giConsumable, new GUIContent("Consumable"));
             EditorGUILayout.PropertyField(_giDistinguishInstance, new GUIContent("Distinguish Instance"));
             EditorGUILayout.PropertyField(_startUnlockedProperty);
@@ -302,6 +307,90 @@ namespace GameFramework.GameStructure.GameItems.Editor
             propSprite.objectReferenceValue = sprite;
             var propLocalisedSprite = newElement.FindPropertyRelative("LocalisableSprite._localisedObjects");
             propLocalisedSprite.arraySize = 0;
+        }
+
+
+
+        protected void DrawTextures()
+        {
+            EditorGUILayout.BeginVertical("Box");
+            EditorGUILayout.LabelField(new GUIContent("Textures", "Here you can add textures for use with standard features such as selection screens or for your own custom needs"), EditorStyles.boldLabel);
+
+            _prefabDropRect = DrawDropRect("Drag a Texture here to create a new entry");
+
+            if (_giLocalisableTexturesProperty.arraySize > 0)
+            {
+                for (var i = 0; i < _giLocalisableTexturesProperty.arraySize; i++)
+                {
+                    var arrayProperty = _giLocalisableTexturesProperty.GetArrayElementAtIndex(i);
+                    var nameProperty = arrayProperty.FindPropertyRelative("Name");
+                    var typeProperty = arrayProperty.FindPropertyRelative("LocalisableTextureType");
+
+                    var deleted = false;
+                    // indent
+                    EditorGUILayout.BeginHorizontal(GuiStyles.BoxLightStyle);
+                    GUILayout.Space(15f);
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.BeginHorizontal();
+                    var title = typeProperty.enumValueIndex == 0
+                        ? (string.IsNullOrEmpty(nameProperty.stringValue) ? "<missing name>" : nameProperty.stringValue)
+                        : typeProperty.enumDisplayNames[typeProperty.enumValueIndex];
+                    arrayProperty.isExpanded = EditorGUILayout.Foldout(arrayProperty.isExpanded, title);
+                    if (GUILayout.Button("X", GuiStyles.BorderlessButtonStyle, GUILayout.Width(12), GUILayout.Height(12)) &&
+                        EditorUtility.DisplayDialog("Remove Entry?", "Are you sure you want to remove this entry?", "Yes",
+                            "No"))
+                    {
+                        _giLocalisableTexturesProperty.DeleteArrayElementAtIndex(i);
+                        deleted = true;
+                    }
+                    EditorGUILayout.EndHorizontal();
+
+                    if (!deleted && arrayProperty.isExpanded)
+                    {
+                        var defaultTextureProperty = arrayProperty.FindPropertyRelative("LocalisableTexture");
+
+                        EditorGUILayout.PropertyField(typeProperty, new GUIContent("Type", typeProperty.tooltip));
+
+                        if (typeProperty.enumValueIndex == (int)GameItem.LocalisableTextureType.Custom)
+                        {
+                            EditorGUILayout.PropertyField(nameProperty, new GUIContent("Name", nameProperty.tooltip));
+                        }
+
+                        EditorGUILayout.PropertyField(defaultTextureProperty, new GUIContent("Texture", defaultTextureProperty.tooltip));
+                    }
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndHorizontal();
+
+                    GUILayout.Space(2f);
+                }
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(new GUIContent("Add Texture Entry"), GUILayout.ExpandWidth(false)))
+            {
+                AddNewTexture();
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(2f);
+            EditorGUILayout.EndVertical();
+        }
+
+        void AddNewTexture(GameObject prefab = null)
+        {
+            _giLocalisableTexturesProperty.arraySize++;
+            var newElement =
+                _giLocalisableTexturesProperty.GetArrayElementAtIndex(_giLocalisableTexturesProperty.arraySize - 1);
+            newElement.isExpanded = true;
+            var propType = newElement.FindPropertyRelative("LocalisableTextureType");
+            propType.enumValueIndex = 0;
+            var propName = newElement.FindPropertyRelative("Name");
+            propName.stringValue = null;
+            var propPrefab = newElement.FindPropertyRelative("LocalisableTexture._default");
+            propPrefab.objectReferenceValue = prefab;
+            var propLocalisedPrefabs = newElement.FindPropertyRelative("LocalisableTexture._localisedObjects");
+            propLocalisedPrefabs.arraySize = 0;
         }
 
 

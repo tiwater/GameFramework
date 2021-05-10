@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
-using static GameFramework.GameStructure.Model.GameItemEquipment;
 using GameFramework.GameStructure.Model;
 using GameFramework.GameStructure.Characters.ObjectModel;
 using static GameFramework.Service.AddressableResService;
 using GameFramework.Service;
+using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
 {

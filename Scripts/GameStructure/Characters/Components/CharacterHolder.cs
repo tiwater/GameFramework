@@ -8,6 +8,7 @@ using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItemContext;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.Model;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.Characters
 {

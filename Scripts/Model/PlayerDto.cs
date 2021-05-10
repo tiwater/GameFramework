@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameFramework.GameStructure.GameItems.ObjectModel;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Variables.ObjectModel;
 using UnityEngine;
 

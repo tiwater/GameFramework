@@ -56,7 +56,7 @@ namespace GameFramework.GameStructure.Game.Editor
         SerializedProperty _identifierBaseProperty;
 
         SerializedProperty _variablesProperty;
-
+        SerializedProperty _isHandleGameItemInTreeProperty;
         SerializedProperty _allowOfflineProperty;
         SerializedProperty _allowOfflineBootProperty;
 
@@ -104,6 +104,7 @@ namespace GameFramework.GameStructure.Game.Editor
 
             _variablesProperty = serializedObject.FindProperty("Variables");
 
+            _isHandleGameItemInTreeProperty = serializedObject.FindProperty("IsHandleGameItemInTree");
             _allowOfflineProperty = serializedObject.FindProperty("AllowOffline");
             _allowOfflineBootProperty = serializedObject.FindProperty("AllowOfflineBoot");
 
@@ -256,139 +257,145 @@ namespace GameFramework.GameStructure.Game.Editor
                 EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Players. Let us know if you need this functionality...", MessageType.Info);
             EditorGUILayout.EndVertical();
 
-            // Worlds setup
-            EditorGUILayout.BeginVertical("Box");
-            EditorGUILayout.PropertyField(_worldSetupModeProperty, new GUIContent("World Setup"));
-            if (_worldSetupModeProperty.enumValueIndex != 0) {
-                // correct deprecated values - update setup mode and always set autocreate to false
-                _autoCreateWorldsProperty.boolValue = false;
+            EditorGUILayout.PropertyField(_isHandleGameItemInTreeProperty, new GUIContent("Is handle GameItems in a tree"));
 
-                if (_worldSetupModeProperty.enumValueIndex == 1)
-                {
-                    EditorGUILayout.PropertyField(_numberOfAutoCreatedWorldsProperty, new GUIContent("Count"));
-                    EditorGUILayout.PropertyField(_worldUnlockModeProperty, new GUIContent("Unlock Mode"));
-                    if (_gameManager.WorldUnlockMode == GameItem.UnlockModeType.Coins)
-                        EditorGUILayout.PropertyField(_coinsToUnlockWorldsProperty);
-                }
-                else if (_worldSetupModeProperty.enumValueIndex == 2)
-                {
-                    EditorGUILayout.PropertyField(_numberOfAutoCreatedWorldsProperty, new GUIContent("Count"));
-                }
-                else if (_worldSetupModeProperty.enumValueIndex == 3)
-                    EditorGUILayout.HelpBox("Specified mode is not currently implemented for Worlds. Let us know if you need this functionality...", MessageType.Info);
-                else if (_worldSetupModeProperty.enumValueIndex == 4)
-                    EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Worlds. Let us know if you need this functionality...", MessageType.Info);
-
-                // per world level setup
+            if (!_isHandleGameItemInTreeProperty.boolValue)
+            {
+                // Worlds setup
                 EditorGUILayout.BeginVertical("Box");
-                EditorGUILayout.PropertyField(_levelSetupModeProperty, new GUIContent("Level Setup"));
-                if (_levelSetupModeProperty.enumValueIndex != 0)
+                EditorGUILayout.PropertyField(_worldSetupModeProperty, new GUIContent("World Setup"));
+                if (_worldSetupModeProperty.enumValueIndex != 0)
                 {
                     // correct deprecated values - update setup mode and always set autocreate to false
-                    //_autoCreateLevelsProperty.boolValue = false;
+                    _autoCreateWorldsProperty.boolValue = false;
 
-                    if (_levelSetupModeProperty.enumValueIndex == 1)
+                    if (_worldSetupModeProperty.enumValueIndex == 1)
                     {
-                        EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
-                        EditorGUILayout.PropertyField(_levelUnlockModeProperty, new GUIContent("Unlock Mode"));
-                        if (_levelUnlockModeProperty.enumValueIndex == 2)
-                            EditorGUILayout.PropertyField(_coinsToUnlockLevelsProperty);
+                        EditorGUILayout.PropertyField(_numberOfAutoCreatedWorldsProperty, new GUIContent("Count"));
+                        EditorGUILayout.PropertyField(_worldUnlockModeProperty, new GUIContent("Unlock Mode"));
+                        if (_gameManager.WorldUnlockMode == GameItem.UnlockModeType.Coins)
+                            EditorGUILayout.PropertyField(_coinsToUnlockWorldsProperty);
                     }
-                    else if (_levelSetupModeProperty.enumValueIndex == 2)
+                    else if (_worldSetupModeProperty.enumValueIndex == 2)
                     {
-                        EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                        EditorGUILayout.PropertyField(_numberOfAutoCreatedWorldsProperty, new GUIContent("Count"));
                     }
-                    else if (_levelSetupModeProperty.enumValueIndex == 3)
-                        EditorGUILayout.HelpBox("Specified mode is not currently implemented for World Levels. Let us know if you need this functionality...", MessageType.Info);
-                    else if (_levelSetupModeProperty.enumValueIndex == 4)
-                        EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for World Levels. Let us know if you need this functionality...", MessageType.Info);
+                    else if (_worldSetupModeProperty.enumValueIndex == 3)
+                        EditorGUILayout.HelpBox("Specified mode is not currently implemented for Worlds. Let us know if you need this functionality...", MessageType.Info);
+                    else if (_worldSetupModeProperty.enumValueIndex == 4)
+                        EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Worlds. Let us know if you need this functionality...", MessageType.Info);
 
-                    // level number ranges
-                    if (_levelSetupModeProperty.enumValueIndex == 1 || _levelSetupModeProperty.enumValueIndex == 2)
+                    // per world level setup
+                    EditorGUILayout.BeginVertical("Box");
+                    EditorGUILayout.PropertyField(_levelSetupModeProperty, new GUIContent("Level Setup"));
+                    if (_levelSetupModeProperty.enumValueIndex != 0)
                     {
-                        EditorGUILayout.LabelField("Level Number Ranges", EditorStyles.boldLabel);
-                        for (var i = 0; i < _worldLevelNumbersProperty.arraySize; i++)
+                        // correct deprecated values - update setup mode and always set autocreate to false
+                        //_autoCreateLevelsProperty.boolValue = false;
+
+                        if (_levelSetupModeProperty.enumValueIndex == 1)
                         {
-                            EditorGUILayout.PropertyField(_worldLevelNumbersProperty.GetArrayElementAtIndex(i),
-                                new GUIContent("World " + i), true);
+                            EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                            EditorGUILayout.PropertyField(_levelUnlockModeProperty, new GUIContent("Unlock Mode"));
+                            if (_levelUnlockModeProperty.enumValueIndex == 2)
+                                EditorGUILayout.PropertyField(_coinsToUnlockLevelsProperty);
                         }
-                        bool overlap = false;
-                        for (var i = 0; i < _gameManager.WorldLevelNumbers.Length - 1; i++)
+                        else if (_levelSetupModeProperty.enumValueIndex == 2)
                         {
-                            for (var j = i + 1; j < _gameManager.WorldLevelNumbers.Length; j++)
+                            EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                        }
+                        else if (_levelSetupModeProperty.enumValueIndex == 3)
+                            EditorGUILayout.HelpBox("Specified mode is not currently implemented for World Levels. Let us know if you need this functionality...", MessageType.Info);
+                        else if (_levelSetupModeProperty.enumValueIndex == 4)
+                            EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for World Levels. Let us know if you need this functionality...", MessageType.Info);
+
+                        // level number ranges
+                        if (_levelSetupModeProperty.enumValueIndex == 1 || _levelSetupModeProperty.enumValueIndex == 2)
+                        {
+                            EditorGUILayout.LabelField("Level Number Ranges", EditorStyles.boldLabel);
+                            for (var i = 0; i < _worldLevelNumbersProperty.arraySize; i++)
                             {
-                                if (_gameManager.WorldLevelNumbers[i].Overlaps(_gameManager.WorldLevelNumbers[j]))
-                                    overlap = true;
+                                EditorGUILayout.PropertyField(_worldLevelNumbersProperty.GetArrayElementAtIndex(i),
+                                    new GUIContent("World " + i), true);
                             }
+                            bool overlap = false;
+                            for (var i = 0; i < _gameManager.WorldLevelNumbers.Length - 1; i++)
+                            {
+                                for (var j = i + 1; j < _gameManager.WorldLevelNumbers.Length; j++)
+                                {
+                                    if (_gameManager.WorldLevelNumbers[i].Overlaps(_gameManager.WorldLevelNumbers[j]))
+                                        overlap = true;
+                                }
+                            }
+                            if (overlap) EditorGUILayout.HelpBox("Level ranges should not overlap!", MessageType.Error);
                         }
-                        if (overlap) EditorGUILayout.HelpBox("Level ranges should not overlap!", MessageType.Error);
                     }
+                    EditorGUILayout.EndVertical();
                 }
                 EditorGUILayout.EndVertical();
-            }
-            EditorGUILayout.EndVertical();
 
-            // Standalone level setup
-            if (_worldSetupModeProperty.enumValueIndex == 0)
-            {
+                // Standalone level setup
+                if (_worldSetupModeProperty.enumValueIndex == 0)
+                {
+                    EditorGUILayout.BeginVertical("Box");
+
+                    EditorGUILayout.PropertyField(_levelSetupModeProperty, new GUIContent("Level Setup"));
+                    if (_levelSetupModeProperty.enumValueIndex != 0)
+                    {
+                        // correct deprecated values - update setup mode and always set autocreate to false
+                        _autoCreateLevelsProperty.boolValue = false;
+
+                        if (_levelSetupModeProperty.enumValueIndex == 1)
+                        {
+                            EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                            EditorGUILayout.PropertyField(_levelUnlockModeProperty, new GUIContent("Unlock Mode"));
+                            if (_levelUnlockModeProperty.enumValueIndex == 2)
+                                EditorGUILayout.PropertyField(_coinsToUnlockLevelsProperty);
+                        }
+                        else if (_levelSetupModeProperty.enumValueIndex == 2)
+                        {
+                            EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                        }
+                        else if (_levelSetupModeProperty.enumValueIndex == 3)
+                            EditorGUILayout.HelpBox("Specified mode is not currently implemented for Levels. Let us know if you need this functionality...", MessageType.Info);
+                        else if (_levelSetupModeProperty.enumValueIndex == 4)
+                        {
+                            EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                            EditorGUILayout.PropertyField(_levelMasterProperty, new GUIContent("Master"));
+                            EditorGUI.indentLevel += 1;
+                            _numberedLevelReferencesList.DoLayoutList();
+                            EditorGUI.indentLevel -= 1;
+                        }
+                    }
+                    EditorGUILayout.EndVertical();
+                }
+
+                // Standalone character setup
                 EditorGUILayout.BeginVertical("Box");
-
-                EditorGUILayout.PropertyField(_levelSetupModeProperty, new GUIContent("Level Setup"));
-                if (_levelSetupModeProperty.enumValueIndex != 0)
+                EditorGUILayout.PropertyField(_characterSetupModeProperty, new GUIContent("Character Setup"));
+                if (_characterSetupModeProperty.enumValueIndex != 0)
                 {
                     // correct deprecated values - update setup mode and always set autocreate to false
-                    _autoCreateLevelsProperty.boolValue = false;
+                    _autoCreateCharactersProperty.boolValue = false;
 
-                    if (_levelSetupModeProperty.enumValueIndex == 1)
+                    if (_characterSetupModeProperty.enumValueIndex == 1)
                     {
-                        EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
-                        EditorGUILayout.PropertyField(_levelUnlockModeProperty, new GUIContent("Unlock Mode"));
-                        if (_levelUnlockModeProperty.enumValueIndex == 2)
-                            EditorGUILayout.PropertyField(_coinsToUnlockLevelsProperty);
+                        EditorGUILayout.PropertyField(_numberOfAutoCreatedCharactersProperty, new GUIContent("Count"));
+                        EditorGUILayout.PropertyField(_characterUnlockModeProperty, new GUIContent("Unlock Mode"));
+                        if (_characterUnlockModeProperty.enumValueIndex == 2)
+                            EditorGUILayout.PropertyField(_coinsToUnlockCharactersProperty);
                     }
-                    else if (_levelSetupModeProperty.enumValueIndex == 2)
+                    else if (_characterSetupModeProperty.enumValueIndex == 2)
                     {
-                        EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
+                        EditorGUILayout.PropertyField(_numberOfAutoCreatedCharactersProperty, new GUIContent("Count"));
                     }
-                    else if (_levelSetupModeProperty.enumValueIndex == 3)
-                        EditorGUILayout.HelpBox("Specified mode is not currently implemented for Levels. Let us know if you need this functionality...", MessageType.Info);
-                    else if (_levelSetupModeProperty.enumValueIndex == 4)
-                    {
-                        EditorGUILayout.PropertyField(_numberOfAutoCreatedLevelsProperty, new GUIContent("Count"));
-                        EditorGUILayout.PropertyField(_levelMasterProperty, new GUIContent("Master"));
-                        EditorGUI.indentLevel += 1;
-                        _numberedLevelReferencesList.DoLayoutList();
-                        EditorGUI.indentLevel -= 1;
-                    }
+                    else if (_characterSetupModeProperty.enumValueIndex == 3)
+                        EditorGUILayout.HelpBox("Specified mode is not currently implemented for Characters. Let us know if you need this functionality...", MessageType.Info);
+                    else if (_characterSetupModeProperty.enumValueIndex == 4)
+                        EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Characters. Let us know if you need this functionality...", MessageType.Info);
                 }
                 EditorGUILayout.EndVertical();
             }
-
-            // Standalone character setup
-            EditorGUILayout.BeginVertical("Box");
-            EditorGUILayout.PropertyField(_characterSetupModeProperty, new GUIContent("Character Setup"));
-            if (_characterSetupModeProperty.enumValueIndex != 0)
-            {
-                // correct deprecated values - update setup mode and always set autocreate to false
-                _autoCreateCharactersProperty.boolValue = false;
-
-                if (_characterSetupModeProperty.enumValueIndex == 1)
-                {
-                    EditorGUILayout.PropertyField(_numberOfAutoCreatedCharactersProperty, new GUIContent("Count"));
-                    EditorGUILayout.PropertyField(_characterUnlockModeProperty, new GUIContent("Unlock Mode"));
-                    if (_characterUnlockModeProperty.enumValueIndex == 2)
-                        EditorGUILayout.PropertyField(_coinsToUnlockCharactersProperty);
-                }
-                else if (_characterSetupModeProperty.enumValueIndex == 2)
-                {
-                    EditorGUILayout.PropertyField(_numberOfAutoCreatedCharactersProperty, new GUIContent("Count"));
-                }
-                else if (_characterSetupModeProperty.enumValueIndex == 3)
-                    EditorGUILayout.HelpBox("Specified mode is not currently implemented for Characters. Let us know if you need this functionality...", MessageType.Info);
-                else if (_characterSetupModeProperty.enumValueIndex == 4)
-                    EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Characters. Let us know if you need this functionality...", MessageType.Info);
-            }
-            EditorGUILayout.EndVertical();
         }
 
 

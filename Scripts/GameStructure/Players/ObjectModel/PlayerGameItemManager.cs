@@ -54,7 +54,7 @@ namespace GameFramework.GameStructure.Players.ObjectModel
             //Load default play schema from local
             await Load(0, 0);
 
-            var player = await PlayerGameItemService.Instance.GetPlayerInstance();
+            var player = await PlayerGameItemService.Instance.GetCurrentPlayerInstance();
 
             if (player == null)
             {

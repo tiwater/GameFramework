@@ -4,9 +4,11 @@ using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 using System.Collections.Generic;
 using System;
 using UnityEngine.Events;
+using GameFramework.GameStructure.GameItems.Components;
 
 namespace GameFramework.Display.Placement.Components
 {
+
     /// <summary>
     /// Maintain a fixed distance from the specified transform
     /// </summary>
@@ -31,18 +33,20 @@ namespace GameFramework.Display.Placement.Components
         [Tooltip("The distance to target that gameobject stop move.")]
         public float StopDistance = 0.15f;
 
-        [Tooltip("The axis of the forward direction of gameobject.")]
-        public AxisDirection ForwardDirection;
-
         [Tooltip("The rotation angel around the forwardDirection.")]
-        public float angel = 0;
+        public float Angel = 0;
 
         [Tooltip("The turn speed for gameobject.")]
-        public float turnSpeed = 5;
+        public float TurnSpeed = 5;
 
         public UnityEvent OnArrivedTarget = new UnityEvent();
 
         private Rigidbody rigidbody;
+
+        //Default direction
+        private AxisDirection forwardDirection = AxisDirection.Z;
+
+        private bool isPrefabLoaded = false;
 
         private void Awake()
         {
@@ -73,22 +77,33 @@ namespace GameFramework.Display.Placement.Components
 
         private void UpdatePosition()
         {
-
-            Vector3 targetVector = Target - transform.position;
-            if (targetVector.sqrMagnitude > StopDistance * 1.2 && !isMoving)
+            if (transform.childCount > 0)
             {
-                isMoving = true;
-            }
-            else if (isMoving && targetVector.sqrMagnitude < StopDistance * 0.8)
-            {
-                isMoving = false;
-                //Notify the listeners
-                OnArrivedTarget.Invoke();
-            }
-            if (isMoving)
-            {
-                Move(targetVector);
-                LookAt(targetVector, angel);
+                if (!isPrefabLoaded)
+                {
+                    isPrefabLoaded = true;
+                    PositionModifier pm = GetComponentInChildren<PositionModifier>();
+                    if (pm != null)
+                    {
+                        forwardDirection = pm.ForwardDirection;
+                    }
+                }
+                Vector3 targetVector = Target - transform.position;
+                if (targetVector.sqrMagnitude > StopDistance * 1.2 && !isMoving)
+                {
+                    isMoving = true;
+                }
+                else if (isMoving && targetVector.sqrMagnitude < StopDistance * 0.8)
+                {
+                    isMoving = false;
+                    //Notify the listeners
+                    OnArrivedTarget.Invoke();
+                }
+                if (isMoving)
+                {
+                    Move(targetVector);
+                    LookAt(targetVector, Angel);
+                }
             }
         }
 
@@ -123,7 +138,7 @@ namespace GameFramework.Display.Placement.Components
             Vector3 up = Vector3.up;
             Vector3 right = Vector3.right;
 
-            if (ForwardDirection == AxisDirection.NegativeX)
+            if (forwardDirection == AxisDirection.NegativeX)
             {
                 //Forward (Z)
                 if (target.x == 0 && target.z == 0)
@@ -145,7 +160,7 @@ namespace GameFramework.Display.Placement.Components
                 }
                 
             }
-            else if (ForwardDirection == AxisDirection.X)
+            else if (forwardDirection == AxisDirection.X)
             {
                 //Forward (Z)
                 if (target.x == 0 && target.z == 0)
@@ -166,7 +181,7 @@ namespace GameFramework.Display.Placement.Components
                     up = rq * up;
                 }
             }
-            else if (ForwardDirection == AxisDirection.NegativeZ)
+            else if (forwardDirection == AxisDirection.NegativeZ)
             {
                 //Forward (Z)
                 forward = -target;
@@ -178,7 +193,7 @@ namespace GameFramework.Display.Placement.Components
                 else
                 {
                     right = Vector3.Cross(up, forward);
-                    up = Vector3.Cross(right, forward);
+                    up = Vector3.Cross(forward, right);
                 }
                 //Roate
                 if (rotateAngel != 0)
@@ -187,7 +202,7 @@ namespace GameFramework.Display.Placement.Components
                     up = rq * up;
                 }
             }
-            else if (ForwardDirection == AxisDirection.Z)
+            else if (forwardDirection == AxisDirection.Z)
             {
                 //Forward (Z)
                 forward = target;
@@ -199,7 +214,7 @@ namespace GameFramework.Display.Placement.Components
                 else
                 {
                     right = Vector3.Cross(up, forward);
-                    up = Vector3.Cross(right, forward);
+                    up = Vector3.Cross(forward, right);
                 }
                 //Roate
                 if (rotateAngel != 0)
@@ -216,7 +231,7 @@ namespace GameFramework.Display.Placement.Components
                 //Constant turn speed
                 //float t = rotateSpeed / gap * Time.deltaTime;
                 //Rotate faster in the beginning
-                float t = turnSpeed * Time.deltaTime;
+                float t = TurnSpeed * Time.deltaTime;
                 newRotation = Quaternion.Lerp(transform.rotation, newRotation, t);
             }
             if (rigidbody == null)

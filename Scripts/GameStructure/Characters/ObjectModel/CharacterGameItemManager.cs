@@ -21,6 +21,8 @@
 
 using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Characters.Messages;
+using System.Threading.Tasks;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.Characters.ObjectModel
 {
@@ -38,6 +40,22 @@ namespace GameFramework.GameStructure.Characters.ObjectModel
         public override void OnSelectedChanged(Character newSelection, Character oldSelection)
         {
                 GameManager.SafeQueueMessage(new CharacterChangedMessage(newSelection, oldSelection));
+        }
+
+        /// <summary>
+        /// Load the addressable resources for the PlayerGameItem
+        /// </summary>
+        /// <param name="pgi"></param>
+        /// <returns></returns>
+        public override async Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi)
+        {
+            await base.LoadAddressableResourceFromPlayerGameItem(pgi);
+            //TODO: mark the selected Character
+            if (pgi.IsActive)
+            {
+                Selected = GetItem(pgi.GiId);
+                Selected.PlayerGameItem = pgi;
+            }
         }
     }
 }

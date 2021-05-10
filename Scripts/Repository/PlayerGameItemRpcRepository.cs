@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameFramework.GameStructure;
+using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.Repository
 {
@@ -11,7 +13,20 @@ namespace GameFramework.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<PlayerGameItem> GetCurrentPlayerInstance()
+        {
+            //TODO: Get from RPC
+            PlayerGameItem player = new PlayerGameItem();
+            player.Id = GameManager.Instance.UserId;
+            return player;
+        }
+
         public Task<PlayerGameItem> GetPlayerGameItem(string itemId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PlayerGameItem> LoadCurrentScene()
         {
             throw new NotImplementedException();
         }

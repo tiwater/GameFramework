@@ -5,8 +5,8 @@ namespace GameFramework.Repository
 {
     public class RepoFactory
     {
-        private enum RepoMode { Pref, Rpc };
-        private RepoMode repoMode = RepoMode.Pref;
+        private enum RepoMode { Pref, Rpc, Mock };
+        private RepoMode repoMode = RepoMode.Mock;
 
         public static IPlayerGameItemRepository PlayerGameItemRepository
         {
@@ -31,16 +31,25 @@ namespace GameFramework.Repository
                 if (repoMode == RepoMode.Pref)
                 {
                     //Prefs repositories
-                    if(type == typeof(IPlayerGameItemRepository))
+                    if (type == typeof(IPlayerGameItemRepository))
                     {
                         repository = new PlayerGameItemPrefRepository();
                     }
-                } else if(repoMode == RepoMode.Rpc)
+                }
+                else if (repoMode == RepoMode.Rpc)
                 {
                     //Rpc repositories
                     if (type == typeof(IPlayerGameItemRepository))
                     {
                         repository = new PlayerGameItemRpcRepository();
+                    }
+                }
+                else if (repoMode == RepoMode.Mock)
+                {
+                    //Rpc repositories
+                    if (type == typeof(IPlayerGameItemRepository))
+                    {
+                        repository = new PlayerGameItemMockRepository();
                     }
                 }
                 if (repository != null)

@@ -23,6 +23,7 @@ using GameFramework.GameStructure.GameItems.Editor;
 using UnityEditor;
 using UnityEngine;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
+using static GameFramework.GameStructure.Model.AddressableGameItemMeta;
 
 namespace GameFramework.GameStructure.AddressableGameItems.Editor
 {
@@ -70,8 +71,15 @@ namespace GameFramework.GameStructure.AddressableGameItems.Editor
         protected new void DrawProperties()
         {
             DrawBasicProperties();
-            //DrawPrefabs();
+            if (_giContentTypeProperty.enumValueIndex != (int)ContentType.Skin)
+            {
+                DrawPrefabs();
+            }
             DrawSprites();
+            if (_giContentTypeProperty.enumValueIndex == (int)ContentType.Skin)
+            {
+                DrawTextures();
+            }
             DrawVariables();
         }
     }

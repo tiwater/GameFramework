@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameFramework.GameStructure.Model
+namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 {
     /// <summary>
     /// Keep the equipment status
