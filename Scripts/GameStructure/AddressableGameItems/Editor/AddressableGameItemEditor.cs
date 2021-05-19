@@ -45,7 +45,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.Editor
             _giAddressableNameProperty = serializedObject.FindProperty("AddressableName");
             _giAddressableLabelProperty = serializedObject.FindProperty("AddressableLabel");
             _giThumbnailProperty = serializedObject.FindProperty("ThumbnailUrl");
-            _giSlotsProperty = serializedObject.FindProperty("Slots");
+            _giSlotsProperty = serializedObject.FindProperty("SupportedSlots");
             _giSupportItemProperty = serializedObject.FindProperty("_supportItems");
         }
 
@@ -60,7 +60,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.Editor
             EditorGUILayout.PropertyField(_giAddressableLabelProperty, new GUIContent("Addressable Label"));
             EditorGUILayout.PropertyField(_giContentTypeProperty, new GUIContent("Content Type"));
             EditorGUILayout.PropertyField(_giThumbnailProperty, new GUIContent("Thumbnail URL"));
-            EditorGUILayout.PropertyField(_giSlotsProperty, new GUIContent("Slots"));
+            EditorGUILayout.PropertyField(_giSlotsProperty, new GUIContent("Supported Slots"));
             EditorGUILayout.PropertyField(_giSupportItemProperty, new GUIContent("Supported Item"));
 
             EditorGUILayout.EndVertical();

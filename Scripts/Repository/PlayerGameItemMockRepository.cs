@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using GameFramework.GameStructure;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Util;
+using GameFramework.GameStructure.Variables.ObjectModel;
 using GameFramework.Repository;
+using Newtonsoft.Json;
 using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
@@ -36,12 +38,12 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         scene.PrefabType = LocalisablePrefabType.InGame;
 
         //Generate the seaweeds
-        scene.Children = await GenerateSeaweeds();
+        scene.Children = GenerateSeaweeds();
 
         //Generate character
         PlayerGameItem character = new PlayerGameItem();
         character.GiType = "Character";
-        character.GiId = "Character_BallFish";
+        character.GiId = "Character_Turtle";
         character.Id = "2";
         character.PrefabType = LocalisablePrefabType.Type1;
         character.IsActive = true;
@@ -57,24 +59,58 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         character.IsActive = false;
 
         scene.Children.Add(character);
+
+        //Equipment: stick
+        PlayerGameItem equipment = new PlayerGameItem();
+        equipment.GiType = "AddressableGameItem";
+        equipment.GiId = "AGI_Stick1";
+        equipment.Id = "4";
+        equipment.PrefabType = LocalisablePrefabType.InGame;
+
+        EquipmentItem eInfo = new EquipmentItem();
+        eInfo.EquiptorId = character.Id;
+        eInfo.EquipSlot = GameItemEquipment.Slot.RHand;
+        eInfo.Equipment = equipment;
+
+        character.Equipments.Add(eInfo);
+
+        //Skin
+        PlayerGameItem skin = new PlayerGameItem();
+        skin.GiType = "AddressableGameItem";
+        skin.GiId = "AGI_BallFishSkin1";
+        skin.Id = "5";
+        skin.PrefabType = LocalisablePrefabType.InGame;
+
+        eInfo = new EquipmentItem();
+        eInfo.EquiptorId = character.Id;
+        eInfo.EquipSlot = GameItemEquipment.Slot.Body;
+        eInfo.Equipment = skin;
+
+        character.Equipments.Add(eInfo);
+
+        //Debug.Log(JsonUtility.ToJson(scene));
+        //Debug.Log(JsonConvert.SerializeObject(scene));
         return scene;
     }
 
-    private async Task<List<PlayerGameItem>> GenerateSeaweeds()
+    private List<PlayerGameItem> GenerateSeaweeds()
     {
         List<PlayerGameItem> seaweeds = new List<PlayerGameItem>();
 
-        for(int i = 0; i < 80; i++)
+        for(int i = 0; i < 150; i++)
         {
             PlayerGameItem seaweed = new PlayerGameItem();
             seaweed.GiType = "AddressableGameItem";
             seaweed.GiId = "AGI_Seaweeds";
             seaweed.Id = seaweed.GiId + i;
             seaweed.PrefabType = (i % (LocalisablePrefabType.Type7 - LocalisablePrefabType.Type1 + 1) + LocalisablePrefabType.Type1);
-            seaweed.Props.SetVector3(Constants.PROP_KEY_POSITION, new Vector3(UnityEngine.Random.Range(-60, 60)/10.0f,
-                0, UnityEngine.Random.Range(-50, 100)/10.0f));
+            seaweed.ExtraProps.SetVector3(Constants.PROP_KEY_POSITION, new Vector3(UnityEngine.Random.Range(-80, 80)/10.0f,
+                0, UnityEngine.Random.Range(-70, 120)/10.0f));
+            seaweed.ExtraProps.SetVector3(Constants.PROP_KEY_ROTATION, Quaternion.identity.eulerAngles);
 
             seaweeds.Add(seaweed);
+            //seaweed.Props = Variables.FromJsonMapString(seaweed.Props.ToJsonMapString());
+            //Debug.Log(seaweed.Props.ToJsonMapString());
         }
 
         return seaweeds;

@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835afb55345b4c74c9924e7053d0936d, type: 3}
+  m_Name: Character_Fish1
+  m_EditorClassIdentifier: 
+  _localisableName:
+    _isLocalised: 1
+    _data: C1.Name
+  _localisableDescription:
+    _isLocalised: 0
+    _data: 
+  _startUnlocked: 1
+  _unlockWithCoins: 1
+  _unlockWithPayment: 0
+  _unlockWithCompletion: 0
+  _valueToUnlock: 0
+  _package: 
+  Consumable: 0
+  DistinguishInstance: 0
+  _localisablePrefabs:
+  - LocalisablePrefabType: 5
+    Name: 
+    IsAddressable: 0
+    Label: 
+    LocalisablePrefab:
+      _default: {fileID: 65409273243181232, guid: d5d163b0e0bbb4516a6adb3fa1aa2d54,
+        type: 3}
+      _localisedObjects: []
+  _localisableSprites:
+  - LocalisableSpriteType: 1
+    Name: 
+    LocalisableSprite:
+      _default: {fileID: 21300000, guid: 5ddfc13a15fe9443b9a0720f7516d389, type: 3}
+      _localisedObjects: []
+  _variables:
+    _boolVariables: []
+    _intVariables:
+    - _tag: SelectedPrefabType
+      _name:
+        _isLocalised: 0
+        _data: 
+      _category: 
+      _defaultValue: 5
+      _persistChanges: 0
+      Value: 5
+    _floatVariables:
+    - _tag: speed
+      _name:
+        _isLocalised: 0
+        _data: 
+      _category: 
+      _defaultValue: 10
+      _persistChanges: 1
+      Value: 0
+    _stringVariables: []
+    _Vector2Variables: []
+    _Vector3Variables: []
+    _colorVariables: []
+  _index: 0
+  Equipments: []

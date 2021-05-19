@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Tiwater {
+namespace Creation {
 
   /// <summary>Holder for reflection information generated from creation.proto</summary>
   public static partial class CreationReflection {
@@ -24,195 +24,38 @@ namespace Tiwater {
     static CreationReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5jcmVhdGlvbi5wcm90bxIHdGl3YXRlchobZ29vZ2xlL3Byb3RvYnVmL2Vt",
-            "cHR5LnByb3RvIiUKFUNyZWF0aW9uc0xpc3RSZXNwb25zZRIMCgRsaXN0GAEg",
-            "AygJIiAKEkdldENyZWF0aW9uUmVxdWVzdBIKCgJpZBgBIAEoCSI3ChBDcmVh",
-            "dGlvblJlc3BvbnNlEiMKCGNyZWF0aW9uGAEgASgLMhEudGl3YXRlci5DcmVh",
-            "dGlvbiI8ChVVcGRhdGVDcmVhdGlvblJlcXVlc3QSIwoIY3JlYXRpb24YASAB",
-            "KAsyES50aXdhdGVyLkNyZWF0aW9uIrUBCghDcmVhdGlvbhIQCghjYXRlZ29y",
-            "eRgBIAEoCRInCglyZXNvdXJjZXMYAiADKAsyFC50aXdhdGVyLkNyZWF0aW9u",
-            "UmVzEhAKCGNoaWxkcmVuGAMgAygJEg4KBmhlYWx0aBgEIAEoBRIMCgRtb29k",
-            "GAUgASgJEg4KBmh1bmdyeRgGIAEoBRILCgNhZ2UYByABKAUSDAoEcmFuaxgI",
-            "IAEoBRITCgthY2hpZXZlbWVudBgJIAEoCSIoCgtDcmVhdGlvblJlcxIMCgRu",
-            "YW1lGAEgASgJEgsKA3VybBgCIAEoCTJdCg9DcmVhdGlvblNlcnZpY2USSgoQ",
-            "R2V0Q3JlYXRpb25zTGlzdBIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoeLnRp",
-            "d2F0ZXIuQ3JlYXRpb25zTGlzdFJlc3BvbnNlYgZwcm90bzM="));
+            "Cg5jcmVhdGlvbi5wcm90bxIIY3JlYXRpb24iIwoSR2V0Q3JlYXRpb25SZXF1",
+            "ZXN0Eg0KBXRoZW1lGAEgASgJIj0KFVVwZGF0ZUNyZWF0aW9uUmVxdWVzdBIk",
+            "CghjcmVhdGlvbhgBIAEoCzISLmNyZWF0aW9uLkNyZWF0aW9uIn4KDUNyZWF0",
+            "aW9uUHJvcHMSDwoHc2xvdHRlZBgBIAEoCRIOCgZoZWFsdGgYAiABKAUSDAoE",
+            "bW9vZBgDIAEoCRIOCgZodW5ncnkYBCABKAUSCwoDYWdlGAUgASgFEgwKBHJh",
+            "bmsYBiABKAUSEwoLYWNoaWV2ZW1lbnQYByABKAkinAMKCENyZWF0aW9uEhUK",
+            "DW1vZGVsX3ZlcnNpb24YASABKAkSEwoLY3JlYXRpb25faWQYAiABKAkSFQoN",
+            "Y3JlYXRpb25fdHlwZRgDIAEoCRITCgtwcmVmYWJfdHlwZRgEIAEoCRIQCgh0",
+            "ZW1wbGF0ZRgFIAEoCRIMCgRuYW1lGAYgASgJEhMKC2Rlc2NyaXB0aW9uGAcg",
+            "ASgJEhAKCGNhdGVnb3J5GAggASgJEigKCXJlc291cmNlcxgJIAMoCzIVLmNy",
+            "ZWF0aW9uLkNyZWF0aW9uUmVzEg0KBXNsb3RzGAogAygJEiYKBXByb3BzGAsg",
+            "ASgLMhcuY3JlYXRpb24uQ3JlYXRpb25Qcm9wcxI3CgtleHRyYV9wcm9wcxgM",
+            "IAMoCzIiLmNyZWF0aW9uLkNyZWF0aW9uLkV4dHJhUHJvcHNFbnRyeRIkCghj",
+            "aGlsZHJlbhgNIAMoCzISLmNyZWF0aW9uLkNyZWF0aW9uGjEKD0V4dHJhUHJv",
+            "cHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIigKC0Ny",
+            "ZWF0aW9uUmVzEgwKBHR5cGUYASABKAkSCwoDdXJsGAIgASgJMlMKEENyZWF0",
+            "aW9uUHJvdmlkZXISPwoLR2V0Q3JlYXRpb24SHC5jcmVhdGlvbi5HZXRDcmVh",
+            "dGlvblJlcXVlc3QaEi5jcmVhdGlvbi5DcmVhdGlvbmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.CreationsListResponse), global::Tiwater.CreationsListResponse.Parser, new[]{ "List" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.GetCreationRequest), global::Tiwater.GetCreationRequest.Parser, new[]{ "Id" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.CreationResponse), global::Tiwater.CreationResponse.Parser, new[]{ "Creation" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.UpdateCreationRequest), global::Tiwater.UpdateCreationRequest.Parser, new[]{ "Creation" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.Creation), global::Tiwater.Creation.Parser, new[]{ "Category", "Resources", "Children", "Health", "Mood", "Hungry", "Age", "Rank", "Achievement" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Tiwater.CreationRes), global::Tiwater.CreationRes.Parser, new[]{ "Name", "Url" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.GetCreationRequest), global::Creation.GetCreationRequest.Parser, new[]{ "Theme" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.UpdateCreationRequest), global::Creation.UpdateCreationRequest.Parser, new[]{ "Creation" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationProps), global::Creation.CreationProps.Parser, new[]{ "Slotted", "Health", "Mood", "Hungry", "Age", "Rank", "Achievement" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.Creation), global::Creation.Creation.Parser, new[]{ "ModelVersion", "CreationId", "CreationType", "PrefabType", "Template", "Name", "Description", "Category", "Resources", "Slots", "Props", "ExtraProps", "Children" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationRes), global::Creation.CreationRes.Parser, new[]{ "Type", "Url" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class CreationsListResponse : pb::IMessage<CreationsListResponse>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<CreationsListResponse> _parser = new pb::MessageParser<CreationsListResponse>(() => new CreationsListResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CreationsListResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[0]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationsListResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationsListResponse(CreationsListResponse other) : this() {
-      list_ = other.list_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationsListResponse Clone() {
-      return new CreationsListResponse(this);
-    }
-
-    /// <summary>Field number for the "list" field.</summary>
-    public const int ListFieldNumber = 1;
-    private static readonly pb::FieldCodec<string> _repeated_list_codec
-        = pb::FieldCodec.ForString(10);
-    private readonly pbc::RepeatedField<string> list_ = new pbc::RepeatedField<string>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> List {
-      get { return list_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as CreationsListResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CreationsListResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if(!list_.Equals(other.list_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      hash ^= list_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      list_.WriteTo(output, _repeated_list_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      list_.WriteTo(ref output, _repeated_list_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      size += list_.CalculateSize(_repeated_list_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CreationsListResponse other) {
-      if (other == null) {
-        return;
-      }
-      list_.Add(other.list_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            list_.AddEntriesFrom(input, _repeated_list_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            list_.AddEntriesFrom(ref input, _repeated_list_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class GetCreationRequest : pb::IMessage<GetCreationRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -225,7 +68,7 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -242,7 +85,7 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetCreationRequest(GetCreationRequest other) : this() {
-      id_ = other.id_;
+      theme_ = other.theme_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -251,14 +94,14 @@ namespace Tiwater {
       return new GetCreationRequest(this);
     }
 
-    /// <summary>Field number for the "id" field.</summary>
-    public const int IdFieldNumber = 1;
-    private string id_ = "";
+    /// <summary>Field number for the "theme" field.</summary>
+    public const int ThemeFieldNumber = 1;
+    private string theme_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Id {
-      get { return id_; }
+    public string Theme {
+      get { return theme_; }
       set {
-        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        theme_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -275,14 +118,14 @@ namespace Tiwater {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Id != other.Id) return false;
+      if (Theme != other.Theme) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (Theme.Length != 0) hash ^= Theme.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -299,9 +142,9 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Id.Length != 0) {
+      if (Theme.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Id);
+        output.WriteString(Theme);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -312,9 +155,9 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Id.Length != 0) {
+      if (Theme.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Id);
+        output.WriteString(Theme);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -325,8 +168,8 @@ namespace Tiwater {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Id.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      if (Theme.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Theme);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -339,8 +182,8 @@ namespace Tiwater {
       if (other == null) {
         return;
       }
-      if (other.Id.Length != 0) {
-        Id = other.Id;
+      if (other.Theme.Length != 0) {
+        Theme = other.Theme;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -357,7 +200,7 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Id = input.ReadString();
+            Theme = input.ReadString();
             break;
           }
         }
@@ -375,188 +218,7 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Id = input.ReadString();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class CreationResponse : pb::IMessage<CreationResponse>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<CreationResponse> _parser = new pb::MessageParser<CreationResponse>(() => new CreationResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CreationResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationResponse(CreationResponse other) : this() {
-      creation_ = other.creation_ != null ? other.creation_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationResponse Clone() {
-      return new CreationResponse(this);
-    }
-
-    /// <summary>Field number for the "creation" field.</summary>
-    public const int CreationFieldNumber = 1;
-    private global::Tiwater.Creation creation_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tiwater.Creation Creation {
-      get { return creation_; }
-      set {
-        creation_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as CreationResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CreationResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(Creation, other.Creation)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (creation_ != null) hash ^= Creation.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (creation_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Creation);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (creation_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Creation);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (creation_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Creation);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CreationResponse other) {
-      if (other == null) {
-        return;
-      }
-      if (other.creation_ != null) {
-        if (creation_ == null) {
-          Creation = new global::Tiwater.Creation();
-        }
-        Creation.MergeFrom(other.Creation);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (creation_ == null) {
-              Creation = new global::Tiwater.Creation();
-            }
-            input.ReadMessage(Creation);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (creation_ == null) {
-              Creation = new global::Tiwater.Creation();
-            }
-            input.ReadMessage(Creation);
+            Theme = input.ReadString();
             break;
           }
         }
@@ -578,7 +240,7 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -606,9 +268,9 @@ namespace Tiwater {
 
     /// <summary>Field number for the "creation" field.</summary>
     public const int CreationFieldNumber = 1;
-    private global::Tiwater.Creation creation_;
+    private global::Creation.Creation creation_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Tiwater.Creation Creation {
+    public global::Creation.Creation Creation {
       get { return creation_; }
       set {
         creation_ = value;
@@ -694,7 +356,7 @@ namespace Tiwater {
       }
       if (other.creation_ != null) {
         if (creation_ == null) {
-          Creation = new global::Tiwater.Creation();
+          Creation = new global::Creation.Creation();
         }
         Creation.MergeFrom(other.Creation);
       }
@@ -714,7 +376,7 @@ namespace Tiwater {
             break;
           case 10: {
             if (creation_ == null) {
-              Creation = new global::Tiwater.Creation();
+              Creation = new global::Creation.Creation();
             }
             input.ReadMessage(Creation);
             break;
@@ -735,7 +397,7 @@ namespace Tiwater {
             break;
           case 10: {
             if (creation_ == null) {
-              Creation = new global::Tiwater.Creation();
+              Creation = new global::Creation.Creation();
             }
             input.ReadMessage(Creation);
             break;
@@ -747,19 +409,19 @@ namespace Tiwater {
 
   }
 
-  public sealed partial class Creation : pb::IMessage<Creation>
+  public sealed partial class CreationProps : pb::IMessage<CreationProps>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Creation> _parser = new pb::MessageParser<Creation>(() => new Creation());
+    private static readonly pb::MessageParser<CreationProps> _parser = new pb::MessageParser<CreationProps>(() => new CreationProps());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Creation> Parser { get { return _parser; } }
+    public static pb::MessageParser<CreationProps> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -768,17 +430,15 @@ namespace Tiwater {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Creation() {
+    public CreationProps() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Creation(Creation other) : this() {
-      category_ = other.category_;
-      resources_ = other.resources_.Clone();
-      children_ = other.children_.Clone();
+    public CreationProps(CreationProps other) : this() {
+      slotted_ = other.slotted_;
       health_ = other.health_;
       mood_ = other.mood_;
       hungry_ = other.hungry_;
@@ -789,43 +449,23 @@ namespace Tiwater {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Creation Clone() {
-      return new Creation(this);
+    public CreationProps Clone() {
+      return new CreationProps(this);
     }
 
-    /// <summary>Field number for the "category" field.</summary>
-    public const int CategoryFieldNumber = 1;
-    private string category_ = "";
+    /// <summary>Field number for the "slotted" field.</summary>
+    public const int SlottedFieldNumber = 1;
+    private string slotted_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Category {
-      get { return category_; }
+    public string Slotted {
+      get { return slotted_; }
       set {
-        category_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        slotted_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "resources" field.</summary>
-    public const int ResourcesFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Tiwater.CreationRes> _repeated_resources_codec
-        = pb::FieldCodec.ForMessage(18, global::Tiwater.CreationRes.Parser);
-    private readonly pbc::RepeatedField<global::Tiwater.CreationRes> resources_ = new pbc::RepeatedField<global::Tiwater.CreationRes>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::Tiwater.CreationRes> Resources {
-      get { return resources_; }
-    }
-
-    /// <summary>Field number for the "children" field.</summary>
-    public const int ChildrenFieldNumber = 3;
-    private static readonly pb::FieldCodec<string> _repeated_children_codec
-        = pb::FieldCodec.ForString(26);
-    private readonly pbc::RepeatedField<string> children_ = new pbc::RepeatedField<string>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> Children {
-      get { return children_; }
-    }
-
     /// <summary>Field number for the "health" field.</summary>
-    public const int HealthFieldNumber = 4;
+    public const int HealthFieldNumber = 2;
     private int health_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Health {
@@ -836,7 +476,7 @@ namespace Tiwater {
     }
 
     /// <summary>Field number for the "mood" field.</summary>
-    public const int MoodFieldNumber = 5;
+    public const int MoodFieldNumber = 3;
     private string mood_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Mood {
@@ -847,7 +487,7 @@ namespace Tiwater {
     }
 
     /// <summary>Field number for the "hungry" field.</summary>
-    public const int HungryFieldNumber = 6;
+    public const int HungryFieldNumber = 4;
     private int hungry_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Hungry {
@@ -858,7 +498,7 @@ namespace Tiwater {
     }
 
     /// <summary>Field number for the "age" field.</summary>
-    public const int AgeFieldNumber = 7;
+    public const int AgeFieldNumber = 5;
     private int age_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Age {
@@ -869,7 +509,7 @@ namespace Tiwater {
     }
 
     /// <summary>Field number for the "rank" field.</summary>
-    public const int RankFieldNumber = 8;
+    public const int RankFieldNumber = 6;
     private int rank_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int Rank {
@@ -880,7 +520,7 @@ namespace Tiwater {
     }
 
     /// <summary>Field number for the "achievement" field.</summary>
-    public const int AchievementFieldNumber = 9;
+    public const int AchievementFieldNumber = 7;
     private string achievement_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Achievement {
@@ -892,20 +532,18 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as Creation);
+      return Equals(other as CreationProps);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Creation other) {
+    public bool Equals(CreationProps other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Category != other.Category) return false;
-      if(!resources_.Equals(other.resources_)) return false;
-      if(!children_.Equals(other.children_)) return false;
+      if (Slotted != other.Slotted) return false;
       if (Health != other.Health) return false;
       if (Mood != other.Mood) return false;
       if (Hungry != other.Hungry) return false;
@@ -918,9 +556,7 @@ namespace Tiwater {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Category.Length != 0) hash ^= Category.GetHashCode();
-      hash ^= resources_.GetHashCode();
-      hash ^= children_.GetHashCode();
+      if (Slotted.Length != 0) hash ^= Slotted.GetHashCode();
       if (Health != 0) hash ^= Health.GetHashCode();
       if (Mood.Length != 0) hash ^= Mood.GetHashCode();
       if (Hungry != 0) hash ^= Hungry.GetHashCode();
@@ -943,34 +579,32 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Category.Length != 0) {
+      if (Slotted.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Category);
+        output.WriteString(Slotted);
       }
-      resources_.WriteTo(output, _repeated_resources_codec);
-      children_.WriteTo(output, _repeated_children_codec);
       if (Health != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(16);
         output.WriteInt32(Health);
       }
       if (Mood.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(26);
         output.WriteString(Mood);
       }
       if (Hungry != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(32);
         output.WriteInt32(Hungry);
       }
       if (Age != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(40);
         output.WriteInt32(Age);
       }
       if (Rank != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(48);
         output.WriteInt32(Rank);
       }
       if (Achievement.Length != 0) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(58);
         output.WriteString(Achievement);
       }
       if (_unknownFields != null) {
@@ -982,34 +616,32 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Category.Length != 0) {
+      if (Slotted.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Category);
+        output.WriteString(Slotted);
       }
-      resources_.WriteTo(ref output, _repeated_resources_codec);
-      children_.WriteTo(ref output, _repeated_children_codec);
       if (Health != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(16);
         output.WriteInt32(Health);
       }
       if (Mood.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(26);
         output.WriteString(Mood);
       }
       if (Hungry != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(32);
         output.WriteInt32(Hungry);
       }
       if (Age != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(40);
         output.WriteInt32(Age);
       }
       if (Rank != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(48);
         output.WriteInt32(Rank);
       }
       if (Achievement.Length != 0) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(58);
         output.WriteString(Achievement);
       }
       if (_unknownFields != null) {
@@ -1021,11 +653,9 @@ namespace Tiwater {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Category.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Category);
+      if (Slotted.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Slotted);
       }
-      size += resources_.CalculateSize(_repeated_resources_codec);
-      size += children_.CalculateSize(_repeated_children_codec);
       if (Health != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Health);
       }
@@ -1051,15 +681,13 @@ namespace Tiwater {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Creation other) {
+    public void MergeFrom(CreationProps other) {
       if (other == null) {
         return;
       }
-      if (other.Category.Length != 0) {
-        Category = other.Category;
+      if (other.Slotted.Length != 0) {
+        Slotted = other.Slotted;
       }
-      resources_.Add(other.resources_);
-      children_.Add(other.children_);
       if (other.Health != 0) {
         Health = other.Health;
       }
@@ -1093,38 +721,30 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Category = input.ReadString();
+            Slotted = input.ReadString();
             break;
           }
-          case 18: {
-            resources_.AddEntriesFrom(input, _repeated_resources_codec);
-            break;
-          }
-          case 26: {
-            children_.AddEntriesFrom(input, _repeated_children_codec);
-            break;
-          }
-          case 32: {
+          case 16: {
             Health = input.ReadInt32();
             break;
           }
-          case 42: {
+          case 26: {
             Mood = input.ReadString();
             break;
           }
-          case 48: {
+          case 32: {
             Hungry = input.ReadInt32();
             break;
           }
-          case 56: {
+          case 40: {
             Age = input.ReadInt32();
             break;
           }
-          case 64: {
+          case 48: {
             Rank = input.ReadInt32();
             break;
           }
-          case 74: {
+          case 58: {
             Achievement = input.ReadString();
             break;
           }
@@ -1143,39 +763,600 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Category = input.ReadString();
+            Slotted = input.ReadString();
             break;
           }
-          case 18: {
-            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
-            break;
-          }
-          case 26: {
-            children_.AddEntriesFrom(ref input, _repeated_children_codec);
-            break;
-          }
-          case 32: {
+          case 16: {
             Health = input.ReadInt32();
             break;
           }
-          case 42: {
+          case 26: {
             Mood = input.ReadString();
             break;
           }
-          case 48: {
+          case 32: {
             Hungry = input.ReadInt32();
             break;
           }
-          case 56: {
+          case 40: {
             Age = input.ReadInt32();
             break;
           }
-          case 64: {
+          case 48: {
             Rank = input.ReadInt32();
             break;
           }
-          case 74: {
+          case 58: {
             Achievement = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class Creation : pb::IMessage<Creation>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<Creation> _parser = new pb::MessageParser<Creation>(() => new Creation());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Creation> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Creation() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Creation(Creation other) : this() {
+      modelVersion_ = other.modelVersion_;
+      creationId_ = other.creationId_;
+      creationType_ = other.creationType_;
+      prefabType_ = other.prefabType_;
+      template_ = other.template_;
+      name_ = other.name_;
+      description_ = other.description_;
+      category_ = other.category_;
+      resources_ = other.resources_.Clone();
+      slots_ = other.slots_.Clone();
+      props_ = other.props_ != null ? other.props_.Clone() : null;
+      extraProps_ = other.extraProps_.Clone();
+      children_ = other.children_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Creation Clone() {
+      return new Creation(this);
+    }
+
+    /// <summary>Field number for the "model_version" field.</summary>
+    public const int ModelVersionFieldNumber = 1;
+    private string modelVersion_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string ModelVersion {
+      get { return modelVersion_; }
+      set {
+        modelVersion_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "creation_id" field.</summary>
+    public const int CreationIdFieldNumber = 2;
+    private string creationId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string CreationId {
+      get { return creationId_; }
+      set {
+        creationId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "creation_type" field.</summary>
+    public const int CreationTypeFieldNumber = 3;
+    private string creationType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string CreationType {
+      get { return creationType_; }
+      set {
+        creationType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "prefab_type" field.</summary>
+    public const int PrefabTypeFieldNumber = 4;
+    private string prefabType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string PrefabType {
+      get { return prefabType_; }
+      set {
+        prefabType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "template" field.</summary>
+    public const int TemplateFieldNumber = 5;
+    private string template_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Template {
+      get { return template_; }
+      set {
+        template_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 6;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "description" field.</summary>
+    public const int DescriptionFieldNumber = 7;
+    private string description_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Description {
+      get { return description_; }
+      set {
+        description_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "category" field.</summary>
+    public const int CategoryFieldNumber = 8;
+    private string category_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Category {
+      get { return category_; }
+      set {
+        category_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "resources" field.</summary>
+    public const int ResourcesFieldNumber = 9;
+    private static readonly pb::FieldCodec<global::Creation.CreationRes> _repeated_resources_codec
+        = pb::FieldCodec.ForMessage(74, global::Creation.CreationRes.Parser);
+    private readonly pbc::RepeatedField<global::Creation.CreationRes> resources_ = new pbc::RepeatedField<global::Creation.CreationRes>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Creation.CreationRes> Resources {
+      get { return resources_; }
+    }
+
+    /// <summary>Field number for the "slots" field.</summary>
+    public const int SlotsFieldNumber = 10;
+    private static readonly pb::FieldCodec<string> _repeated_slots_codec
+        = pb::FieldCodec.ForString(82);
+    private readonly pbc::RepeatedField<string> slots_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> Slots {
+      get { return slots_; }
+    }
+
+    /// <summary>Field number for the "props" field.</summary>
+    public const int PropsFieldNumber = 11;
+    private global::Creation.CreationProps props_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::Creation.CreationProps Props {
+      get { return props_; }
+      set {
+        props_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "extra_props" field.</summary>
+    public const int ExtraPropsFieldNumber = 12;
+    private static readonly pbc::MapField<string, string>.Codec _map_extraProps_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 98);
+    private readonly pbc::MapField<string, string> extraProps_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> ExtraProps {
+      get { return extraProps_; }
+    }
+
+    /// <summary>Field number for the "children" field.</summary>
+    public const int ChildrenFieldNumber = 13;
+    private static readonly pb::FieldCodec<global::Creation.Creation> _repeated_children_codec
+        = pb::FieldCodec.ForMessage(106, global::Creation.Creation.Parser);
+    private readonly pbc::RepeatedField<global::Creation.Creation> children_ = new pbc::RepeatedField<global::Creation.Creation>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::Creation.Creation> Children {
+      get { return children_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Creation);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Creation other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ModelVersion != other.ModelVersion) return false;
+      if (CreationId != other.CreationId) return false;
+      if (CreationType != other.CreationType) return false;
+      if (PrefabType != other.PrefabType) return false;
+      if (Template != other.Template) return false;
+      if (Name != other.Name) return false;
+      if (Description != other.Description) return false;
+      if (Category != other.Category) return false;
+      if(!resources_.Equals(other.resources_)) return false;
+      if(!slots_.Equals(other.slots_)) return false;
+      if (!object.Equals(Props, other.Props)) return false;
+      if (!ExtraProps.Equals(other.ExtraProps)) return false;
+      if(!children_.Equals(other.children_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ModelVersion.Length != 0) hash ^= ModelVersion.GetHashCode();
+      if (CreationId.Length != 0) hash ^= CreationId.GetHashCode();
+      if (CreationType.Length != 0) hash ^= CreationType.GetHashCode();
+      if (PrefabType.Length != 0) hash ^= PrefabType.GetHashCode();
+      if (Template.Length != 0) hash ^= Template.GetHashCode();
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Description.Length != 0) hash ^= Description.GetHashCode();
+      if (Category.Length != 0) hash ^= Category.GetHashCode();
+      hash ^= resources_.GetHashCode();
+      hash ^= slots_.GetHashCode();
+      if (props_ != null) hash ^= Props.GetHashCode();
+      hash ^= ExtraProps.GetHashCode();
+      hash ^= children_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ModelVersion.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ModelVersion);
+      }
+      if (CreationId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CreationId);
+      }
+      if (CreationType.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(CreationType);
+      }
+      if (PrefabType.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(PrefabType);
+      }
+      if (Template.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Template);
+      }
+      if (Name.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Name);
+      }
+      if (Description.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(Description);
+      }
+      if (Category.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Category);
+      }
+      resources_.WriteTo(output, _repeated_resources_codec);
+      slots_.WriteTo(output, _repeated_slots_codec);
+      if (props_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(Props);
+      }
+      extraProps_.WriteTo(output, _map_extraProps_codec);
+      children_.WriteTo(output, _repeated_children_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ModelVersion.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ModelVersion);
+      }
+      if (CreationId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CreationId);
+      }
+      if (CreationType.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(CreationType);
+      }
+      if (PrefabType.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(PrefabType);
+      }
+      if (Template.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(Template);
+      }
+      if (Name.Length != 0) {
+        output.WriteRawTag(50);
+        output.WriteString(Name);
+      }
+      if (Description.Length != 0) {
+        output.WriteRawTag(58);
+        output.WriteString(Description);
+      }
+      if (Category.Length != 0) {
+        output.WriteRawTag(66);
+        output.WriteString(Category);
+      }
+      resources_.WriteTo(ref output, _repeated_resources_codec);
+      slots_.WriteTo(ref output, _repeated_slots_codec);
+      if (props_ != null) {
+        output.WriteRawTag(90);
+        output.WriteMessage(Props);
+      }
+      extraProps_.WriteTo(ref output, _map_extraProps_codec);
+      children_.WriteTo(ref output, _repeated_children_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (ModelVersion.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ModelVersion);
+      }
+      if (CreationId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CreationId);
+      }
+      if (CreationType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CreationType);
+      }
+      if (PrefabType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(PrefabType);
+      }
+      if (Template.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Template);
+      }
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (Description.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Description);
+      }
+      if (Category.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Category);
+      }
+      size += resources_.CalculateSize(_repeated_resources_codec);
+      size += slots_.CalculateSize(_repeated_slots_codec);
+      if (props_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Props);
+      }
+      size += extraProps_.CalculateSize(_map_extraProps_codec);
+      size += children_.CalculateSize(_repeated_children_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Creation other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ModelVersion.Length != 0) {
+        ModelVersion = other.ModelVersion;
+      }
+      if (other.CreationId.Length != 0) {
+        CreationId = other.CreationId;
+      }
+      if (other.CreationType.Length != 0) {
+        CreationType = other.CreationType;
+      }
+      if (other.PrefabType.Length != 0) {
+        PrefabType = other.PrefabType;
+      }
+      if (other.Template.Length != 0) {
+        Template = other.Template;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.Description.Length != 0) {
+        Description = other.Description;
+      }
+      if (other.Category.Length != 0) {
+        Category = other.Category;
+      }
+      resources_.Add(other.resources_);
+      slots_.Add(other.slots_);
+      if (other.props_ != null) {
+        if (props_ == null) {
+          Props = new global::Creation.CreationProps();
+        }
+        Props.MergeFrom(other.Props);
+      }
+      extraProps_.Add(other.extraProps_);
+      children_.Add(other.children_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            ModelVersion = input.ReadString();
+            break;
+          }
+          case 18: {
+            CreationId = input.ReadString();
+            break;
+          }
+          case 26: {
+            CreationType = input.ReadString();
+            break;
+          }
+          case 34: {
+            PrefabType = input.ReadString();
+            break;
+          }
+          case 42: {
+            Template = input.ReadString();
+            break;
+          }
+          case 50: {
+            Name = input.ReadString();
+            break;
+          }
+          case 58: {
+            Description = input.ReadString();
+            break;
+          }
+          case 66: {
+            Category = input.ReadString();
+            break;
+          }
+          case 74: {
+            resources_.AddEntriesFrom(input, _repeated_resources_codec);
+            break;
+          }
+          case 82: {
+            slots_.AddEntriesFrom(input, _repeated_slots_codec);
+            break;
+          }
+          case 90: {
+            if (props_ == null) {
+              Props = new global::Creation.CreationProps();
+            }
+            input.ReadMessage(Props);
+            break;
+          }
+          case 98: {
+            extraProps_.AddEntriesFrom(input, _map_extraProps_codec);
+            break;
+          }
+          case 106: {
+            children_.AddEntriesFrom(input, _repeated_children_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            ModelVersion = input.ReadString();
+            break;
+          }
+          case 18: {
+            CreationId = input.ReadString();
+            break;
+          }
+          case 26: {
+            CreationType = input.ReadString();
+            break;
+          }
+          case 34: {
+            PrefabType = input.ReadString();
+            break;
+          }
+          case 42: {
+            Template = input.ReadString();
+            break;
+          }
+          case 50: {
+            Name = input.ReadString();
+            break;
+          }
+          case 58: {
+            Description = input.ReadString();
+            break;
+          }
+          case 66: {
+            Category = input.ReadString();
+            break;
+          }
+          case 74: {
+            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
+            break;
+          }
+          case 82: {
+            slots_.AddEntriesFrom(ref input, _repeated_slots_codec);
+            break;
+          }
+          case 90: {
+            if (props_ == null) {
+              Props = new global::Creation.CreationProps();
+            }
+            input.ReadMessage(Props);
+            break;
+          }
+          case 98: {
+            extraProps_.AddEntriesFrom(ref input, _map_extraProps_codec);
+            break;
+          }
+          case 106: {
+            children_.AddEntriesFrom(ref input, _repeated_children_codec);
             break;
           }
         }
@@ -1197,7 +1378,7 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Tiwater.CreationReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1214,7 +1395,7 @@ namespace Tiwater {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public CreationRes(CreationRes other) : this() {
-      name_ = other.name_;
+      type_ = other.type_;
       url_ = other.url_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -1224,14 +1405,14 @@ namespace Tiwater {
       return new CreationRes(this);
     }
 
-    /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 1;
-    private string name_ = "";
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private string type_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Name {
-      get { return name_; }
+    public string Type {
+      get { return type_; }
       set {
-        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        type_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -1259,7 +1440,7 @@ namespace Tiwater {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Name != other.Name) return false;
+      if (Type != other.Type) return false;
       if (Url != other.Url) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -1267,7 +1448,7 @@ namespace Tiwater {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Type.Length != 0) hash ^= Type.GetHashCode();
       if (Url.Length != 0) hash ^= Url.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1285,9 +1466,9 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Name.Length != 0) {
+      if (Type.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Name);
+        output.WriteString(Type);
       }
       if (Url.Length != 0) {
         output.WriteRawTag(18);
@@ -1302,9 +1483,9 @@ namespace Tiwater {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Name.Length != 0) {
+      if (Type.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Name);
+        output.WriteString(Type);
       }
       if (Url.Length != 0) {
         output.WriteRawTag(18);
@@ -1319,8 +1500,8 @@ namespace Tiwater {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Name.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      if (Type.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Type);
       }
       if (Url.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Url);
@@ -1336,8 +1517,8 @@ namespace Tiwater {
       if (other == null) {
         return;
       }
-      if (other.Name.Length != 0) {
-        Name = other.Name;
+      if (other.Type.Length != 0) {
+        Type = other.Type;
       }
       if (other.Url.Length != 0) {
         Url = other.Url;
@@ -1357,7 +1538,7 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Name = input.ReadString();
+            Type = input.ReadString();
             break;
           }
           case 18: {
@@ -1379,7 +1560,7 @@ namespace Tiwater {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Name = input.ReadString();
+            Type = input.ReadString();
             break;
           }
           case 18: {

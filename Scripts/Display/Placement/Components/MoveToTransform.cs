@@ -28,7 +28,7 @@ namespace GameFramework.Display.Placement.Components
         /// The Speed with which to follow the Target.
         /// </summary>
         [Tooltip("The Speed of the gameobject.")]
-        public float Speed = 5f;
+        public float Speed = 1.5f;
 
         [Tooltip("The distance to target that gameobject stop move.")]
         public float StopDistance = 0.15f;
@@ -41,7 +41,7 @@ namespace GameFramework.Display.Placement.Components
 
         public UnityEvent OnArrivedTarget = new UnityEvent();
 
-        private Rigidbody rigidbody;
+        private Rigidbody rigidbodyComp;
 
         //Default direction
         private AxisDirection forwardDirection = AxisDirection.Z;
@@ -55,13 +55,13 @@ namespace GameFramework.Display.Placement.Components
 
         protected void Start()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            rigidbodyComp = GetComponent<Rigidbody>();
         }
 
         protected void Update()
         {
             //TODO: Support Rigidbody
-            if (rigidbody == null)
+            if (rigidbodyComp == null)
             {
                 UpdatePosition();
             }
@@ -69,7 +69,7 @@ namespace GameFramework.Display.Placement.Components
 
         private void FixedUpdate()
         {
-            if (rigidbody != null)
+            if (rigidbodyComp != null)
             {
                 UpdatePosition();
             }
@@ -113,13 +113,13 @@ namespace GameFramework.Display.Placement.Components
             Vector3 movement = targetVector;
             //Normalize the speed, then calculate the movement by delta time
             movement = movement.normalized * Speed * Time.deltaTime;
-            if (rigidbody == null)
+            if (rigidbodyComp == null)
             {
                 transform.position = transform.position + movement;
             }
             else
             {
-                rigidbody.MovePosition(transform.position + movement);
+                rigidbodyComp.MovePosition(transform.position + movement);
             }
         }
 
@@ -234,13 +234,13 @@ namespace GameFramework.Display.Placement.Components
                 float t = TurnSpeed * Time.deltaTime;
                 newRotation = Quaternion.Lerp(transform.rotation, newRotation, t);
             }
-            if (rigidbody == null)
+            if (rigidbodyComp == null)
             {
                 transform.rotation = newRotation;
             }
             else
             {
-                rigidbody.MoveRotation(newRotation);
+                rigidbodyComp.MoveRotation(newRotation);
             }
         }
 

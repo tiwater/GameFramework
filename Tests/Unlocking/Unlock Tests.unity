@@ -2758,6 +2758,7 @@ MonoBehaviour:
   DisplayChangeCheckDelay: 0.5
   AllowOffline: 0
   AllowOfflineBoot: 0
+  IsHandleGameItemInTree: 1
   BindwithDevice: 1
   PlayerSetupMode: 1
   PlayerCount: 1

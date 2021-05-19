@@ -10,7 +10,8 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
     [Serializable]
     public class SupportItemInfo
     {
-        public string GiType;
+        public enum SupportGameItemType { World, Level, Character, AGI };
+        public SupportGameItemType GiType;
         public ContentType ContentType;
         public List<string> GiIds;
     }

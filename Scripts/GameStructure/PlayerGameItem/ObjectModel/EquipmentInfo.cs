@@ -1,5 +1,6 @@
 ﻿using System;
 using GameFramework.GameStructure.GameItems.ObjectModel;
+using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
@@ -11,6 +12,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
     public class EquipmentInfo
     {
         public Slot slot;
+        public LocalisablePrefabType PrefabType;
         public GameItem equipment;
     }
 }

@@ -569,7 +569,7 @@ namespace GameFramework.GameStructure
         public AddressableGameItemManager AddressableGameItems { get; set; }
 
         /// <summary>
-        /// GameItemManager containing the current Players
+        /// GameItemManager containing the current PlayerGameItems
         /// </summary>
         public GameItemInstanceManager PlayerGameItems { get; set; }
 
@@ -755,7 +755,7 @@ namespace GameFramework.GameStructure
             GameSetupAysnc();
         }
 
-        private async void GameSetupAysnc()
+        private async Task GameSetupAysnc()
         {
 
             var sb = new System.Text.StringBuilder();
@@ -843,7 +843,6 @@ namespace GameFramework.GameStructure
                 await LoadCurrentScene();
                 Debug.Log("Load Scene Done");
                 await Scripts.PreloadScripts();
-                Debug.Log("Load PreloadScripts Done");
             }
             else
             {

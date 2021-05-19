@@ -87,7 +87,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="pgi"></param>
         /// <returns></returns>
-        Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi);
+        Task LoadAddressableResources(List<string> giIds);
     }
 
     /// <summary>
@@ -287,38 +287,27 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// </summary>
         /// <param name="pgi"></param>
         /// <returns></returns>
-        public virtual async Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi)
+        public virtual async Task LoadAddressableResources(List<string> giIds)
         {
-            if (GetItem(pgi.GiId) == null)
+            //The GameItem is not loaded yet
+            string label = typeof(T).Name;
+            if (label == "AddressableGameItem")
             {
-                //The GameItem is not loaded yet
-                string label = typeof(T).Name;
-                if (label == "AddressableGameItem")
-                {
-                    //For AddressableGameItem, use a short label
-                    label = "AGI";
-                }
-                //Load it
-                var resource = await AddressableResService.GetInstance().LoadResourceAsync<T>(pgi.GiId, label);
-                resource.Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger, pgi.GiId);
-                Items.Add(resource);
+                //For AddressableGameItem, use a short label
+                label = "AGI";
             }
-            if (pgi.Children != null)
+
+            var resourceSelector = giIds.Where(id => GetItem(id) == null)
+                .Select(id => AddressableResService.GetInstance().LoadResourceAsync<T>(id, label));
+
+            await Task.WhenAll(resourceSelector);
+            foreach (var result in resourceSelector)
             {
-                //Load children
-                foreach (var child in pgi.Children)
+                var res = await result;
+                if (res != null)
                 {
-                    await GameManager.Instance.GetIBaseGameItemManager(child.GiType).LoadAddressableResourceFromPlayerGameItem(child);
-                }
-            }
-            if (pgi.CharacterEquipments != null) {
-                //Load equipments
-                foreach (var equipment in pgi.CharacterEquipments)
-                {
-                    var equipItem = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(equipment.GameItemId);
-                    if (equipItem != null) {
-                        await GameManager.Instance.GetIBaseGameItemManager(equipItem.GiType).LoadAddressableResourceFromPlayerGameItem(equipItem);
-                    }
+                    res.Initialise(GameConfiguration.Instance, GameManager.Instance.Player, GameManager.Messenger, res.name);
+                    Items.Add(res);
                 }
             }
         }

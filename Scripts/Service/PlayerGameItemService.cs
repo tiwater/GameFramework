@@ -189,66 +189,66 @@ namespace GameFramework.Service
 
             var items = new List<PlayerGameItem>();
 
-            PlayerGameItem pgi = new PlayerGameItem();
-            pgi.GiType = "Character";
-            pgi.GiId = "hty";
-            pgi.Id = MOCK_FISH2_ID;
-            //pgi.Position = new Vector3(0, 0 , 0);
-            //pgi.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
-            pgi.PrefabType = GameItem.LocalisablePrefabType.Type1;
-            pgi.IsActive = true;
-            items.Add(pgi);
+            //PlayerGameItem pgi = new PlayerGameItem();
+            //pgi.GiType = "Character";
+            //pgi.GiId = "hty";
+            //pgi.Id = MOCK_FISH2_ID;
+            ////pgi.Position = new Vector3(0, 0 , 0);
+            ////pgi.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
+            //pgi.PrefabType = GameItem.LocalisablePrefabType.Type1;
+            //pgi.IsActive = true;
+            //items.Add(pgi);
 
-            //The HTY skin
-            List<GameItemEquipment> el1 = new List<GameItemEquipment>();
+            ////The HTY skin
+            //List<GameItemEquipment> el1 = new List<GameItemEquipment>();
 
-            GameItemEquipment ce1 = new GameItemEquipment(MOCK_FISH2_ID, Slot.Root, MOCK_SKIN_ID2);
-            el1.Add(ce1);
-            GameItemEquipment ce2 = new GameItemEquipment(MOCK_FISH2_ID, Slot.RHand, MOCK_STICK_ID1);
-            el1.Add(ce2);
+            //GameItemEquipment ce1 = new GameItemEquipment(MOCK_FISH2_ID, Slot.Root, MOCK_SKIN_ID2);
+            //el1.Add(ce1);
+            //GameItemEquipment ce2 = new GameItemEquipment(MOCK_FISH2_ID, Slot.RHand, MOCK_STICK_ID1);
+            //el1.Add(ce2);
 
-            pgi.CharacterEquipments = el1;
+            //pgi.CharacterEquipments = el1;
 
-            PlayerGameItem pgi2 = new PlayerGameItem();
-            pgi2.GiType = "Level";
-            pgi2.GiId = "forest";
-            pgi2.Id = "abcd";
-            items.Add(pgi2);
+            //PlayerGameItem pgi2 = new PlayerGameItem();
+            //pgi2.GiType = "Level";
+            //pgi2.GiId = "forest";
+            //pgi2.Id = "abcd";
+            //items.Add(pgi2);
 
-            PlayerGameItem pgi3 = new PlayerGameItem();
-            pgi3.GiType = "AddressableGameItem";
-            pgi3.GiId = "Fish1Skin1";
-            pgi3.Id = MOCK_SKIN_ID1;
-            items.Add(pgi3);
+            //PlayerGameItem pgi3 = new PlayerGameItem();
+            //pgi3.GiType = "AddressableGameItem";
+            //pgi3.GiId = "Fish1Skin1";
+            //pgi3.Id = MOCK_SKIN_ID1;
+            //items.Add(pgi3);
 
-            PlayerGameItem pgi4 = new PlayerGameItem();
-            pgi4.GiType = "Character";
-            pgi4.GiId = "Fish1";
-            pgi4.Id = MOCK_FISH1_ID;
-            //pgi4.Position = new Vector3(0, 1, 0);
-            //pgi4.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
-            pgi4.PrefabType = GameItem.LocalisablePrefabType.Type1;
-            pgi4.IsActive = true;
-            items.Add(pgi4);
+            //PlayerGameItem pgi4 = new PlayerGameItem();
+            //pgi4.GiType = "Character";
+            //pgi4.GiId = "Fish1";
+            //pgi4.Id = MOCK_FISH1_ID;
+            ////pgi4.Position = new Vector3(0, 1, 0);
+            ////pgi4.Rotation = new Vector3(0, 0, 0);// Quaternion.identity.eulerAngles;
+            //pgi4.PrefabType = GameItem.LocalisablePrefabType.Type1;
+            //pgi4.IsActive = true;
+            //items.Add(pgi4);
 
 
-            //Fish1 skin
-            List<GameItemEquipment> el2 = new List<GameItemEquipment>();
-            GameItemEquipment ce22 = new GameItemEquipment(MOCK_FISH1_ID, Slot.Root, MOCK_SKIN_ID1);
-            el2.Add(ce22);
-            pgi4.CharacterEquipments = el2;
+            ////Fish1 skin
+            //List<GameItemEquipment> el2 = new List<GameItemEquipment>();
+            //GameItemEquipment ce22 = new GameItemEquipment(MOCK_FISH1_ID, Slot.Root, MOCK_SKIN_ID1);
+            //el2.Add(ce22);
+            //pgi4.CharacterEquipments = el2;
 
-            PlayerGameItem pgi5 = new PlayerGameItem();
-            pgi5.GiType = "AddressableGameItem";
-            pgi5.GiId = "AGI_Fish2Skin1";
-            pgi5.Id = MOCK_SKIN_ID2;
-            items.Add(pgi5);
+            //PlayerGameItem pgi5 = new PlayerGameItem();
+            //pgi5.GiType = "AddressableGameItem";
+            //pgi5.GiId = "AGI_Fish2Skin1";
+            //pgi5.Id = MOCK_SKIN_ID2;
+            //items.Add(pgi5);
 
-            PlayerGameItem pgi6 = new PlayerGameItem();
-            pgi6.GiType = "AddressableGameItem";
-            pgi6.GiId = "AGI_Stick1";
-            pgi6.Id = MOCK_STICK_ID1;
-            items.Add(pgi6);
+            //PlayerGameItem pgi6 = new PlayerGameItem();
+            //pgi6.GiType = "AddressableGameItem";
+            //pgi6.GiId = "AGI_Stick1";
+            //pgi6.Id = MOCK_STICK_ID1;
+            //items.Add(pgi6);
 
             return items;
         }

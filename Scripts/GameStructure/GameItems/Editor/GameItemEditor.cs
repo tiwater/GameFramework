@@ -47,6 +47,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
         SerializedProperty _giIndex;
         SerializedProperty _giConsumable;
         SerializedProperty _giDistinguishInstance;
+        SerializedProperty _giAvailableSlots;
 
         Rect _prefabDropRect;
         Rect _spriteDropRect;
@@ -69,6 +70,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
             _giConsumable = serializedObject.FindProperty("Consumable");
             _giDistinguishInstance = serializedObject.FindProperty("DistinguishInstance");
             _giIndex = serializedObject.FindProperty("_index");
+            _giAvailableSlots = serializedObject.FindProperty("_availableSlots");
         }
 
         public override void OnInspectorGUI()
@@ -121,6 +123,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
             EditorGUILayout.PropertyField(_giConsumable, new GUIContent("Consumable"));
             EditorGUILayout.PropertyField(_giDistinguishInstance, new GUIContent("Distinguish Instance"));
             EditorGUILayout.PropertyField(_startUnlockedProperty);
+            EditorGUILayout.PropertyField(_giAvailableSlots);
             if (!_startUnlockedProperty.boolValue)
             {
                 EditorGUI.indentLevel ++;

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607273e6dcefe451cbe3eca7bc5e50a8, type: 3}
+  m_Name: AGI_Fish1Skin1
+  m_EditorClassIdentifier: 
+  _localisableName:
+    _isLocalised: 0
+    _data: 
+  _localisableDescription:
+    _isLocalised: 0
+    _data: 
+  _startUnlocked: 0
+  _unlockWithCoins: 1
+  _unlockWithPayment: 0
+  _unlockWithCompletion: 0
+  _valueToUnlock: 0
+  _package: Fish1Skin1
+  Consumable: 0
+  DistinguishInstance: 0
+  _localisablePrefabs:
+  - LocalisablePrefabType: 0
+    Name: 
+    IsAddressable: 0
+    Label: 
+    LocalisablePrefab:
+      _default: {fileID: 0}
+      _localisedObjects: []
+  _localisableSprites:
+  - LocalisableSpriteType: 1
+    Name: 
+    LocalisableSprite:
+      _default: {fileID: 21300000, guid: 2ad565d8436594b4a8e349c155f6ff71, type: 3}
+      _localisedObjects: []
+  _variables:
+    _boolVariables: []
+    _intVariables: []
+    _floatVariables: []
+    _stringVariables: []
+    _Vector2Variables: []
+    _Vector3Variables: []
+    _colorVariables: []
+  _index: 0
+  AddressableName: 
+  AddressableLabel: 
+  ThumbnailUrl: 
+  Slots: 
+  _contentType: 2
+  _supportItems:
+  - GiType: 
+    ContentType: 0
+    GiIds: []

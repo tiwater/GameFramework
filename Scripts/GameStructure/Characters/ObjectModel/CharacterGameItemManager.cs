@@ -23,6 +23,7 @@ using GameFramework.GameStructure.GameItems.ObjectModel;
 using GameFramework.GameStructure.Characters.Messages;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
+using System.Collections.Generic;
 
 namespace GameFramework.GameStructure.Characters.ObjectModel
 {
@@ -47,11 +48,12 @@ namespace GameFramework.GameStructure.Characters.ObjectModel
         /// </summary>
         /// <param name="pgi"></param>
         /// <returns></returns>
-        public override async Task LoadAddressableResourceFromPlayerGameItem(PlayerGameItem pgi)
+        public override async Task LoadAddressableResources(List<string> giIds)
         {
-            await base.LoadAddressableResourceFromPlayerGameItem(pgi);
+            await base.LoadAddressableResources(giIds);
             //TODO: mark the selected Character
-            if (pgi.IsActive)
+            var pgi = GameManager.Instance.PlayerGameItems.SelectedCharacter;
+            if(pgi!=null)
             {
                 Selected = GetItem(pgi.GiId);
                 Selected.PlayerGameItem = pgi;

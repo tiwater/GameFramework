@@ -48,7 +48,7 @@ namespace GameFramework.GameStructure.Players.ObjectModel
         public override string IdentifierBasePrefs { get { return "P"; } }
 
 
-        public PlayerDto PlayerDto { get; set; }
+        //public PlayerDto PlayerDto { get; set; }
 
         /// <summary>
         /// Override in subclasses to return a list of custom counter configuration entries that should also

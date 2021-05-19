@@ -58,8 +58,12 @@ namespace GameFramework.GameStructure.GameItems.Editor.AbstractClasses
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(new GUIContent("Animation", "Animate gameobject changes."), EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(_gameObjectToGameObjectAnimationProperty);
-
+            DrawGUI();
             serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual void DrawGUI()
+        {
         }
     }
 }

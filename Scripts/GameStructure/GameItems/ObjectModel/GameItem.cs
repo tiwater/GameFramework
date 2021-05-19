@@ -36,6 +36,7 @@ using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
 using GameFramework.Service;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
+using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -244,13 +245,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         public bool DistinguishInstance;
 
         [SerializeField]
-        List<LocalisablePrefabEntry> _localisablePrefabs = new List<LocalisablePrefabEntry>();
+        protected List<LocalisablePrefabEntry> _localisablePrefabs = new List<LocalisablePrefabEntry>();
 
         [SerializeField]
-        List<LocalisableSpriteEntry> _localisableSprites = new List<LocalisableSpriteEntry>();
+        protected List<LocalisableSpriteEntry> _localisableSprites = new List<LocalisableSpriteEntry>();
 
         [SerializeField]
-        List<LocalisableTextureEntry> _localisableTextures = new List<LocalisableTextureEntry>();
+        protected List<LocalisableTextureEntry> _localisableTextures = new List<LocalisableTextureEntry>();
 
         /// <summary>
         /// A list of custom variables for this game item.
@@ -530,6 +531,20 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         List<ResourceInfo> _resources = new List<ResourceInfo>();
 
         /// <summary>
+        /// The available slots on this GameItem
+        /// </summary>
+        public List<Slot> AvailableSlots
+        {
+            get
+            {
+                return _availableSlots;
+            }
+        }
+        [Tooltip("The available slots on this GameItem.")]
+        [SerializeField]
+        List<Slot> _availableSlots = new List<Slot>();
+
+        /// <summary>
         /// Stored json data from disk. 
         /// </summary>
         /// You can provide a json configuration file that contains both standard and custom values for setting up 
@@ -714,7 +729,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             }
             pgi.IsActive = true;
             //Duplicate the meta's variables
-            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(Variables), pgi.Props);
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(Variables), pgi.ExtraProps);
             return pgi;
         }
 

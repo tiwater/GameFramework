@@ -58,7 +58,7 @@ namespace AssemblyCSharp.Assets.GameFramework.Scripts.Preferences.PlayerDtoPrefs
                     {
                         //TODO: Sync Offline data to the player instance
                     }
-                    return GameManager.Instance.Players.Selected.PlayerDto.Props;
+                    return GameManager.Instance.Players.Selected.PlayerGameItem.ExtraProps;
                 }
             }
         }

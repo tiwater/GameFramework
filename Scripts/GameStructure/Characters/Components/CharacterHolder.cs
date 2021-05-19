@@ -7,7 +7,6 @@ using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItemContext;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
-using GameFramework.GameStructure.Model;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.GameStructure.Characters
@@ -19,10 +18,13 @@ namespace GameFramework.GameStructure.Characters
     [AddComponentMenu("Game Framework/GameStructure/Characters/Character Holder")]
     public class CharacterHolder : GameItemInstanceHolder<Character>
     {
+        /// <summary>
+        /// The equipped GameItem information.
+        /// </summary>
+        [Tooltip("The equipped GameItem information.")]
         public List<EquipmentInfo> EquipmentInfos;
 
         private bool Updated = false;
-
 
         /// <summary>
         /// Returns the current Character GameItem
@@ -64,7 +66,7 @@ namespace GameFramework.GameStructure.Characters
             await AttachCharacterPrefabById(gameItem.GiId, localisablePrefabType);
 
 
-            List<GameItemEquipment> equipments = gameItem.CharacterEquipments;//new List<CharacterEquipment>(GameManager.Instance.Players.Selected.PlayerDto.CharacterEquipments[gameItem.Id]);
+            var equipments = gameItem.Equipments;//new List<CharacterEquipment>(GameManager.Instance.Players.Selected.PlayerDto.CharacterEquipments[gameItem.Id]);
             if (equipments != null)
             {
                 PopulateCharacterEquipments(equipments);
@@ -103,22 +105,41 @@ namespace GameFramework.GameStructure.Characters
         }
 
         /// <summary>
-        /// Convert the equipments in the PlayerDto to the format this component can understand
+        /// Convert the equipments in the PlayerGameItem to the format this component can understand
         /// </summary>
         /// <param name="equipments"></param>
-        private void PopulateCharacterEquipments(List<GameItemEquipment> equipments)
+        private void PopulateCharacterEquipments(List<EquipmentItem> equipments)
         {
             List<EquipmentInfo> equipmentInfos = new List<EquipmentInfo>();
             foreach (var equipment in equipments)
             {
                 EquipmentInfo equipmentInfo = new EquipmentInfo();
                 equipmentInfo.slot = equipment.EquipSlot;
-                var gameItem = GameManager.Instance.Players.Selected.PlayerDto.GetPlayerGameItemById(equipment.GameItemId);
+                var gameItem = equipment.Equipment;
                 equipmentInfo.equipment = GameManager.Instance.GetIBaseGameItemManager(gameItem.GiType).BaseGetItem(gameItem.GiId);
+                equipmentInfo.PrefabType = gameItem.PrefabType;
                 equipmentInfos.Add(equipmentInfo);
             }
             EquipmentInfos = equipmentInfos;
         }
+
+        /// <summary>
+        /// Convert the equipments in the PlayerDto to the format this component can understand
+        /// </summary>
+        /// <param name="equipments"></param>
+        //private void PopulateCharacterEquipments(List<GameItemEquipment> equipments)
+        //{
+        //    List<EquipmentInfo> equipmentInfos = new List<EquipmentInfo>();
+        //    foreach (var equipment in equipments)
+        //    {
+        //        EquipmentInfo equipmentInfo = new EquipmentInfo();
+        //        equipmentInfo.slot = equipment.EquipSlot;
+        //        var gameItem = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(equipment.GameItemId);
+        //        equipmentInfo.equipment = GameManager.Instance.GetIBaseGameItemManager(gameItem.GiType).BaseGetItem(gameItem.GiId);
+        //        equipmentInfos.Add(equipmentInfo);
+        //    }
+        //    EquipmentInfos = equipmentInfos;
+        //}
 
         /// <summary>
         /// Wear the equipable assets, put the resources to proper places in the GameObject tree
@@ -134,24 +155,25 @@ namespace GameFramework.GameStructure.Characters
                     _selectedPrefabInstance.hideFlags = HideFlags.HideAndDontSave;
                 }
                 List<Task> tasks = new List<Task>();
-                foreach (var equipment in EquipmentInfos)
+                foreach (var equipmentInfo in EquipmentInfos)
                 {
-                    if (equipment.equipment.GetType() == typeof(AddressableGameItem))
+                    if (equipmentInfo.equipment.GetType() == typeof(AddressableGameItem))
                     {
-                        AddressableGameItem agi = (AddressableGameItem)equipment.equipment;
-                        if (string.IsNullOrEmpty(agi.AddressableName) && string.IsNullOrEmpty(agi.AddressableLabel))
-                        {
-                            //TODO: Should provide full info for the assets
-                            //If not supplied the Addressable info, fallback to Package
-                            tasks.Add(agi.Apply(gameObject, equipment.slot, null, agi.Package, true));
-                        }
-                        else
-                        {
-                            tasks.Add(agi.Apply(gameObject, equipment.slot, new List<string> { agi.AddressableName }, agi.AddressableLabel, true));
-                        }
+                        AddressableGameItem agi = (AddressableGameItem)equipmentInfo.equipment;
+                        agi.Apply(gameObject, equipmentInfo.slot, equipmentInfo.PrefabType);
+                        //if (string.IsNullOrEmpty(agi.AddressableName) && string.IsNullOrEmpty(agi.AddressableLabel))
+                        //{
+                        //    //TODO: Should provide full info for the assets
+                        //    //If not supplied the Addressable info, fallback to Package
+                        //    tasks.Add(agi.Apply(gameObject, equipmentInfo.slot, null, agi.Package, true));
+                        //}
+                        //else
+                        //{
+                        //    tasks.Add(agi.Apply(gameObject, equipmentInfo.slot, new List<string> { agi.AddressableName }, agi.AddressableLabel, true));
+                        //}
                     }
                 }
-                await Task.WhenAll(tasks.ToArray());
+                //await Task.WhenAll(tasks.ToArray());
 
                 if (_selectedPrefabInstance != null)
                 {

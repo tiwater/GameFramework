@@ -21,8 +21,10 @@
 
 using System;
 using System.Collections.Generic;
+using GameFramework.GameStructure.Util;
 using GameFramework.Localisation.ObjectModel;
 using GameFramework.Preferences;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace GameFramework.GameStructure.Variables.ObjectModel
@@ -534,6 +536,80 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
             newVariable.Tag = tag;
             newVariable.Value = value;
             ColorVariables.Add(newVariable);
+        }
+
+
+        public string ToJsonMapString()
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+
+            GenerateVariableDictionary<BoolVariable, bool>(BoolVariables, dict);
+            GenerateVariableDictionary<IntVariable, int>(IntVariables, dict);
+            GenerateVariableDictionary<FloatVariable, float>(FloatVariables, dict);
+            GenerateVariableDictionary<StringVariable, string>(StringVariables, dict);
+            GenerateVariableDictionary<Vector2Variable, Vector2>(Vector2Variables, dict);
+            GenerateVariableDictionary<Vector3Variable, Vector3>(Vector3Variables, dict);
+            GenerateVariableDictionary<ColorVariable, Color>(ColorVariables, dict);
+
+            return JsonConvert.SerializeObject(dict);
+        }
+
+        private void GenerateVariableDictionary<T, K>(List<T> variables, Dictionary<string, string> dict) where T : Variable<K>
+        {
+            string keyPrefix = typeof(T).Name + "_";
+            foreach(var variable in variables)
+            {
+                dict[keyPrefix + variable.Tag] = JsonUtility.ToJson(variable);
+            }
+        }
+
+        public static Variables FromDict(IDictionary<string, string> dict)
+        {
+            Variables variables = new Variables();
+            foreach (var pair in dict)
+            {
+                string type = pair.Key.Substring(0, pair.Key.IndexOf('_'));
+                if (type == typeof(BoolVariable).Name)
+                {
+                    variables.BoolVariables.Add(FromString<BoolVariable>(pair.Value));
+                }
+                else if (type == typeof(FloatVariable).Name)
+                {
+                    variables.FloatVariables.Add(FromString<FloatVariable>(pair.Value));
+                }
+                else if (type == typeof(IntVariable).Name)
+                {
+                    variables.IntVariables.Add(FromString<IntVariable>(pair.Value));
+                }
+                else if (type == typeof(StringVariable).Name)
+                {
+                    variables.StringVariables.Add(FromString<StringVariable>(pair.Value));
+                }
+                else if (type == typeof(Vector2Variable).Name)
+                {
+                    variables.Vector2Variables.Add(FromString<Vector2Variable>(pair.Value));
+                }
+                else if (type == typeof(Vector3Variable).Name)
+                {
+                    variables.Vector3Variables.Add(FromString<Vector3Variable>(pair.Value));
+                }
+                else if (type == typeof(ColorVariable).Name)
+                {
+                    variables.ColorVariables.Add(FromString<ColorVariable>(pair.Value));
+                }
+            }
+            return variables;
+        }
+
+        public static Variables FromJsonMapString(string json)
+        {
+            return FromDict(JsonConvert.DeserializeObject<Dictionary<string, string>>(json));
+        }
+
+        private static T FromString<T>(string str)
+        {
+            T t = JsonUtility.FromJson<T>(str);
+            return t;
         }
     }
 

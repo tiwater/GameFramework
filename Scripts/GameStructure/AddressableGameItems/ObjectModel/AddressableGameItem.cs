@@ -50,7 +50,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// </summary>
         [Tooltip("The Slot this AddressGameItem supports.")]
         [SerializeField]
-        public List<Slot> Slots = new List<Slot>();
+        public List<Slot> SupportedSlots = new List<Slot>();
 
         /// <summary>
         /// The type of the GameItem content
@@ -71,7 +71,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         AddressableGameItemMeta.ContentType _contentType;
 
         /// <summary>
-        /// The GameItem this character supports.
+        /// The GameItem this asset supports.
         /// </summary>
         public List<SupportItemInfo> SupportItems
         {
@@ -240,6 +240,50 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
             });
         }
 
+        public void Apply(GameObject target, Slot slot, LocalisablePrefabType localisablePrefabType, bool instantiateInWorldSpace = false)
+        {
+            target = FindSlotTarget(target, slot) ?? target;
+            if (ContentType == AddressableGameItemMeta.ContentType.Skin)
+            {
+                //Skin is texture
+                foreach (var texture in _localisableTextures)
+                {
+                    //TODO: Now compare the enum string, should find a better way
+                    if (Enum.GetName(typeof(LocalisableTextureType), texture.LocalisableTextureType)==
+                        Enum.GetName(typeof(LocalisablePrefabType), localisablePrefabType))
+                    {
+                        TryToApplyTexture2DOnChildren(target, texture.LocalisableTexture.GetTexture().name,
+                            (Texture2D)texture.LocalisableTexture.GetTexture());
+                    }
+                }
+            }
+            else
+            {
+                //Others are entity
+                foreach (var prefab in _localisablePrefabs)
+                {
+                    //If in supported slot
+                    if(SupportedSlots.Contains(Slot.All) || SupportedSlots.Contains(slot))
+                    {
+                        //Matched prefab type
+                        if(localisablePrefabType == prefab.LocalisablePrefabType)
+                        {
+                            GameObject resource;
+                            //Prefab
+                            if (target == null)
+                            {
+                                resource = Instantiate((GameObject)prefab.LocalisablePrefab.GetPrefab());
+                            }
+                            else
+                            {
+                                resource = Instantiate((GameObject)prefab.LocalisablePrefab.GetPrefab(), target.transform, instantiateInWorldSpace);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Apply the resources in the AddressableGameItem to the target GameObject. If the resource is texture, will try to replace the texture with same name.
         /// If the resource is prefab, will be instantiated as a child object under the given target. If the target is null, then the instantiated
@@ -253,6 +297,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         public async Task Apply(GameObject target, Slot slot, List<string> names = null, string label = null, bool instantiateInWorldSpace = false, ResourceLoadedCallback callback = null)
         {
             bool isEmptyName = StringUtil.IsListEmpty(names);
+            target = FindSlotTarget(target, slot) ?? target;
             if (isEmptyName && string.IsNullOrEmpty(label))
             {
                 Debug.LogError("Names and Label must have at least one piece of valid data");
@@ -300,6 +345,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// <param name="callback"></param>
         public async Task Apply<T>(GameObject target, Slot slot, List<string> names = null, string label = null, bool instantiateInWorldSpace = false, ResourceLoadedCallback<T> callback = null)
         {
+            target = FindSlotTarget(target, slot) ?? target;
             bool isEmptyName = StringUtil.IsListEmpty(names);
             if (isEmptyName && string.IsNullOrEmpty(label))
             {
@@ -371,6 +417,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         /// <param name="callback"></param>
         public async Task Apply(GameObject target, Slot slot, Vector3 position, Quaternion rotation, List<string> names = null, string label = null, ResourceLoadedCallback callback = null)
         {
+            target = FindSlotTarget(target, slot) ?? target;
             bool isEmptyName = StringUtil.IsListEmpty(names);
             if (isEmptyName && string.IsNullOrEmpty(label))
             {
@@ -420,6 +467,7 @@ namespace GameFramework.GameStructure.AddressableGameItems.ObjectModel
         public async Task Apply<T>(GameObject target, Slot slot, Vector3 position, Quaternion rotation, List<string> names = null, string label = null, ResourceLoadedCallback<T> callback = null)
         {
 
+            target = FindSlotTarget(target, slot) ?? target;
 
             bool isEmptyName = StringUtil.IsListEmpty(names);
             if (isEmptyName && string.IsNullOrEmpty(label))

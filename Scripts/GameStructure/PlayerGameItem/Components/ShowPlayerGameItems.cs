@@ -32,21 +32,18 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
 
         IEnumerator LateStart()
         {
-            Debug.Log("Wait for GM ready!!!");
             while (!GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }
-            Debug.Log("DisplayPlayGameItems Begin!!!");
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
-            Debug.Log("DisplayPlayGameItems Done");
         }
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
         {
             //Get the position and rotation info for the GameItem
-            var positionVariable = item.Props.GetVector3(Constants.PROP_KEY_POSITION);
-            var rotationVariable = item.Props.GetVector3(Constants.PROP_KEY_ROTATION);
+            var positionVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION);
+            var rotationVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION);
             Vector3 position;
             Quaternion rotation;
             //Position
@@ -80,9 +77,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
                     position, rotation, parent);
                 //Config the prefab
                 var holderComponent = gameObject.GetComponent<CharacterHolder>();
-                holderComponent.Context.ContextMode = GameItems.ObjectModel.GameItemContext.ContextModeType.ByNumber;
-                holderComponent.Context.Number = item.GiId;
-                holderComponent.PrefabType = item.PrefabType;
+                holderComponent.BindCharacterPGI(item, item.PrefabType);
+                //holderComponent.Context.ContextMode = GameItems.ObjectModel.GameItemContext.ContextModeType.ByNumber;
+                //holderComponent.Context.Number = item.GiId;
+                //holderComponent.PrefabType = item.PrefabType;
+                //holderComponent.PlayerGameItem = item;
             }
             else if (item.GiType == typeof(AddressableGameItem).Name)
             {
