@@ -163,22 +163,22 @@ namespace GameFramework.Service
         {
             Dictionary<string, GameItemEquipment[]> equipments = new Dictionary<string, GameItemEquipment[]>();
 
-            //The HTY skin
-            List<GameItemEquipment> el1 = new List<GameItemEquipment>();
+            ////The HTY skin
+            //List<GameItemEquipment> el1 = new List<GameItemEquipment>();
 
-            GameItemEquipment ce1 = new GameItemEquipment(MOCK_FISH2_ID, Slot.Root, MOCK_SKIN_ID2);
-            el1.Add(ce1);
-            GameItemEquipment ce2 = new GameItemEquipment(MOCK_FISH2_ID, Slot.RHand, MOCK_STICK_ID1);
-            el1.Add(ce2);
+            //GameItemEquipment ce1 = new GameItemEquipment(MOCK_FISH2_ID, Slot.Root, MOCK_SKIN_ID2);
+            //el1.Add(ce1);
+            //GameItemEquipment ce2 = new GameItemEquipment(MOCK_FISH2_ID, Slot.RHand, MOCK_STICK_ID1);
+            //el1.Add(ce2);
 
-            equipments.Add(MOCK_FISH2_ID, el1.ToArray());
+            //equipments.Add(MOCK_FISH2_ID, el1.ToArray());
 
-            //Fish1 skin
-            List<GameItemEquipment> el2 = new List<GameItemEquipment>();
-            GameItemEquipment ce22 = new GameItemEquipment(MOCK_FISH1_ID, Slot.Root, MOCK_SKIN_ID1);
-            el2.Add(ce22);
+            ////Fish1 skin
+            //List<GameItemEquipment> el2 = new List<GameItemEquipment>();
+            //GameItemEquipment ce22 = new GameItemEquipment(MOCK_FISH1_ID, Slot.Root, MOCK_SKIN_ID1);
+            //el2.Add(ce22);
 
-            equipments.Add(MOCK_FISH1_ID, el2.ToArray());
+            //equipments.Add(MOCK_FISH1_ID, el2.ToArray());
 
 
             return equipments;

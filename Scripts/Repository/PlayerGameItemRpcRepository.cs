@@ -68,9 +68,11 @@ namespace GameFramework.Repository
                 item.GiType = creation.CreationType;
                 item.GiId = creation.Template;
                 item.Id = creation.CreationId;
-                Enum.TryParse( creation.PrefabType, out item.PrefabType);
+                Enum.TryParse(creation.PrefabType, out item.PrefabType);
                 item.CustomName = creation.Name;
                 item.ModelVersion = creation.ModelVersion;
+                item.IsActive = "active" == creation.Status;
+                item.Category = creation.Category;
 
                 //The props the logic cares
                 if (creation.Props != null)
@@ -82,7 +84,7 @@ namespace GameFramework.Repository
                     item.Props.Hungry = creation.Props.Hungry;
                     item.Props.Mood = creation.Props.Mood;
                     item.Props.Rank = creation.Props.Rank;
-                    item.Props.Slotted = creation.Props.Slotted;
+                    Enum.TryParse(creation.Props.Slotted, out item.Props.Slotted);
                 }
                 //The extra props
                 if (creation.ExtraProps != null)
@@ -90,12 +92,38 @@ namespace GameFramework.Repository
                     item.ExtraProps = Variables.FromDict(creation.ExtraProps);
                 }
                 //The children
-                if(creation.Children!=null && creation.Children.Count > 0)
+                if (creation.Children != null && creation.Children.Count > 0)
                 {
-                    item.Children = new List<PlayerGameItem>();
-                    foreach(var child in creation.Children)
+
+                    var children = new List<PlayerGameItem>();
+                    var equipments = new List<PlayerGameItem>();
+                    //item.Children = new List<PlayerGameItem>();
+                    //item.Equipments = new List<EquipmentItem>();
+                    foreach (var child in creation.Children)
                     {
-                        item.Children.Add(PopulatePlayerGameItem(child));
+                        var subItem = PopulatePlayerGameItem(child);
+                        if (subItem.Category == "uw:pet:equipment")
+                        {
+                            //Equipment
+                            if (subItem.IsActive)
+                            {
+                                //Only equip the actived item
+                                equipments.Add(subItem);
+                            }
+                        }
+                        else
+                        {
+                            //Normal item
+                            children.Add(PopulatePlayerGameItem(child));
+                        }
+                    }
+                    if (children.Count > 0)
+                    {
+                        item.Children = children;
+                    }
+                    if (equipments.Count > 0)
+                    {
+                        item.Equipments = equipments;
                     }
                 }
             }

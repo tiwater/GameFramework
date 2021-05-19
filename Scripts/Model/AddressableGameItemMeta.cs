@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
-using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
+using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
 namespace GameFramework.GameStructure.Model
 {

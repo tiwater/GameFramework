@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
+using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
 namespace GameFramework.GameStructure.Characters.ObjectModel
 {

@@ -108,16 +108,15 @@ namespace GameFramework.GameStructure.Characters
         /// Convert the equipments in the PlayerGameItem to the format this component can understand
         /// </summary>
         /// <param name="equipments"></param>
-        private void PopulateCharacterEquipments(List<EquipmentItem> equipments)
+        private void PopulateCharacterEquipments(List<PlayerGameItem> equipments)
         {
             List<EquipmentInfo> equipmentInfos = new List<EquipmentInfo>();
             foreach (var equipment in equipments)
             {
                 EquipmentInfo equipmentInfo = new EquipmentInfo();
-                equipmentInfo.slot = equipment.EquipSlot;
-                var gameItem = equipment.Equipment;
-                equipmentInfo.equipment = GameManager.Instance.GetIBaseGameItemManager(gameItem.GiType).BaseGetItem(gameItem.GiId);
-                equipmentInfo.PrefabType = gameItem.PrefabType;
+                equipmentInfo.slot = equipment.Props.Slotted;
+                equipmentInfo.equipment = GameManager.Instance.GetIBaseGameItemManager(equipment.GiType).BaseGetItem(equipment.GiId);
+                equipmentInfo.PrefabType = equipment.PrefabType;
                 equipmentInfos.Add(equipmentInfo);
             }
             EquipmentInfos = equipmentInfos;

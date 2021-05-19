@@ -29,26 +29,27 @@ namespace Creation {
             "CghjcmVhdGlvbhgBIAEoCzISLmNyZWF0aW9uLkNyZWF0aW9uIn4KDUNyZWF0",
             "aW9uUHJvcHMSDwoHc2xvdHRlZBgBIAEoCRIOCgZoZWFsdGgYAiABKAUSDAoE",
             "bW9vZBgDIAEoCRIOCgZodW5ncnkYBCABKAUSCwoDYWdlGAUgASgFEgwKBHJh",
-            "bmsYBiABKAUSEwoLYWNoaWV2ZW1lbnQYByABKAkinAMKCENyZWF0aW9uEhUK",
-            "DW1vZGVsX3ZlcnNpb24YASABKAkSEwoLY3JlYXRpb25faWQYAiABKAkSFQoN",
-            "Y3JlYXRpb25fdHlwZRgDIAEoCRITCgtwcmVmYWJfdHlwZRgEIAEoCRIQCgh0",
-            "ZW1wbGF0ZRgFIAEoCRIMCgRuYW1lGAYgASgJEhMKC2Rlc2NyaXB0aW9uGAcg",
-            "ASgJEhAKCGNhdGVnb3J5GAggASgJEigKCXJlc291cmNlcxgJIAMoCzIVLmNy",
-            "ZWF0aW9uLkNyZWF0aW9uUmVzEg0KBXNsb3RzGAogAygJEiYKBXByb3BzGAsg",
-            "ASgLMhcuY3JlYXRpb24uQ3JlYXRpb25Qcm9wcxI3CgtleHRyYV9wcm9wcxgM",
-            "IAMoCzIiLmNyZWF0aW9uLkNyZWF0aW9uLkV4dHJhUHJvcHNFbnRyeRIkCghj",
-            "aGlsZHJlbhgNIAMoCzISLmNyZWF0aW9uLkNyZWF0aW9uGjEKD0V4dHJhUHJv",
-            "cHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBIigKC0Ny",
-            "ZWF0aW9uUmVzEgwKBHR5cGUYASABKAkSCwoDdXJsGAIgASgJMlMKEENyZWF0",
-            "aW9uUHJvdmlkZXISPwoLR2V0Q3JlYXRpb24SHC5jcmVhdGlvbi5HZXRDcmVh",
-            "dGlvblJlcXVlc3QaEi5jcmVhdGlvbi5DcmVhdGlvbmIGcHJvdG8z"));
+            "bmsYBiABKAUSEwoLYWNoaWV2ZW1lbnQYByABKAkirAMKCENyZWF0aW9uEhUK",
+            "DW1vZGVsX3ZlcnNpb24YASABKAkSEwoLY3JlYXRpb25faWQYAiABKAkSDgoG",
+            "c3RhdHVzGAMgASgJEhUKDWNyZWF0aW9uX3R5cGUYBCABKAkSEwoLcHJlZmFi",
+            "X3R5cGUYBSABKAkSEAoIdGVtcGxhdGUYBiABKAkSDAoEbmFtZRgHIAEoCRIT",
+            "CgtkZXNjcmlwdGlvbhgIIAEoCRIQCghjYXRlZ29yeRgJIAEoCRIoCglyZXNv",
+            "dXJjZXMYCiADKAsyFS5jcmVhdGlvbi5DcmVhdGlvblJlcxINCgVzbG90cxgL",
+            "IAMoCRImCgVwcm9wcxgMIAEoCzIXLmNyZWF0aW9uLkNyZWF0aW9uUHJvcHMS",
+            "NwoLZXh0cmFfcHJvcHMYDSADKAsyIi5jcmVhdGlvbi5DcmVhdGlvbi5FeHRy",
+            "YVByb3BzRW50cnkSJAoIY2hpbGRyZW4YDiADKAsyEi5jcmVhdGlvbi5DcmVh",
+            "dGlvbhoxCg9FeHRyYVByb3BzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
+            "GAIgASgJOgI4ASIoCgtDcmVhdGlvblJlcxIMCgR0eXBlGAEgASgJEgsKA3Vy",
+            "bBgCIAEoCTJTChBDcmVhdGlvblByb3ZpZGVyEj8KC0dldENyZWF0aW9uEhwu",
+            "Y3JlYXRpb24uR2V0Q3JlYXRpb25SZXF1ZXN0GhIuY3JlYXRpb24uQ3JlYXRp",
+            "b25iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.GetCreationRequest), global::Creation.GetCreationRequest.Parser, new[]{ "Theme" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.UpdateCreationRequest), global::Creation.UpdateCreationRequest.Parser, new[]{ "Creation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationProps), global::Creation.CreationProps.Parser, new[]{ "Slotted", "Health", "Mood", "Hungry", "Age", "Rank", "Achievement" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.Creation), global::Creation.Creation.Parser, new[]{ "ModelVersion", "CreationId", "CreationType", "PrefabType", "Template", "Name", "Description", "Category", "Resources", "Slots", "Props", "ExtraProps", "Children" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.Creation), global::Creation.Creation.Parser, new[]{ "ModelVersion", "CreationId", "Status", "CreationType", "PrefabType", "Template", "Name", "Description", "Category", "Resources", "Slots", "Props", "ExtraProps", "Children" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationRes), global::Creation.CreationRes.Parser, new[]{ "Type", "Url" }, null, null, null, null)
           }));
     }
@@ -828,6 +829,7 @@ namespace Creation {
     public Creation(Creation other) : this() {
       modelVersion_ = other.modelVersion_;
       creationId_ = other.creationId_;
+      status_ = other.status_;
       creationType_ = other.creationType_;
       prefabType_ = other.prefabType_;
       template_ = other.template_;
@@ -869,8 +871,19 @@ namespace Creation {
       }
     }
 
+    /// <summary>Field number for the "status" field.</summary>
+    public const int StatusFieldNumber = 3;
+    private string status_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Status {
+      get { return status_; }
+      set {
+        status_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "creation_type" field.</summary>
-    public const int CreationTypeFieldNumber = 3;
+    public const int CreationTypeFieldNumber = 4;
     private string creationType_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string CreationType {
@@ -881,7 +894,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "prefab_type" field.</summary>
-    public const int PrefabTypeFieldNumber = 4;
+    public const int PrefabTypeFieldNumber = 5;
     private string prefabType_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PrefabType {
@@ -892,7 +905,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "template" field.</summary>
-    public const int TemplateFieldNumber = 5;
+    public const int TemplateFieldNumber = 6;
     private string template_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Template {
@@ -903,7 +916,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 6;
+    public const int NameFieldNumber = 7;
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -914,7 +927,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "description" field.</summary>
-    public const int DescriptionFieldNumber = 7;
+    public const int DescriptionFieldNumber = 8;
     private string description_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -925,7 +938,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "category" field.</summary>
-    public const int CategoryFieldNumber = 8;
+    public const int CategoryFieldNumber = 9;
     private string category_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Category {
@@ -936,9 +949,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "resources" field.</summary>
-    public const int ResourcesFieldNumber = 9;
+    public const int ResourcesFieldNumber = 10;
     private static readonly pb::FieldCodec<global::Creation.CreationRes> _repeated_resources_codec
-        = pb::FieldCodec.ForMessage(74, global::Creation.CreationRes.Parser);
+        = pb::FieldCodec.ForMessage(82, global::Creation.CreationRes.Parser);
     private readonly pbc::RepeatedField<global::Creation.CreationRes> resources_ = new pbc::RepeatedField<global::Creation.CreationRes>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Creation.CreationRes> Resources {
@@ -946,9 +959,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "slots" field.</summary>
-    public const int SlotsFieldNumber = 10;
+    public const int SlotsFieldNumber = 11;
     private static readonly pb::FieldCodec<string> _repeated_slots_codec
-        = pb::FieldCodec.ForString(82);
+        = pb::FieldCodec.ForString(90);
     private readonly pbc::RepeatedField<string> slots_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Slots {
@@ -956,7 +969,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "props" field.</summary>
-    public const int PropsFieldNumber = 11;
+    public const int PropsFieldNumber = 12;
     private global::Creation.CreationProps props_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Creation.CreationProps Props {
@@ -967,9 +980,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "extra_props" field.</summary>
-    public const int ExtraPropsFieldNumber = 12;
+    public const int ExtraPropsFieldNumber = 13;
     private static readonly pbc::MapField<string, string>.Codec _map_extraProps_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 98);
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 106);
     private readonly pbc::MapField<string, string> extraProps_ = new pbc::MapField<string, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> ExtraProps {
@@ -977,9 +990,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "children" field.</summary>
-    public const int ChildrenFieldNumber = 13;
+    public const int ChildrenFieldNumber = 14;
     private static readonly pb::FieldCodec<global::Creation.Creation> _repeated_children_codec
-        = pb::FieldCodec.ForMessage(106, global::Creation.Creation.Parser);
+        = pb::FieldCodec.ForMessage(114, global::Creation.Creation.Parser);
     private readonly pbc::RepeatedField<global::Creation.Creation> children_ = new pbc::RepeatedField<global::Creation.Creation>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Creation.Creation> Children {
@@ -1001,6 +1014,7 @@ namespace Creation {
       }
       if (ModelVersion != other.ModelVersion) return false;
       if (CreationId != other.CreationId) return false;
+      if (Status != other.Status) return false;
       if (CreationType != other.CreationType) return false;
       if (PrefabType != other.PrefabType) return false;
       if (Template != other.Template) return false;
@@ -1020,6 +1034,7 @@ namespace Creation {
       int hash = 1;
       if (ModelVersion.Length != 0) hash ^= ModelVersion.GetHashCode();
       if (CreationId.Length != 0) hash ^= CreationId.GetHashCode();
+      if (Status.Length != 0) hash ^= Status.GetHashCode();
       if (CreationType.Length != 0) hash ^= CreationType.GetHashCode();
       if (PrefabType.Length != 0) hash ^= PrefabType.GetHashCode();
       if (Template.Length != 0) hash ^= Template.GetHashCode();
@@ -1055,34 +1070,38 @@ namespace Creation {
         output.WriteRawTag(18);
         output.WriteString(CreationId);
       }
-      if (CreationType.Length != 0) {
+      if (Status.Length != 0) {
         output.WriteRawTag(26);
+        output.WriteString(Status);
+      }
+      if (CreationType.Length != 0) {
+        output.WriteRawTag(34);
         output.WriteString(CreationType);
       }
       if (PrefabType.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(PrefabType);
       }
       if (Template.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteString(Template);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteString(Name);
       }
       if (Description.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteString(Description);
       }
       if (Category.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteString(Category);
       }
       resources_.WriteTo(output, _repeated_resources_codec);
       slots_.WriteTo(output, _repeated_slots_codec);
       if (props_ != null) {
-        output.WriteRawTag(90);
+        output.WriteRawTag(98);
         output.WriteMessage(Props);
       }
       extraProps_.WriteTo(output, _map_extraProps_codec);
@@ -1104,34 +1123,38 @@ namespace Creation {
         output.WriteRawTag(18);
         output.WriteString(CreationId);
       }
-      if (CreationType.Length != 0) {
+      if (Status.Length != 0) {
         output.WriteRawTag(26);
+        output.WriteString(Status);
+      }
+      if (CreationType.Length != 0) {
+        output.WriteRawTag(34);
         output.WriteString(CreationType);
       }
       if (PrefabType.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(PrefabType);
       }
       if (Template.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteString(Template);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteString(Name);
       }
       if (Description.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteString(Description);
       }
       if (Category.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteString(Category);
       }
       resources_.WriteTo(ref output, _repeated_resources_codec);
       slots_.WriteTo(ref output, _repeated_slots_codec);
       if (props_ != null) {
-        output.WriteRawTag(90);
+        output.WriteRawTag(98);
         output.WriteMessage(Props);
       }
       extraProps_.WriteTo(ref output, _map_extraProps_codec);
@@ -1150,6 +1173,9 @@ namespace Creation {
       }
       if (CreationId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(CreationId);
+      }
+      if (Status.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Status);
       }
       if (CreationType.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(CreationType);
@@ -1192,6 +1218,9 @@ namespace Creation {
       }
       if (other.CreationId.Length != 0) {
         CreationId = other.CreationId;
+      }
+      if (other.Status.Length != 0) {
+        Status = other.Status;
       }
       if (other.CreationType.Length != 0) {
         CreationType = other.CreationType;
@@ -1244,49 +1273,53 @@ namespace Creation {
             break;
           }
           case 26: {
-            CreationType = input.ReadString();
+            Status = input.ReadString();
             break;
           }
           case 34: {
-            PrefabType = input.ReadString();
+            CreationType = input.ReadString();
             break;
           }
           case 42: {
-            Template = input.ReadString();
+            PrefabType = input.ReadString();
             break;
           }
           case 50: {
-            Name = input.ReadString();
+            Template = input.ReadString();
             break;
           }
           case 58: {
-            Description = input.ReadString();
+            Name = input.ReadString();
             break;
           }
           case 66: {
-            Category = input.ReadString();
+            Description = input.ReadString();
             break;
           }
           case 74: {
-            resources_.AddEntriesFrom(input, _repeated_resources_codec);
+            Category = input.ReadString();
             break;
           }
           case 82: {
-            slots_.AddEntriesFrom(input, _repeated_slots_codec);
+            resources_.AddEntriesFrom(input, _repeated_resources_codec);
             break;
           }
           case 90: {
+            slots_.AddEntriesFrom(input, _repeated_slots_codec);
+            break;
+          }
+          case 98: {
             if (props_ == null) {
               Props = new global::Creation.CreationProps();
             }
             input.ReadMessage(Props);
             break;
           }
-          case 98: {
+          case 106: {
             extraProps_.AddEntriesFrom(input, _map_extraProps_codec);
             break;
           }
-          case 106: {
+          case 114: {
             children_.AddEntriesFrom(input, _repeated_children_codec);
             break;
           }
@@ -1313,49 +1346,53 @@ namespace Creation {
             break;
           }
           case 26: {
-            CreationType = input.ReadString();
+            Status = input.ReadString();
             break;
           }
           case 34: {
-            PrefabType = input.ReadString();
+            CreationType = input.ReadString();
             break;
           }
           case 42: {
-            Template = input.ReadString();
+            PrefabType = input.ReadString();
             break;
           }
           case 50: {
-            Name = input.ReadString();
+            Template = input.ReadString();
             break;
           }
           case 58: {
-            Description = input.ReadString();
+            Name = input.ReadString();
             break;
           }
           case 66: {
-            Category = input.ReadString();
+            Description = input.ReadString();
             break;
           }
           case 74: {
-            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
+            Category = input.ReadString();
             break;
           }
           case 82: {
-            slots_.AddEntriesFrom(ref input, _repeated_slots_codec);
+            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
             break;
           }
           case 90: {
+            slots_.AddEntriesFrom(ref input, _repeated_slots_codec);
+            break;
+          }
+          case 98: {
             if (props_ == null) {
               Props = new global::Creation.CreationProps();
             }
             input.ReadMessage(Props);
             break;
           }
-          case 98: {
+          case 106: {
             extraProps_.AddEntriesFrom(ref input, _map_extraProps_codec);
             break;
           }
-          case 106: {
+          case 114: {
             children_.AddEntriesFrom(ref input, _repeated_children_codec);
             break;
           }

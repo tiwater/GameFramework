@@ -36,7 +36,6 @@ using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
 using GameFramework.Service;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
-using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.GameItems.ObjectModel
 {
@@ -77,6 +76,18 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// The axis directions
         /// </summary>
         public enum AxisDirection { X, NegativeX, Y, NegativeY, Z, NegativeZ }
+
+        /// <summary>
+        /// The equip slot on a GameItem
+        /// </summary>
+        public enum Slot
+        {
+            None = 0, All = 1, Root = 2,
+            Body = 10,
+            Hat = 20, Coat = 21, Trousers = 21, Shoes = 22,
+            LHand = 30, RHand = 31,
+            LEar = 40, REar = 41
+        };
         #endregion Enums
 
         #region Editor Parameters

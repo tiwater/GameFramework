@@ -4,11 +4,9 @@ using System.Threading.Tasks;
 using GameFramework.Service;
 using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
-using static GameFramework.GameStructure.PlayerGameItems.ObjectModel.GameItemEquipment;
 
 namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 {
-    [Serializable]
     public class PlayerGameItem
     {
         public string Id;
@@ -28,19 +26,19 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         //public List<GameItemEquipment> CharacterEquipments = new List<GameItemEquipment>();
 
         //[NonSerialized]
-        public List<EquipmentItem> Equipments = new List<EquipmentItem>();
+        public List<PlayerGameItem> Equipments { get; set; }
 
         /// <summary>
         /// The children PlayerGameItem
         /// </summary>
         //[SerializeField]
         //[NonSerialized]
-        public List<PlayerGameItem> Children;
+        public List<PlayerGameItem> Children { get; set; }
 
         public LocalisablePrefabType PrefabType;
         public bool IsActive;
 
-        public Props Props;
+        public Props Props = new Props();
 
         /// <summary>
         /// A list of custom variables for this game item.
@@ -57,8 +55,9 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             }
         }
         [Tooltip("A list of custom variables for this game item.")]
-        [SerializeField]
         Variables.ObjectModel.Variables _variables = new Variables.ObjectModel.Variables();
+
+        public string Category;
 
         public PlayerGameItem()
         {
@@ -87,18 +86,18 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         }
     }
 
-    [Serializable]
-    public class EquipmentItem
-    {
-        public string EquiptorId;
-        public Slot EquipSlot;
-        public PlayerGameItem Equipment;
-    }
+    //[Serializable]
+    //public class EquipmentItem
+    //{
+    //    public string EquiptorId;
+    //    public Slot EquipSlot;
+    //    public PlayerGameItem Equipment;
+    //}
 
     [Serializable]
     public class Props
     {
-        public string Slotted;
+        public Slot Slotted;
         public float Health;
         public string Mood;
         public float Hungry;

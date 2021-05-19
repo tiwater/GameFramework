@@ -86,7 +86,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
                 //Load equipments
                 foreach (var equipment in pgi.Equipments)
                 {
-                    FetchGameItems(equipment.Equipment, gameItems);
+                    FetchGameItems(equipment, gameItems);
                 }
             }
 

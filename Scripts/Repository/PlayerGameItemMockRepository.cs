@@ -66,13 +66,11 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         equipment.GiId = "AGI_Stick1";
         equipment.Id = "4";
         equipment.PrefabType = LocalisablePrefabType.InGame;
+        equipment.IsActive = true;
+        equipment.Props.Slotted = Slot.RHand;
 
-        EquipmentItem eInfo = new EquipmentItem();
-        eInfo.EquiptorId = character.Id;
-        eInfo.EquipSlot = GameItemEquipment.Slot.RHand;
-        eInfo.Equipment = equipment;
-
-        character.Equipments.Add(eInfo);
+        character.Equipments = new List<PlayerGameItem>();
+        character.Equipments.Add(equipment);
 
         //Skin
         PlayerGameItem skin = new PlayerGameItem();
@@ -80,13 +78,10 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         skin.GiId = "AGI_BallFishSkin1";
         skin.Id = "5";
         skin.PrefabType = LocalisablePrefabType.InGame;
+        skin.IsActive = true;
+        skin.Props.Slotted = Slot.Body;
 
-        eInfo = new EquipmentItem();
-        eInfo.EquiptorId = character.Id;
-        eInfo.EquipSlot = GameItemEquipment.Slot.Body;
-        eInfo.Equipment = skin;
-
-        character.Equipments.Add(eInfo);
+        character.Equipments.Add(skin);
 
         //Debug.Log(JsonUtility.ToJson(scene));
         //Debug.Log(JsonConvert.SerializeObject(scene));
