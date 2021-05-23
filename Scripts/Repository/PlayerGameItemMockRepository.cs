@@ -92,7 +92,7 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
     {
         List<PlayerGameItem> seaweeds = new List<PlayerGameItem>();
 
-        for(int i = 0; i < 150; i++)
+        for(int i = 0; i < 20; i++)
         {
             PlayerGameItem seaweed = new PlayerGameItem();
             seaweed.GiType = "AddressableGameItem";

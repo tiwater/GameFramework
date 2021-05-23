@@ -48,6 +48,7 @@ using GameFramework.GameStructure.Service;
 using GameFramework.Service;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.PlayerGameItems;
+using GameFramework.Platform.Android;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS
@@ -579,6 +580,23 @@ namespace GameFramework.GameStructure
         public ScriptManager Scripts { get; set; }
 
         /// <summary>
+        /// For communicate with Android
+        /// </summary>
+        public UnityAndroidBridge UnityAndroidBridge;
+
+        /// <summary>
+        /// The callback from Android layer to dispatch the Intent,
+        /// wrapper of the UnityAndroidBridge OnIntent method
+        /// </summary>
+        /// <param name="intent"></param>
+        public void OnIntent(string intent)
+        {
+#if UNITY_ANDROID
+            UnityAndroidBridge.OnIntent(intent);
+#endif
+        }
+
+        /// <summary>
         /// The root node of current scene
         /// </summary>
         public PlayerGameItem SceneRootNode
@@ -751,6 +769,9 @@ namespace GameFramework.GameStructure
         {
             //Clear initialised flag
             IsInitialised = false;
+#if UNITY_ANDROID
+            UnityAndroidBridge = new UnityAndroidBridge();
+#endif
             base.GameSetup();
             GameSetupAysnc();
         }

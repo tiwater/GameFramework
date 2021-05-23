@@ -8,6 +8,9 @@ using GameFramework.GameStructure.Characters;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.AddressableGameItems.Components;
 using GameFramework.GameStructure.Util;
+using GameFramework.Platform.Android;
+using Newtonsoft.Json;
+using UnityEngine.Events;
 
 namespace GameFramework.GameStructure
 {
@@ -115,6 +118,10 @@ namespace GameFramework.GameStructure
                     DisplayPlayGameItems(gameObject.transform, child);
                 }
             }
+        }
+
+        private void OnDestroy()
+        {
         }
     }
 }

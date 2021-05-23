@@ -28,7 +28,7 @@ namespace GameFramework.Display.Placement.Components
         /// The Speed with which to follow the Target.
         /// </summary>
         [Tooltip("The Speed of the gameobject.")]
-        public float Speed = 1.5f;
+        public float Speed = 1.2f;
 
         [Tooltip("The distance to target that gameobject stop move.")]
         public float StopDistance = 0.15f;
