@@ -17,13 +17,35 @@ import java.util.Set;
 
 public class MainExtActivity extends UnityPlayerActivity {
 
+  private static final String TAG = "MainExtActivity";
   private HashMap<String, UnityBroadCastReceiver> receivers = new HashMap<String, UnityBroadCastReceiver>();
 
   protected void onCreate(Bundle savedInstanceState) {
-    // 调用 UnityPlayerActivity.onCreate()
+    // Call UnityPlayerActivity.onCreate()
     super.onCreate(savedInstanceState);
-    // 将调试消息打印至 logcat
-    Log.d("MainExtActivity", "onCreate called!");
+    // Print debug info to logcat
+    Log.d(TAG, "onCreate called!");
+    Intent intent = this.getIntent();
+    if (intent != null) {
+      String extra = intent.getStringExtra("GameTrigger");
+      if (extra != null) {
+        Log.d(TAG, extra);
+      }
+    }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+
+    Log.d(TAG, "onResume called!");
+    Intent intent = this.getIntent();
+    if (intent != null) {
+      String extra = intent.getStringExtra("GameTrigger");
+      if (extra != null) {
+        Log.d(TAG, extra);
+      }
+    }
   }
 
   /**
@@ -33,7 +55,7 @@ public class MainExtActivity extends UnityPlayerActivity {
    */
   public void registerIntentUnityReceiver(String action){
     if(!receivers.containsKey(action)){
-      Log.i("MainExtActivity", "registerIntentUnityReceiver!");
+      Log.i(TAG, "registerIntentUnityReceiver!");
       //Only need to register 1 receiver for an action
       UnityBroadCastReceiver receiver = new UnityBroadCastReceiver();
       receivers.put(action, receiver);
@@ -87,12 +109,12 @@ public class MainExtActivity extends UnityPlayerActivity {
             root.put("Extras", extras);
           }
         }
-        Log.d("MainExtActivity", root.toString());
+        Log.d(TAG, root.toString());
         //Dispatch to Unity
         UnityPlayer.UnitySendMessage("GameManager", "OnIntent", root.toString());
       } catch (Exception ex){
         ex.printStackTrace();
-        Log.e("MainExtActivity", ex.getMessage());
+        Log.e(TAG, ex.getMessage());
       }
     }
   }

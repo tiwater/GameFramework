@@ -11,6 +11,7 @@ using GameFramework.GameStructure.Util;
 using GameFramework.Platform.Android;
 using Newtonsoft.Json;
 using UnityEngine.Events;
+using PuertsExtension;
 
 namespace GameFramework.GameStructure
 {
@@ -28,6 +29,7 @@ namespace GameFramework.GameStructure
         public GameObject AgiHolder;
 
         public GameObject PlayerCharacterHolder { get; set; }
+        private UnityAction<Intent> listener;
 
         private void Start()
         {
@@ -40,7 +42,13 @@ namespace GameFramework.GameStructure
             {
                 yield return Task.Yield();
             }
+            listener = GameManager.Instance.UnityAndroidBridge.AddIntentListener("com.tiwater.test", OnIntent);
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
+            Intent intent = new Intent();
+            intent.Action = "com.tiwater.test";
+            intent.PutExtras("health", 1);
+            intent.PutExtras("name", "Buddy");
+            UnityAndroidBridge.SendIntent(intent);
         }
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
@@ -122,6 +130,16 @@ namespace GameFramework.GameStructure
 
         private void OnDestroy()
         {
+            if (listener != null)
+            {
+                GameManager.Instance.UnityAndroidBridge.RemoveIntentListener(listener);
+                listener = null;
+            }
+        }
+
+        private void OnIntent(Intent msg)
+        {
+            Debug.Log("SceneItemInstanceManager Got:" + JsonConvert.SerializeObject(msg));
         }
     }
 }

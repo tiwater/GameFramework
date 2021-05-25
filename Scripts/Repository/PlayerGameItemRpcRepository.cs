@@ -47,7 +47,7 @@ namespace GameFramework.Repository
             var client = new CreationProvider.CreationProviderClient(channel);
 
             var request = new GetCreationRequest();
-            //Mock data
+            //TODO: Update Mock data
             request.Theme = "lido";
 
             var reply = await client.GetCreationAsync(request);

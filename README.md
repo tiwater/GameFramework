@@ -71,6 +71,10 @@ Feel free to try and use the free version, however if you like the framework the
 
 All reviews on the [asset store](https://www.assetstore.unity3d.com/#!/content/55334?aid=1011lGnE) are also very much appreciated and encourage us to continue developing this framework.
 
+## Customize Android App
+To customize the android app, in the Unity Build Settings, switch the platform to Android, then select the Export Project checkbox, after that, click the Export button in the dialog, you will get a template android project for the Unity app. Copy the MainExtActivity.java into the source code folder of the template project, you can have a well configured environment for Android development.
+The AndroidManifest.xml of this project needs to be put in the /Plugins/Android folder.
+
 ## Background
 While developing games, we have slowly built up our own internal framework that lets us quickly and easily create and release new games. It is our wish to contribute and make this available to the community to help others. It is freely available so even those with little or no budget can use it. We appreciate however if you are able to download and rate the [Asset Store Package](http://u3d.as/mtk) to help support the effort needed to maintain this framework.
 
