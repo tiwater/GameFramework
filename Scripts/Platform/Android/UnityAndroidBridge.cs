@@ -13,6 +13,8 @@ namespace GameFramework.Platform.Android
     /// This automatically hooks up the button onClick listener
     public class UnityAndroidBridge
     {
+        public const string RECEIVE_ACTION = "com.tiwater.gameframework.karu.GAME_UPDATED";
+
         private Dictionary<string, UnityAction<Intent>> actions = new Dictionary<string, UnityAction<Intent>>();
 
         /// <summary>
@@ -169,9 +171,9 @@ namespace GameFramework.Platform.Android
         /// <param name="intent"></param>
         public void OnIntent(string intent)
         {
-            Debug.Log("Got json intent: " + intent);
+            //Debug.Log("Got json intent: " + intent);
             Intent intentObj = JsonConvert.DeserializeObject<Intent>(intent);
-            Debug.Log("After deserialize: " + JsonConvert.SerializeObject(intentObj));
+            //Debug.Log("After deserialize: " + JsonConvert.SerializeObject(intentObj));
             if (actions.ContainsKey(intentObj.Action))
             {
                 actions[intentObj.Action].Invoke(intentObj);
@@ -184,12 +186,12 @@ namespace GameFramework.Platform.Android
         public string Action;
         public Dictionary<string, object> Extras = new Dictionary<string, object>();
 
-        public void PutExtras(string key, object value)
+        public void PutExtra(string key, object value)
         {
             Extras[key] = value;
         }
 
-        public object GetExtras(string key)
+        public object GetExtra(string key)
         {
             if (Extras.ContainsKey(key))
             {

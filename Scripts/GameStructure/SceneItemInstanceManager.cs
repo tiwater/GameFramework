@@ -42,13 +42,15 @@ namespace GameFramework.GameStructure
             {
                 yield return Task.Yield();
             }
-            listener = GameManager.Instance.UnityAndroidBridge.AddIntentListener("com.tiwater.test", OnIntent);
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
-            Intent intent = new Intent();
-            intent.Action = "com.tiwater.test";
-            intent.PutExtras("health", 1);
-            intent.PutExtras("name", "Buddy");
-            UnityAndroidBridge.SendIntent(intent);
+
+            //Listen to the game update message from the Android layer
+            listener = GameManager.Instance.UnityAndroidBridge.AddIntentListener(UnityAndroidBridge.RECEIVE_ACTION, OnIntent);
+            //Intent intent = new Intent();
+            //intent.Action = "com.tiwater.test";
+            //intent.PutExtra("health", 1);
+            //intent.PutExtra("name", "Buddy");
+            //UnityAndroidBridge.SendIntent(intent);
         }
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
