@@ -21,11 +21,18 @@ namespace GameFramework.Service
         private static string MOCK_SKIN_ID2 = "sk2";
         private static string MOCK_STICK_ID1 = "stick1";
 
-        private static PlayerGameItemService _instance = new PlayerGameItemService();
+        protected static PlayerGameItemService _instance;
 
         public static PlayerGameItemService Instance
         {
-            get { return _instance; }
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new PlayerGameItemService();
+                }
+                return _instance;
+            }
         }
 
         public async Task<string> LoadToken()

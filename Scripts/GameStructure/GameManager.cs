@@ -776,6 +776,22 @@ namespace GameFramework.GameStructure
             GameSetupAysnc();
         }
 
+        protected void RegisterServices()
+        {
+            //Sub classes can override this method to register specific services/repositories
+        }
+
+        private void CreateManagers()
+        {
+            RegisterServices();
+            Worlds = new WorldGameItemManager();
+            Levels = new LevelGameItemManager();
+            Characters = new CharacterGameItemManager();
+            AddressableGameItems = new AddressableGameItemManager();
+            PlayerGameItems = new GameItemInstanceManager();
+            Scripts = new ScriptManager();
+        }
+
         private async Task GameSetupAysnc()
         {
 
@@ -851,12 +867,7 @@ namespace GameFramework.GameStructure
             SetDisplayProperties();
 
             // setup of worlds and levels
-            Worlds = new WorldGameItemManager();
-            Levels = new LevelGameItemManager();
-            Characters = new CharacterGameItemManager();
-            AddressableGameItems = new AddressableGameItemManager();
-            PlayerGameItems = new GameItemInstanceManager();
-            Scripts = new ScriptManager();
+            CreateManagers();
 
             if (IsHandleGameItemInTree)
             {
