@@ -88,7 +88,7 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         return scene;
     }
 
-    private List<PlayerGameItem> GenerateSeaweeds()
+    protected List<PlayerGameItem> GenerateSeaweeds()
     {
         List<PlayerGameItem> seaweeds = new List<PlayerGameItem>();
 
