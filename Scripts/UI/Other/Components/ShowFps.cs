@@ -28,10 +28,10 @@ namespace GameFramework.UI.Other.Components
         private Rect m_fps;
         private GUIStyle m_style = new GUIStyle();
 
-        void Awake()
-        {
-            Application.targetFrameRate = 100;
-        }
+        //void Awake()
+        //{
+        //    Application.targetFrameRate = 60;
+        //}
 
         void Start()
         {

@@ -13,7 +13,7 @@ namespace GameFramework.Platform.Android
     /// This automatically hooks up the button onClick listener
     public class UnityAndroidBridge
     {
-        public const string RECEIVE_ACTION = "com.tiwater.gameframework.karu.GAME_UPDATED";
+        public const string RECEIVE_ACTION = "com.tiwater.karu.GAME_UPDATED";
 
         private Dictionary<string, UnityAction<Intent>> actions = new Dictionary<string, UnityAction<Intent>>();
 
