@@ -776,14 +776,13 @@ namespace GameFramework.GameStructure
             GameSetupAysnc();
         }
 
-        protected void RegisterServices()
+        protected virtual void RegisterServices()
         {
             //Sub classes can override this method to register specific services/repositories
         }
 
         private void CreateManagers()
         {
-            RegisterServices();
             Worlds = new WorldGameItemManager();
             Levels = new LevelGameItemManager();
             Characters = new CharacterGameItemManager();
@@ -810,6 +809,7 @@ namespace GameFramework.GameStructure
             //    //No token, need to proceed with device binding
             //    return;
             //}
+            RegisterServices();
 
             // secure preferences
             PreferencesFactory.UseSecurePrefs = SecurePreferences;
