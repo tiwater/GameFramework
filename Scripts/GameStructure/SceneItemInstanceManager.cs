@@ -99,10 +99,6 @@ namespace GameFramework.GameStructure
                     //Link to the player's character holder
                     PlayerCharacterHolder = gameObject;
                 }
-                //holderComponent.Context.ContextMode = GameItems.ObjectModel.GameItemContext.ContextModeType.ByNumber;
-                //holderComponent.Context.Number = item.GiId;
-                //holderComponent.PrefabType = item.PrefabType;
-                //holderComponent.PlayerGameItem = item;
             }
             else if (item.GiType == typeof(AddressableGameItem).Name)
             {

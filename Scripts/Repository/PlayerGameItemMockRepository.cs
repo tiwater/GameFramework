@@ -12,24 +12,24 @@ using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
 public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepository
 {
-    public Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
+    public virtual Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PlayerGameItem> GetCurrentPlayerInstance()
+    public async virtual Task<PlayerGameItem> GetCurrentPlayerInstance()
     {
         PlayerGameItem player = new PlayerGameItem();
         player.Id = GameManager.Instance.UserId;
         return player;
     }
 
-    public Task<PlayerGameItem> GetPlayerGameItem(string itemId)
+    public virtual Task<PlayerGameItem> GetPlayerGameItem(string itemId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PlayerGameItem> LoadCurrentScene()
+    public async virtual Task<PlayerGameItem> LoadCurrentScene()
     {
         PlayerGameItem scene = new PlayerGameItem();
         scene.GiType = "Level";
@@ -111,22 +111,22 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         return seaweeds;
     }
 
-    public Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
+    public virtual Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<string> LoadToken()
+    public virtual Task<string> LoadToken()
     {
         throw new NotImplementedException();
     }
 
-    public Task StoreToken(string token)
+    public virtual Task StoreToken(string token)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateParentChildRelation(string parentId, string childId, bool add)
+    public virtual Task UpdateParentChildRelation(string parentId, string childId, bool add)
     {
         throw new NotImplementedException();
     }
