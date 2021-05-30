@@ -29,7 +29,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
         /// <returns></returns>
         public async Task LoadItemInCurrentScene()
         {
-            Root = await PlayerGameItemService.Instance.LoadCurrentScene();
+            Root = await PlayerGameItemService.Instance.LoadCurrentScene(GameManager.Instance.GameName);
             await PopulateGameItem(Root);
         }
 

@@ -43,9 +43,10 @@ namespace GameFramework.GameStructure
                 yield return Task.Yield();
             }
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
-
+#if UNITY_ANDROID
             //Listen to the game update message from the Android layer
             listener = GameManager.Instance.UnityAndroidBridge.AddIntentListener(UnityAndroidBridge.RECEIVE_ACTION, OnIntent);
+#endif
             //Intent intent = new Intent();
             //intent.Action = "com.tiwater.test";
             //intent.PutExtra("health", 1);

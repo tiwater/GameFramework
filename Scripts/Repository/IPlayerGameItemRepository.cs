@@ -30,6 +30,6 @@ namespace GameFramework.Repository
         /// Load the scene the player located in
         /// </summary>
         /// <returns></returns>
-        Task<PlayerGameItem> LoadCurrentScene();
+        Task<PlayerGameItem> LoadCurrentScene(string theme);
     }
 }

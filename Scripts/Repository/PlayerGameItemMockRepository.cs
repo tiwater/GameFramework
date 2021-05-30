@@ -29,7 +29,7 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         throw new NotImplementedException();
     }
 
-    public async virtual Task<PlayerGameItem> LoadCurrentScene()
+    public async virtual Task<PlayerGameItem> LoadCurrentScene(string theme)
     {
         PlayerGameItem scene = new PlayerGameItem();
         scene.GiType = "Level";

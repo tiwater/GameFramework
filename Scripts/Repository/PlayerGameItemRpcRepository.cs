@@ -39,7 +39,7 @@ namespace GameFramework.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<PlayerGameItem> LoadCurrentScene()
+        public async Task<PlayerGameItem> LoadCurrentScene(string theme)
         {
 
             Channel channel = ChannelFactory.GetChannel();
@@ -47,8 +47,8 @@ namespace GameFramework.Repository
             var client = new CreationProvider.CreationProviderClient(channel);
 
             var request = new GetCreationRequest();
-            //TODO: Update Mock data
-            request.Theme = "lido";
+
+            request.Theme = theme;
 
             var reply = await client.GetCreationAsync(request);
 

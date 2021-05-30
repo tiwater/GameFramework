@@ -306,9 +306,9 @@ namespace GameFramework.Service
             await RepoFactory.PlayerGameItemRepository.UpdateParentChildRelation(parentId, child.Id, true);
         }
 
-        public async Task<PlayerGameItem> LoadCurrentScene()
+        public async Task<PlayerGameItem> LoadCurrentScene(string theme)
         {
-            return await RepoFactory.PlayerGameItemRepository.LoadCurrentScene();
+            return await RepoFactory.PlayerGameItemRepository.LoadCurrentScene(theme.ToLower());
         }
     }
 }

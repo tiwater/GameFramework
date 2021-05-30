@@ -122,7 +122,7 @@ namespace GameFramework.Repository
             return GetPlayerGameItem(GameManager.Instance.UserId);
         }
 
-        public Task<PlayerGameItem> LoadCurrentScene()
+        public Task<PlayerGameItem> LoadCurrentScene(string theme)
         {
             throw new NotImplementedException();
         }
