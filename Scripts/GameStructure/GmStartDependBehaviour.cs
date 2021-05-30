@@ -8,7 +8,7 @@ namespace GameFramework.GameStructure
     /// An MonoBehaviour which will call LateStart() after the GameManager is ready
     /// </summary>
     /// The MonoBehaviour will call LateStart() after the GameManager is ready
-    public abstract class GMDependBehaviour : MonoBehaviour
+    public abstract class GmStartDependBehaviour : MonoBehaviour
     {
         private void Start()
         {
@@ -23,9 +23,9 @@ namespace GameFramework.GameStructure
                 yield return Task.Yield();
             }
             //Call LateStart
-            LateStart();
+            GmReadyStart();
         }
 
-        protected abstract void LateStart();
+        protected abstract void GmReadyStart();
     }
 }

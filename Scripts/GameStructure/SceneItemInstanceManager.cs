@@ -22,7 +22,7 @@ namespace GameFramework.GameStructure
     /// GameStructure, Display, Localisation, Audio, Messaging and more. Please see the online help for full information.
     [AddComponentMenu("Game Framework/GameStructure/Scene Item Instance Manager")]
     [HelpURL("http://www.flipwebapps.com/game-framework/")]
-    public class SceneItemInstanceManager : GMDependBehaviour
+    public class SceneItemInstanceManager : GmStartDependBehaviour
     {
         public GameObject LevelHolder;
         public GameObject CharacterHolder;
@@ -31,7 +31,7 @@ namespace GameFramework.GameStructure
         public GameObject PlayerCharacterHolder { get; set; }
         private UnityAction<Intent> listener;
 
-        protected override void LateStart()
+        protected override void GmReadyStart()
         {
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
 #if UNITY_ANDROID
