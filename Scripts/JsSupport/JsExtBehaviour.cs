@@ -66,7 +66,6 @@ namespace GameFramework.GameStructure.JsSupport
         {
             if (JsStart != null)
             {
-                Debug.Log("Origin Start()");
                 JsStart();
                 IsJsStartCalled = true;
             }
@@ -80,7 +79,6 @@ namespace GameFramework.GameStructure.JsSupport
             {
                 if (!IsJsStartCalled)
                 {
-                    Debug.Log("Update triggered start");
                     Start();
                     IsJsStartCalled = true;
                 }
