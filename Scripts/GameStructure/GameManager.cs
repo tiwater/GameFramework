@@ -871,9 +871,6 @@ namespace GameFramework.GameStructure
 
             if (IsHandleGameItemInTree)
             {
-                Debug.Log("Load Scene");
-                await LoadCurrentScene();
-                Debug.Log("Load Scene Done");
                 await Scripts.PreloadScripts();
             }
             else
