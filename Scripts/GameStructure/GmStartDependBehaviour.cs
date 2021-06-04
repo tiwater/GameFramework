@@ -18,7 +18,7 @@ namespace GameFramework.GameStructure
         IEnumerator GmDependStart()
         {
             //Wait for GameManager ready
-            while (!GameManager.Instance.IsInitialised)
+            while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }

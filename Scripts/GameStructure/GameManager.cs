@@ -48,7 +48,8 @@ using GameFramework.GameStructure.Service;
 using GameFramework.Service;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.PlayerGameItems;
-using GameFramework.Platform.Android;
+using GameFramework.Platform.Abstract;
+using GameFramework.Platform;
 #pragma warning disable 618
 
 #if BEAUTIFUL_TRANSITIONS
@@ -582,18 +583,19 @@ namespace GameFramework.GameStructure
         /// <summary>
         /// For communicate with Android
         /// </summary>
-        public UnityAndroidBridge UnityAndroidBridge;
+        public UnityPlatformBridge UnityPlatformBridge;
 
         /// <summary>
         /// The callback from Android layer to dispatch the Intent,
         /// wrapper of the UnityAndroidBridge OnIntent method
         /// </summary>
         /// <param name="intent"></param>
-        public void OnIntent(string intent)
+        public void OnNativeMessage(string message)
         {
-#if UNITY_ANDROID
-            UnityAndroidBridge.OnIntent(intent);
-#endif
+            if (UnityPlatformBridge != null)
+            {
+                UnityPlatformBridge.OnNativeMessage(message);
+            }
         }
 
         /// <summary>
@@ -769,9 +771,7 @@ namespace GameFramework.GameStructure
         {
             //Clear initialised flag
             IsInitialised = false;
-#if UNITY_ANDROID
-            UnityAndroidBridge = new UnityAndroidBridge();
-#endif
+            UnityPlatformBridge = UnityPlatformBridgeFactory.GetUnityPlatformBridge();
             base.GameSetup();
             GameSetupAysnc();
         }

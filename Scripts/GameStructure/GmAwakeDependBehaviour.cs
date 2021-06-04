@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GameFramework.GameStructure;
 using System.Threading.Tasks;
 
-public abstract class GmAwakeDependBehaviour : MonoBehaviour
+namespace GameFramework.GameStructure
 {
-    void Awake()
+    public abstract class GmAwakeDependBehaviour : MonoBehaviour
     {
-        StartCoroutine(GmDependAwake());
-    }
-
-    IEnumerator GmDependAwake()
-    {
-
-        //Wait for the GameManager init process
-        while (!GameManager.Instance.IsInitialised)
+        void Awake()
         {
-            yield return Task.Yield();
+            StartCoroutine(GmDependAwake());
         }
-        GmReadyAwake();
-    }
 
-    protected abstract void GmReadyAwake();
+        IEnumerator GmDependAwake()
+        {
+
+            //Wait for the GameManager init process
+            while (!GameManager.Instance.IsInitialised)
+            {
+                yield return Task.Yield();
+            }
+            GmReadyAwake();
+        }
+
+        protected abstract void GmReadyAwake();
+    }
 }

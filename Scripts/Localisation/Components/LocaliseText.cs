@@ -153,7 +153,7 @@ namespace GameFramework.Localisation.Components
         protected IEnumerator LateEnable()
         {
 
-            while (!GameManager.Instance.IsInitialised)
+            while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }

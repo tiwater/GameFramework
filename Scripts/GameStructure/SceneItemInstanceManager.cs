@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Threading.Tasks;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 using GameFramework.GameStructure.Levels.ObjectModel;
 using GameFramework.GameStructure.Characters.ObjectModel;
@@ -8,10 +6,10 @@ using GameFramework.GameStructure.Characters;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.AddressableGameItems.Components;
 using GameFramework.GameStructure.Util;
-using GameFramework.Platform.Android;
 using Newtonsoft.Json;
 using UnityEngine.Events;
-using PuertsExtension;
+using GameFramework.GameStructure.Platform.Messaging;
+using GameFramework.Messaging;
 
 namespace GameFramework.GameStructure
 {
@@ -29,20 +27,19 @@ namespace GameFramework.GameStructure
         public GameObject AgiHolder;
 
         public GameObject PlayerCharacterHolder { get; set; }
-        private UnityAction<Intent> listener;
+        private UnityAction<PlatformMessage> listener;
 
         protected override void GmReadyStart()
         {
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
-#if UNITY_ANDROID
+
             //Listen to the game update message from the Android layer
-            listener = GameManager.Instance.UnityAndroidBridge.AddIntentListener(UnityAndroidBridge.RECEIVE_ACTION, OnIntent);
-#endif
-            //Intent intent = new Intent();
-            //intent.Action = "com.tiwater.test";
-            //intent.PutExtra("health", 1);
-            //intent.PutExtra("name", "Buddy");
-            //UnityAndroidBridge.SendIntent(intent);
+            GameManager.SafeAddListener<PlatformMessage>(OnMessage);
+
+            //PlatformMessage msg = new PlatformMessage(PlatformMessage.DEFAULT_MESSAGE_HEADER);
+            //msg.PutContent("health", 1);
+            //msg.PutContent("name", "Buddy");
+            //GameManager.Instance.UnityPlatformBridge.SendPlatformMessage(msg);
         }
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
@@ -120,16 +117,13 @@ namespace GameFramework.GameStructure
 
         private void OnDestroy()
         {
-            if (listener != null)
-            {
-                GameManager.Instance.UnityAndroidBridge.RemoveIntentListener(listener);
-                listener = null;
-            }
+            GameManager.SafeRemoveListener<PlatformMessage>(OnMessage);
         }
 
-        private void OnIntent(Intent msg)
+        private bool OnMessage(BaseMessage msg)
         {
             Debug.Log("SceneItemInstanceManager Got:" + JsonConvert.SerializeObject(msg));
+            return true;
         }
     }
 }
