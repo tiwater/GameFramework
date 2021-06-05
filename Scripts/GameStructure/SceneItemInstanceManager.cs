@@ -44,73 +44,76 @@ namespace GameFramework.GameStructure
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
         {
-            //Get the position and rotation info for the GameItem
-            var positionVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION);
-            var rotationVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION);
-            Vector3 position;
-            Quaternion rotation;
-            //Position
-            if (positionVariable != null)
+            if (item != null)
             {
-                position = positionVariable.Value;
-            }
-            else
-            {
-                position = Vector3.zero;
-            }
-            //Rotation
-            if (rotationVariable != null)
-            {
-                rotation = Quaternion.Euler(rotationVariable.Value);
-            }
-            else
-            {
-                rotation = Quaternion.identity;
-            }
-            GameObject gameObject = null;
-
-            if (item.GiType == typeof(Level).Name)
-            {
-                //Level
-                gameObject = Instantiate(LevelHolder,
-                    position, rotation, parent);
-            }
-            else if (item.GiType == typeof(Character).Name)
-            {
-                //Create the character holder
-                gameObject = Instantiate(CharacterHolder,
-                    position, rotation, parent);
-                //Config the prefab
-                var holderComponent = gameObject.GetComponent<CharacterHolder>();
-                holderComponent.BindCharacterPGI(item, item.PrefabType);
-                if (item.IsActive)
+                //Get the position and rotation info for the GameItem
+                var positionVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION);
+                var rotationVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION);
+                Vector3 position;
+                Quaternion rotation;
+                //Position
+                if (positionVariable != null)
                 {
-                    //Link to the player's character holder
-                    PlayerCharacterHolder = gameObject;
+                    position = positionVariable.Value;
                 }
-            }
-            else if (item.GiType == typeof(AddressableGameItem).Name)
-            {
-                AddressableGameItem gameItem = GameManager.Instance.AddressableGameItems.GetItem(item.GiId);
-                //Won't create GameObject for Skin (Texture).
-                if (gameItem.ContentType != Model.AddressableGameItemMeta.ContentType.Skin)
+                else
                 {
-                    //AddressableGameItem
-                    gameObject = Instantiate(AgiHolder,
+                    position = Vector3.zero;
+                }
+                //Rotation
+                if (rotationVariable != null)
+                {
+                    rotation = Quaternion.Euler(rotationVariable.Value);
+                }
+                else
+                {
+                    rotation = Quaternion.identity;
+                }
+                GameObject gameObject = null;
+
+                if (item.GiType == typeof(Level).Name)
+                {
+                    //Level
+                    gameObject = Instantiate(LevelHolder,
+                        position, rotation, parent);
+                }
+                else if (item.GiType == typeof(Character).Name)
+                {
+                    //Create the character holder
+                    gameObject = Instantiate(CharacterHolder,
                         position, rotation, parent);
                     //Config the prefab
-                    var holderComponent = gameObject.GetComponent<AddressableGameItemHolder>();
-                    holderComponent.Context.ContextMode = GameItems.ObjectModel.GameItemContext.ContextModeType.ByNumber;
-                    holderComponent.Context.Number = item.GiId;
-                    holderComponent.PrefabType = item.PrefabType;
+                    var holderComponent = gameObject.GetComponent<CharacterHolder>();
+                    holderComponent.BindCharacterPGI(item, item.PrefabType);
+                    if (item.IsActive)
+                    {
+                        //Link to the player's character holder
+                        PlayerCharacterHolder = gameObject;
+                    }
                 }
-            }
-            if (item.Children != null && gameObject != null)
-            {
-                //Handle the children's display
-                foreach (var child in item.Children)
+                else if (item.GiType == typeof(AddressableGameItem).Name)
                 {
-                    DisplayPlayGameItems(gameObject.transform, child);
+                    AddressableGameItem gameItem = GameManager.Instance.AddressableGameItems.GetItem(item.GiId);
+                    //Won't create GameObject for Skin (Texture).
+                    if (gameItem.ContentType != Model.AddressableGameItemMeta.ContentType.Skin)
+                    {
+                        //AddressableGameItem
+                        gameObject = Instantiate(AgiHolder,
+                            position, rotation, parent);
+                        //Config the prefab
+                        var holderComponent = gameObject.GetComponent<AddressableGameItemHolder>();
+                        holderComponent.Context.ContextMode = GameItems.ObjectModel.GameItemContext.ContextModeType.ByNumber;
+                        holderComponent.Context.Number = item.GiId;
+                        holderComponent.PrefabType = item.PrefabType;
+                    }
+                }
+                if (item.Children != null && gameObject != null)
+                {
+                    //Handle the children's display
+                    foreach (var child in item.Children)
+                    {
+                        DisplayPlayGameItems(gameObject.transform, child);
+                    }
                 }
             }
         }

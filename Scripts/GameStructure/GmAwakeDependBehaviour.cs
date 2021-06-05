@@ -15,7 +15,7 @@ namespace GameFramework.GameStructure
         {
 
             //Wait for the GameManager init process
-            while (!GameManager.Instance.IsInitialised)
+            while (GameManager.Instance==null || !GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }
