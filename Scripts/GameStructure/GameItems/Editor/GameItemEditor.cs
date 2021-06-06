@@ -41,6 +41,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
         SerializedProperty _giLocalisablePrefabsProperty;
         SerializedProperty _giLocalisableSpritesProperty;
         SerializedProperty _giLocalisableTexturesProperty;
+        SerializedProperty _giLocalisableAudioClipsProperty;
         SerializedProperty _giVariablesProperty;
         SerializedProperty _giPackageProperty;
 
@@ -65,6 +66,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
             _giLocalisablePrefabsProperty = serializedObject.FindProperty("_localisablePrefabs");
             _giLocalisableSpritesProperty = serializedObject.FindProperty("_localisableSprites");
             _giLocalisableTexturesProperty = serializedObject.FindProperty("_localisableTextures");
+            _giLocalisableAudioClipsProperty = serializedObject.FindProperty("_localisableAudioClips");
             _giVariablesProperty = serializedObject.FindProperty("_variables");
             _giPackageProperty = serializedObject.FindProperty("_package");
             _giConsumable = serializedObject.FindProperty("Consumable");
@@ -108,6 +110,7 @@ namespace GameFramework.GameStructure.GameItems.Editor
             DrawBasicProperties();
             DrawPrefabs();
             DrawSprites();
+            DrawAudioClips();
             DrawVariables();
         }
 
@@ -393,6 +396,91 @@ namespace GameFramework.GameStructure.GameItems.Editor
             var propPrefab = newElement.FindPropertyRelative("LocalisableTexture._default");
             propPrefab.objectReferenceValue = prefab;
             var propLocalisedPrefabs = newElement.FindPropertyRelative("LocalisableTexture._localisedObjects");
+            propLocalisedPrefabs.arraySize = 0;
+        }
+
+        /// <summary>
+        /// Draw the audio clips part
+        /// </summary>
+        protected void DrawAudioClips()
+        {
+            EditorGUILayout.BeginVertical("Box");
+            EditorGUILayout.LabelField(new GUIContent("AudioClips", "Here you can add audio clips for use with standard features such as selection screens or for your own custom needs"), EditorStyles.boldLabel);
+
+            _prefabDropRect = DrawDropRect("Drag an AudioClip here to create a new entry");
+
+            if (_giLocalisableAudioClipsProperty.arraySize > 0)
+            {
+                for (var i = 0; i < _giLocalisableAudioClipsProperty.arraySize; i++)
+                {
+                    var arrayProperty = _giLocalisableAudioClipsProperty.GetArrayElementAtIndex(i);
+                    var nameProperty = arrayProperty.FindPropertyRelative("Name");
+                    var typeProperty = arrayProperty.FindPropertyRelative("LocalisableAssetType");
+
+                    var deleted = false;
+                    // indent
+                    EditorGUILayout.BeginHorizontal(GuiStyles.BoxLightStyle);
+                    GUILayout.Space(15f);
+                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.BeginHorizontal();
+                    var title = typeProperty.enumValueIndex == 0
+                        ? (string.IsNullOrEmpty(nameProperty.stringValue) ? "<missing name>" : nameProperty.stringValue)
+                        : typeProperty.enumDisplayNames[typeProperty.enumValueIndex];
+                    arrayProperty.isExpanded = EditorGUILayout.Foldout(arrayProperty.isExpanded, title);
+                    if (GUILayout.Button("X", GuiStyles.BorderlessButtonStyle, GUILayout.Width(12), GUILayout.Height(12)) &&
+                        EditorUtility.DisplayDialog("Remove Entry?", "Are you sure you want to remove this entry?", "Yes",
+                            "No"))
+                    {
+                        _giLocalisableAudioClipsProperty.DeleteArrayElementAtIndex(i);
+                        deleted = true;
+                    }
+                    EditorGUILayout.EndHorizontal();
+
+                    if (!deleted && arrayProperty.isExpanded)
+                    {
+                        var defaultAssetProperty = arrayProperty.FindPropertyRelative("LocalisableAsset");
+
+                        EditorGUILayout.PropertyField(typeProperty, new GUIContent("Type", typeProperty.tooltip));
+
+                        if (typeProperty.enumValueIndex == (int)GameItem.LocalisableAssetType.Custom)
+                        {
+                            EditorGUILayout.PropertyField(nameProperty, new GUIContent("Name", nameProperty.tooltip));
+                        }
+
+                        EditorGUILayout.PropertyField(defaultAssetProperty, new GUIContent("AudioClip", defaultAssetProperty.tooltip));
+                    }
+                    EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndHorizontal();
+
+                    GUILayout.Space(2f);
+                }
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(new GUIContent("Add AudioClip Entry"), GUILayout.ExpandWidth(false)))
+            {
+                AddNewAudioClip();
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(2f);
+            EditorGUILayout.EndVertical();
+        }
+
+        void AddNewAudioClip(GameObject audioClip = null)
+        {
+            _giLocalisableAudioClipsProperty.arraySize++;
+            var newElement =
+                _giLocalisableAudioClipsProperty.GetArrayElementAtIndex(_giLocalisableAudioClipsProperty.arraySize - 1);
+            newElement.isExpanded = true;
+            var propType = newElement.FindPropertyRelative("LocalisableAssetType");
+            propType.enumValueIndex = 0;
+            var propName = newElement.FindPropertyRelative("Name");
+            propName.stringValue = null;
+            var propPrefab = newElement.FindPropertyRelative("LocalisableAsset._default");
+            propPrefab.objectReferenceValue = audioClip;
+            var propLocalisedPrefabs = newElement.FindPropertyRelative("LocalisableAsset._localisedObjects");
             propLocalisedPrefabs.arraySize = 0;
         }
 
