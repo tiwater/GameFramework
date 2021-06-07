@@ -70,7 +70,13 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
         /// The different types of textures we have
         /// </summary>
         public enum LocalisableTextureType { Custom, SelectionMenu, InGame, UnlockWindow,
-            Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10}
+            Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10
+        }
+
+        /// <summary>
+        /// The different types of asset we have
+        /// </summary>
+        public enum LocalisableAssetType { Custom, SelectionMenu, InGame, UnlockWindow }
 
         /// <summary>
         /// The axis directions
@@ -263,6 +269,10 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
         [SerializeField]
         protected List<LocalisableTextureEntry> _localisableTextures = new List<LocalisableTextureEntry>();
+
+        [SerializeField]
+        //protected List<LocalisableAudioClipEntry> _localisableAudioClips = new List<LocalisableAudioClipEntry>();
+        protected List<LocalisableAssetEntry<AudioClip>> _localisableAudioClips = new List<LocalisableAssetEntry<AudioClip>>();
 
         /// <summary>
         /// A list of custom variables for this game item.
@@ -1514,6 +1524,196 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
 
         #endregion Sprite Related
 
+        #region Generic LocalisableAsset Related
+        /// <summary>
+        /// Get a localisable asset with the given name that corresponds to the currently set language
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetLocalisableAssetByName<T>(string name) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(name);
+            return localisableAsset == null ? null : localisableAsset.GetAsset();
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given name that correspondsto the specified language
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAssetByName<T>(string name, SystemLanguage language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(name);
+            return localisableAsset == null ? null : localisableAsset.GetAsset(language, fallbackToDefault);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given name that corresponds to the specified language
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAssetByName<T>(string name, string language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(name);
+            return localisableAsset == null ? null : localisableAsset.GetAsset(language, fallbackToDefault);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type that corresponds to the currently set language
+        /// </summary>
+        /// <returns></returns>
+        public T GetLocalisableAssetByType<T>(LocalisableAssetType localisableAssetType) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(localisableAssetType);
+            return localisableAsset == null ? null : localisableAsset.GetAsset();
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type that correspondsto the specified language
+        /// </summary>
+        /// <param name="spriteType"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAssetByType<T>(LocalisableAssetType localisableAssetType, SystemLanguage language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(localisableAssetType);
+            return localisableAsset == null ? null : localisableAsset.GetAsset(language, fallbackToDefault);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type that corresponds to the specified language
+        /// </summary>
+        /// <param name="spriteType"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAssetByType<T>(LocalisableAssetType localisableAssetType, string language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            var localisableAsset = GetLocalisableAsset<T>(localisableAssetType);
+            return localisableAsset == null ? null : localisableAsset.GetAsset(language, fallbackToDefault);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type and custom name
+        /// </summary>
+        /// <param name="spriteType"></param>
+        /// <param name="customName"></param>
+        /// <returns></returns>
+        public T GetLocalisableAsset<T>(LocalisableAssetType localisableAssetType, string customName) where T : UnityEngine.Object
+        {
+            return localisableAssetType == GameItem.LocalisableAssetType.Custom ? GetLocalisableAssetByName<T>(customName) : GetLocalisableAssetByType<T>(localisableAssetType);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type and custom name that corresponds to the specified language
+        /// </summary>
+        /// <param name="spriteType"></param>
+        /// <param name="customName"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAsset<T>(LocalisableAssetType localisableAssetType, string customName, SystemLanguage language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            return localisableAssetType == GameItem.LocalisableAssetType.Custom
+                ? GetLocalisableAssetByName<T>(customName, language, fallbackToDefault)
+                : GetLocalisableAssetByType<T>(localisableAssetType, language, fallbackToDefault);
+        }
+
+
+        /// <summary>
+        /// Get a localisable asset with the given type and custom name that corresponds to the specified language
+        /// </summary>
+        /// <param name="spriteType"></param>
+        /// <param name="customName"></param>
+        /// <param name="language"></param>
+        /// <param name="fallbackToDefault"></param>
+        /// <returns></returns>
+        public T GetLocalisableAsset<T>(LocalisableAssetType localisableAssetType, string customName, string language, bool fallbackToDefault = true) where T : UnityEngine.Object
+        {
+            return localisableAssetType == GameItem.LocalisableAssetType.Custom
+                ? GetLocalisableAssetByName<T>(customName, language, fallbackToDefault)
+                : GetLocalisableAssetByType<T>(localisableAssetType, language, fallbackToDefault);
+        }
+
+        /// <summary>
+        /// Get a localised asset entry with the given name
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="localisableAssets"></param>
+        /// <returns></returns>
+        TypedLocalisableObject<T> GetLocalisableAsset<T>(string name, List<LocalisableAssetEntry<T>> localisableAssets) where T : UnityEngine.Object
+        {
+
+            foreach (var assetEntry in localisableAssets)
+            {
+                if (assetEntry.Name == name) return assetEntry.LocalisableAsset;
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Get a localised asset entry with the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        TypedLocalisableObject<T> GetLocalisableAsset<T>(string name) where T : UnityEngine.Object
+        {
+            if (typeof(T) == typeof(AudioClip))
+            {
+                object asset = GetLocalisableAsset<AudioClip>(name, _localisableAudioClips);
+                return (TypedLocalisableObject<T>)asset;
+            } else
+            {
+                throw new Exception("Unsupported type of LocalisableAsset!");
+            }
+        }
+
+
+        /// <summary>
+        /// Get a localised asset entry with the given type
+        /// </summary>
+        /// <param name="localisableSpriteTypeEnum"></param>
+        /// <returns></returns>
+        TypedLocalisableObject<T> GetLocalisableAsset<T>(LocalisableAssetType localisableAssetTypeEnum) where T : UnityEngine.Object
+        {
+
+            if (typeof(T) == typeof(AudioClip))
+            {
+                object asset = GetLocalisableAsset<AudioClip>(localisableAssetTypeEnum, _localisableAudioClips);
+                return (TypedLocalisableObject<T>)asset;
+            }
+            else
+            {
+                throw new Exception("Unsupported type of LocalisableAsset!");
+            }
+        }
+
+        
+        TypedLocalisableObject<T> GetLocalisableAsset<T>(LocalisableAssetType localisableAssetTypeEnum, List<LocalisableAssetEntry<T>> localisableAssets) where T : UnityEngine.Object
+        {
+            foreach (var assetEntry in localisableAssets)
+            {
+                if (assetEntry.LocalisableAssetType == localisableAssetTypeEnum) return assetEntry.LocalisableAsset;
+            }
+            return null;
+        }
+
+        #endregion AudioClip Related
+
         #region Score Related
 
         /// <summary>
@@ -1967,6 +2167,33 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
             public string Name;
             [Tooltip("The sprite that will be used for this type unless overridden for a particular language.")]
             public LocalisableTexture LocalisableTexture;
+        }
+
+        //[Serializable]
+        //public class LocalisableAudioClipEntry
+        //{
+        //    [Tooltip("The type that this audio clip represents, either a standard type or a custom one for your own use.")]
+        //    public LocalisableAssetType LocalisableAssetType;
+        //    [Tooltip("A unique name that identifies this prefab that you can later use for accessing it.")]
+        //    public string Name;
+        //    [Tooltip("The sprite that will be used for this type unless overridden for a particular language.")]
+        //    public LocalisableAudioClip LocalisableAudioClip;
+        //}
+
+        [Serializable]
+        public class LocalisableAudioClipEntry : LocalisableAssetEntry<AudioClip>
+        {
+        }
+
+        [Serializable]
+        public class LocalisableAssetEntry<T> where T:UnityEngine.Object
+        {
+            [Tooltip("The type that this audio clip represents, either a standard type or a custom one for your own use.")]
+            public LocalisableAssetType LocalisableAssetType;
+            [Tooltip("A unique name that identifies this prefab that you can later use for accessing it.")]
+            public string Name;
+            [Tooltip("The sprite that will be used for this type unless overridden for a particular language.")]
+            public TypedLocalisableObject<T> LocalisableAsset;
         }
 
         #endregion extra classes for configuration
