@@ -165,7 +165,7 @@ namespace GameFramework.Localisation.Components
         /// </summary>
         IEnumerator Localise()
         {
-            while (!GameManager.Instance.IsInitialised)
+            while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }
