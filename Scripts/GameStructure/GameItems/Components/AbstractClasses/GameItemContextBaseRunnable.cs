@@ -41,7 +41,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
 
         private IEnumerator LateStart()
         {
-            while (!GameManager.Instance.IsInitialised)
+            while (GameManager.Instance ==null || !GameManager.Instance.IsInitialised)
             {
                 yield return Task.Yield();
             }
