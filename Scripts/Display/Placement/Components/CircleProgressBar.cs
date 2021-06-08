@@ -68,20 +68,45 @@ public class CircleProgressBar : MonoBehaviour
 
     private Image bgImage;
     private Image pbImage;
+    private Image icImage;
 
     private RectTransform rectTransform;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        //Init the component variables
         rectTransform = GetComponent<RectTransform>();
 
         bgImage = CircleBackground.GetComponent<Image>();
         pbImage = ProgressBar.GetComponent<Image>();
-        //Init the color
+        icImage = Indicator.GetComponent<Image>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        UpdateProgress();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+#if UNITY_EDITOR
+        //For the display in editor
+        UpdateProgress();
+#endif
+    }
+
+    /// <summary>
+    /// Update the progress bar
+    /// </summary>
+    private void UpdateProgress()
+    {
+        //Set the color
         bgImage.color = CircleBackgroundColor;
         pbImage.color = ProgressBarColor;
-        Indicator.GetComponent<Image>().color = IndicatorColor;
+        icImage.color = IndicatorColor;
         //Set image type
         bgImage.fillClockwise = Clockwise;
         bgImage.fillOrigin = (int)FillOrigin;
@@ -89,29 +114,18 @@ public class CircleProgressBar : MonoBehaviour
 
         pbImage.fillClockwise = Clockwise;
         pbImage.fillOrigin = (int)FillOrigin;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateProgress();
-    }
-
-    private void UpdateProgress()
-    {
-        //Update the display of progress bar
-        bgImage.fillClockwise = Clockwise;
-        bgImage.fillOrigin = (int)FillOrigin;
-        bgImage.fillAmount = MaxAngle / 360.0f;
-
-        pbImage.fillClockwise = Clockwise;
-        pbImage.fillOrigin = (int)FillOrigin;
+        //Update the progress value
         SetProgress();
         SetIndicator();
     }
 
-    private void SetProgress()
+    /// <summary>
+    /// Check whether the value of the progress is proper
+    /// </summary>
+    private void CheckValue()
     {
+
         if (MinValue > MaxValue)
         {
             Debug.LogWarning("MinValue " + MinValue + " > MaxValue: " + MaxValue);
@@ -119,26 +133,39 @@ public class CircleProgressBar : MonoBehaviour
         }
         if (Value > MaxValue)
         {
-            Debug.LogWarning("Value " + Value +" > MaxValue: " + MaxValue);
+            Debug.LogWarning("Value " + Value + " > MaxValue: " + MaxValue);
             Value = MaxValue;
-        } 
+        }
         if (Value < MinValue)
         {
             Debug.LogWarning("Value " + Value + " < MinValue: " + MinValue);
             Value = MinValue;
         }
+    }
+
+    /// <summary>
+    /// Set the percentage of the progress bar
+    /// </summary>
+    private void SetProgress()
+    {
+        CheckValue();
         //Calculate the progress percentage
         float amount = (Value - MinValue) / (MaxValue - MinValue) * MaxAngle / 360;
         pbImage.fillAmount = amount;
     }
 
+    /// <summary>
+    /// Put the indicator to the right place
+    /// </summary>
     private void SetIndicator()
     {
+        //Calculate the scale
         float w = rectTransform.rect.width;
         float h = rectTransform.rect.height;
 
         ratio = Mathf.Min( w / defaultComponentSize, h/ defaultComponentSize);
 
+        //Calculate the indicator angle to x axis
         float angle = 0;
         switch (FillOrigin)
         {
@@ -160,6 +187,8 @@ public class CircleProgressBar : MonoBehaviour
 
         //To radians
         angle = angle / 360.0f * 2 * Mathf.PI;
+
+        //The position of the indicator
         float x = r * Mathf.Cos(angle) * ratio;
         float y = r * Mathf.Sin(angle) * ratio;
 
