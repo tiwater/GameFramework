@@ -32,14 +32,6 @@ namespace GameFramework.GameStructure
         protected override void GmReadyStart()
         {
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
-
-            //Listen to the game update message from the Android layer
-            GameManager.SafeAddListener<PlatformMessage>(OnMessage);
-
-            //PlatformMessage msg = new PlatformMessage(PlatformMessage.DEFAULT_MESSAGE_HEADER);
-            //msg.PutContent("health", 1);
-            //msg.PutContent("name", "Buddy");
-            //GameManager.Instance.UnityPlatformBridge.SendPlatformMessage(msg);
         }
 
         private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
@@ -116,17 +108,6 @@ namespace GameFramework.GameStructure
                     }
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            GameManager.SafeRemoveListener<PlatformMessage>(OnMessage);
-        }
-
-        private bool OnMessage(BaseMessage msg)
-        {
-            Debug.Log("SceneItemInstanceManager Got:" + JsonConvert.SerializeObject(msg));
-            return true;
         }
     }
 }

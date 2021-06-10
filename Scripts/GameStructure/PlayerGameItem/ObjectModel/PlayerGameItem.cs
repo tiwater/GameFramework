@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GameFramework.GameStructure.Util;
 using GameFramework.Service;
 using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
 namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 {
+    [Serializable]
     public class PlayerGameItem
     {
         public string Id;
@@ -22,18 +24,14 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         /// <summary>
         /// The equipment for each character
         /// </summary>
-        //[SerializeField]
-        //public List<GameItemEquipment> CharacterEquipments = new List<GameItemEquipment>();
-
-        //[NonSerialized]
-        public List<PlayerGameItem> Equipments { get; set; }
+        [NonSerialized]
+        public List<PlayerGameItem> Equipments;
 
         /// <summary>
         /// The children PlayerGameItem
         /// </summary>
-        //[SerializeField]
-        //[NonSerialized]
-        public List<PlayerGameItem> Children { get; set; }
+        [NonSerialized]
+        public List<PlayerGameItem> Children;
 
         public LocalisablePrefabType PrefabType;
         public bool IsActive;
@@ -83,6 +81,93 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             {
                 Debug.LogError("Cannot add self as child");
             }
+        }
+
+        public List<string> CompareWith(PlayerGameItem that)
+        {
+            List<string> differents = ObjectUtil.CompareObjects(this, that);
+            differents.AddRange(ObjectUtil.CompareObjects(this.Props, that.Props));
+            if(CompareLists(this.Children, that.Children) != 0)
+            {
+                //Children are different
+                differents.Add("Children");
+            }
+            if (CompareLists(this.Equipments, that.Equipments) != 0)
+            {
+                //Equipments are different
+                differents.Add("Equipments");
+            }
+            List<string> differentsProps = this.ExtraProps.CompareWith(that.ExtraProps);
+            if (differentsProps.Count > 0)
+            {
+                //Add the ExtraProps property name
+                differents.Add("ExtraProps");
+                //And add the difference inside ExtraProps
+                differents.AddRange(differentsProps);
+            }
+
+            return differents;
+        }
+
+        private int CompareLists(List<PlayerGameItem> thisChildren, List<PlayerGameItem> thatChildren)
+        {
+            //Check whether the List is empty
+            if(thisChildren==null || thisChildren.Count==0 )
+            {
+                if (thatChildren == null || thatChildren.Count == 0)
+                {
+                    return 0;
+                } else
+                {
+                    return -1;
+                }
+            }
+            if(thatChildren == null || thatChildren.Count == 0)
+            {
+                return 1;
+            }
+            //Check the list size
+            if (thisChildren.Count > thatChildren.Count)
+            {
+                return 1;
+            } else if (thisChildren.Count < thatChildren.Count)
+            {
+                return -1;
+            }
+            //Sort the list to ease the compare
+            thisChildren.Sort((x, y) => x.Id.CompareTo(y.Id));
+            thatChildren.Sort((x, y) => x.Id.CompareTo(y.Id));
+            for (int i = 0; i < thisChildren.Count; i++)
+            {
+                //Compare the id on each side
+                if(thisChildren[i].Id == thatChildren[i].Id)
+                {
+                    List<string> differents = thisChildren[i].CompareWith(thisChildren[i]);
+                    if(differents!=null && differents.Count > 0)
+                    {
+                        //The two children are different
+                        //TODO: find a method to mark the comparison of the two objects, e.g. add a CompareTo method
+                        //Now we just return 1 to mark the list are different
+                        return 1;
+                    }
+                } else
+                {
+                    //Different Id
+                    if (thisChildren[i].Id == null)
+                    {
+                        //This id is null, consider it is less
+                        return -1;
+                    }
+                    else
+                    {
+                        //Compare the Ids
+                        return thisChildren[i].Id.CompareTo(thatChildren[i].Id);
+                    }
+                }
+            }
+            //No difference
+            return 0;
+
         }
     }
 

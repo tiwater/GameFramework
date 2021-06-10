@@ -611,6 +611,87 @@ namespace GameFramework.GameStructure.Variables.ObjectModel
             T t = JsonUtility.FromJson<T>(str);
             return t;
         }
+
+
+        public List<string> CompareWith(Variables that)
+        {
+            List<string> differents = new List<string>();
+            //Compare each type variable list
+            if(CompareVariableLists<BoolVariable, bool>(this.BoolVariables, that.BoolVariables) != 0)
+            {
+                differents.Add("BoolVariable");
+            }
+            if (CompareVariableLists<IntVariable, int>(this.IntVariables, that.IntVariables) != 0)
+            {
+                differents.Add("IntVariable");
+            }
+            if (CompareVariableLists<FloatVariable, float>(this.FloatVariables, that.FloatVariables) != 0)
+            {
+                differents.Add("FloatVariable");
+            }
+            if (CompareVariableLists<StringVariable, string>(this.StringVariables, that.StringVariables) != 0)
+            {
+                differents.Add("StringVariable");
+            }
+            if (CompareVariableLists<Vector2Variable, Vector2>(this.Vector2Variables, that.Vector2Variables) != 0)
+            {
+                differents.Add("Vector2Variable");
+            }
+            if (CompareVariableLists<Vector3Variable, Vector3>(this.Vector3Variables, that.Vector3Variables) != 0)
+            {
+                differents.Add("Vector3Variable");
+            }
+            if (CompareVariableLists<ColorVariable, Color>(this.ColorVariables, that.ColorVariables) != 0)
+            {
+                differents.Add("ColorVariable");
+            }
+            return differents;
+        }
+
+        private int CompareVariableLists<T, M>(List<T> thisChildren, List<T> thatChildren) where T : Variable<M>
+        {
+            //Check whether the List is empty
+            if (thisChildren == null || thisChildren.Count == 0)
+            {
+                if (thatChildren == null || thatChildren.Count == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            if (thatChildren == null || thatChildren.Count == 0)
+            {
+                return 1;
+            }
+            //Check the list size
+            if (thisChildren.Count > thatChildren.Count)
+            {
+                return 1;
+            }
+            else if (thisChildren.Count < thatChildren.Count)
+            {
+                return -1;
+            }
+            //Sort the list to ease the compare
+            thisChildren.Sort((x, y) => x.Tag.CompareTo(y.Tag));
+            thatChildren.Sort((x, y) => x.Tag.CompareTo(y.Tag));
+            for (int i = 0; i < thisChildren.Count; i++)
+            {
+                List<string> differents = ObjectUtil.CompareObjects(thisChildren[i], thatChildren[i]);
+                if(differents!=null && differents.Count > 0)
+                {
+                    //Found different
+                    //But cannot describe the bigger or smaller in the list, always return 1 for different
+                    return 1;
+                }
+            }
+            //No difference
+            return 0;
+
+        }
     }
 
 

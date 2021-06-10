@@ -35,7 +35,7 @@ public class CameraFollow : MonoBehaviour
             {
                 //Get the character
                 Target = sceneManager.GetComponent<SceneItemInstanceManager>()
-                    .PlayerCharacterHolder.transform.GetChild(0).transform;
+                    .PlayerCharacterHolder.transform;
                 //Record the offset
                 offset = transform.position - Target.position;
                 initialized = true;

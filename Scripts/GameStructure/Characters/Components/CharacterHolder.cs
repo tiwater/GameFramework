@@ -96,6 +96,8 @@ namespace GameFramework.GameStructure.Characters
 
             //Clear the origin assets for new equipment
             _selectedPrefabInstance = null;
+            //Detach the children
+            transform.DetachChildren();
             foreach (var instance in _cachedPrefabInstances.Values)
             {
                 GameObject.Destroy(instance);

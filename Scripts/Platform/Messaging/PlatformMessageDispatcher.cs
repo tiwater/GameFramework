@@ -31,6 +31,7 @@ namespace GameFramework.Platform.Messaging
             //Register listener for each header, then all messages from native platform will be sent here
             foreach (var header in ListenedMessageHeaders)
             {
+                //The UnityPlatformBridge in GameManager will handle the real native message receiving
                 GameManager.Instance.UnityPlatformBridge.AddMessageListener(header, OnMessage);
             }
         }
@@ -49,7 +50,7 @@ namespace GameFramework.Platform.Messaging
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public void OnMessage(PlatformMessage message)
+        public virtual void OnMessage(PlatformMessage message)
         {
             GameManager.SafeQueueMessage(message);
         }

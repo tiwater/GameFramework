@@ -8,9 +8,20 @@ namespace GameFramework.GameStructure.Platform.Messaging
     {
 
         public const string DEFAULT_MESSAGE_HEADER = "com.tiwater.karu.GAME_UPDATED";
+        public const string PLATFORM_MESSAGE_TYPE_KEY = "MsgType";
+
+        public const string PLATFORM_MESSAGE_TYPE_CREATION_UPDATED = "CreationUpdated";
+        public const string PLATFORM_MESSAGE_TYPE_EQUIPMENT_UPDATED = "EquipmentUpdated";
+
+        public const string PLATFORM_MESSAGE_CONTENT_PGI_KEY = "PGI";
+
+
+        public const string PLATFORM_MESSAGE_CONTENT_EQUIPMENT_KEY = "EQUIPMENT";
+
+        public const string PLATFORM_MESSAGE_CHARACTER_ID_KEY = "CharacterId";
 
         public string Header;
-        public Dictionary<string, object> Content;
+        public Dictionary<string, object> Content = new Dictionary<string, object>();
 
 
         public PlatformMessage()

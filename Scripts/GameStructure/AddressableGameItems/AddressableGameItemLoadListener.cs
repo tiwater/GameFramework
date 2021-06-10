@@ -7,7 +7,7 @@ namespace GameFramework.GameStructure.Listener
     public class AddressableGameItemLoadListener : RunOnMessage<AddressableGameItemLoadedMessage>
     {
         /// <summary>
-        /// Check if the health is zero and if so decrease the number of lives the player has.
+        /// Called when an AddressableGameItem is loaded.
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
