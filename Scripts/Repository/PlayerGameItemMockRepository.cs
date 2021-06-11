@@ -33,7 +33,7 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         character.Id = itemId;
         character.PrefabType = LocalisablePrefabType.Type1;
         character.IsActive = true;
-        character.Props.Health = UnityEngine.Random.Range(0,100);
+        character.Props.Health = UnityEngine.Random.Range(0, 100);
 
         return character;
     }

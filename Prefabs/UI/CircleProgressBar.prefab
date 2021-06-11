@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2783019, g: 0.6918445, b: 1, a: 1}
+  m_Color: {r: 0.41585082, g: 0.8396226, b: 0.72810376, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1273585, g: 0.36750746, b: 1, a: 1}
+  m_Color: {r: 0.075694196, g: 0.764151, b: 0.57713413, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -242,9 +242,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26270a7a7eca74415b1afc446dc456c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CircleBackgroundColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
-  ProgressBarColor: {r: 0.2783019, g: 0.6918445, b: 1, a: 1}
-  IndicatorColor: {r: 0.1273585, g: 0.36750746, b: 1, a: 1}
+  CircleBackgroundColor: {r: 0.8962264, g: 0.85817903, b: 0.85817903, a: 1}
+  ProgressBarColor: {r: 0.41585082, g: 0.8396226, b: 0.72810376, a: 1}
+  IndicatorColor: {r: 0.075694196, g: 0.764151, b: 0.57713413, a: 1}
   CircleBackground: {fileID: 1341796408233599749}
   ProgressBar: {fileID: 1341796407655802411}
   Indicator: {fileID: 1341796407737893942}
@@ -254,6 +254,9 @@ MonoBehaviour:
   MinValue: 0
   MaxValue: 1
   _value: 0.5
+  AnimatedProgress: 1
+  Speed: 20
+  KeepIndicatorInBar: 1
 --- !u!225 &4045280584252305441
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -324,7 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
+  m_Color: {r: 0.8962264, g: 0.85817903, b: 0.85817903, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

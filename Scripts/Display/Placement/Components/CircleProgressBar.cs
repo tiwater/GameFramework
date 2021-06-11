@@ -20,6 +20,9 @@ public class CircleProgressBar : MonoBehaviour
     public RectTransform ProgressBar;
     public RectTransform Indicator;
 
+    /// <summary>
+    /// The progress increment direction
+    /// </summary>
     public bool Clockwise
     {
         get
@@ -29,12 +32,16 @@ public class CircleProgressBar : MonoBehaviour
         set
         {
             _clockWise = value;
-            UpdateProgress();
+            UpdateBehavior();
         }
     }
+    [Tooltip("The progress bar increment direction")]
     [SerializeField]
     private bool _clockWise;
 
+    /// <summary>
+    /// The start position
+    /// </summary>
     public Image.Origin360 FillOrigin {
         get
         {
@@ -43,14 +50,34 @@ public class CircleProgressBar : MonoBehaviour
         set
         {
             _fillOrigin = value;
-            UpdateProgress();
+            UpdateBehavior();
         }
     }
+    [Tooltip("The start position")]
     [SerializeField]
     private Image.Origin360 _fillOrigin = Image.Origin360.Bottom;
+
+    /// <summary>
+    /// The max rotation angle of the circle progress bar
+    /// </summary>
+    [Tooltip("The max rotation angle of the circle progress bar")]
     public int MaxAngle = 180;
+
+    /// <summary>
+    /// The max value the progress bar accepts
+    /// </summary>
+    [Tooltip("The max value the progress bar accepts")]
     public float MinValue = 0;
+
+    /// <summary>
+    /// The min value the progress bar accepts
+    /// </summary>
+    [Tooltip("The min value the progress bar accepts")]
     public float MaxValue = 1;
+
+    /// <summary>
+    /// The value of the progress
+    /// </summary>
     public float Value
     {
         get
@@ -60,11 +87,33 @@ public class CircleProgressBar : MonoBehaviour
         set
         {
             _value = value;
-            UpdateProgress();
+            CheckValue();
+            UpdateBehavior();
         }
     }
+    [Tooltip("The value of the progress")]
     [SerializeField]
     private float _value = 0.5f;
+
+    /// <summary>
+    /// Whether the progress of the value changing is displayed in animation
+    /// </summary>
+    [Tooltip("Whether the progress of the value changing is displayed in animation")]
+    public bool AnimatedProgress = true;
+
+    /// <summary>
+    /// The speed of the progress bar changing. Ignored when AnimatedProgress is false
+    /// </summary>
+    [Tooltip("The speed of the progress bar changing. Ignored when AnimatedProgress is false")]
+    public float Speed = 20;
+
+
+    private float currentValue = 0;
+
+    public bool KeepIndicatorInBar = true;
+    //If multiple progress bars are placed by joined together, the indicator might be overlapped by another bar's background
+    //So put a space for the indicator to avoid the overlap
+    private float indicatorSpace = 0.03f;
 
     private Image bgImage;
     private Image pbImage;
@@ -85,8 +134,8 @@ public class CircleProgressBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        UpdateProgress();
+        CheckValue();
+        UpdateBehavior();
     }
 
     // Update is called once per frame
@@ -94,14 +143,18 @@ public class CircleProgressBar : MonoBehaviour
     {
 #if UNITY_EDITOR
         //For the display in editor
-        UpdateProgress();
+        UpdateBehavior();
 #endif
+        if (Value != currentValue)
+        {
+            UpdateProgress();
+        }
     }
 
     /// <summary>
-    /// Update the progress bar
+    /// Update the progress bar view
     /// </summary>
-    private void UpdateProgress()
+    private void UpdateBehavior()
     {
         //Set the color
         bgImage.color = CircleBackgroundColor;
@@ -114,9 +167,50 @@ public class CircleProgressBar : MonoBehaviour
 
         pbImage.fillClockwise = Clockwise;
         pbImage.fillOrigin = (int)FillOrigin;
+    }
+
+    /// <summary>
+    /// Update the progress bar according to the value
+    /// </summary>
+    private void UpdateProgress()
+    {
+        if (AnimatedProgress)
+        {
+            float delta = Speed * Time.deltaTime;
+            float gap = Value - currentValue;
+            if (delta > Mathf.Abs(gap))
+            {
+                //If move too much, then we are at the target position now
+                currentValue = Value;
+            }
+            else
+            {
+                //Decide the move direction
+                if (gap > 0)
+                {
+                    currentValue += delta;
+                }
+                else
+                {
+                    currentValue -= delta;
+                }
+            }
+        }
+        else
+        {
+            currentValue = Value;
+        }
 
         //Update the progress value
-        SetProgress();
+        //For the display in editor
+        if (Application.IsPlaying(gameObject))
+        {
+            SetProgress(currentValue);
+        }
+        else
+        {
+            SetProgress(Value);
+        }
         SetIndicator();
     }
 
@@ -146,12 +240,19 @@ public class CircleProgressBar : MonoBehaviour
     /// <summary>
     /// Set the percentage of the progress bar
     /// </summary>
-    private void SetProgress()
+    private void SetProgress(float progress)
     {
-        CheckValue();
         //Calculate the progress percentage
-        float amount = (Value - MinValue) / (MaxValue - MinValue) * MaxAngle / 360;
-        pbImage.fillAmount = amount;
+        float amount = (progress - MinValue) / (MaxValue - MinValue) * MaxAngle / 360;
+        if (KeepIndicatorInBar)
+        {
+            //Set buffer for the indicator
+            pbImage.fillAmount = amount * (1 - indicatorSpace * 2) + indicatorSpace * MaxAngle / 360;
+        }
+        else
+        {
+            pbImage.fillAmount = amount;
+        }
     }
 
     /// <summary>
@@ -167,6 +268,7 @@ public class CircleProgressBar : MonoBehaviour
 
         //Calculate the indicator angle to x axis
         float angle = 0;
+        //The start angle
         switch (FillOrigin)
         {
             case Image.Origin360.Bottom:
@@ -181,6 +283,7 @@ public class CircleProgressBar : MonoBehaviour
             default:
                 break;
         }
+        //The angle for the progress
         angle += (pbImage.fillAmount * 360) * (Clockwise ? -1 : 1);
 
         float r = defaultComponentSize / 2.0f - defaultRingWidth / 2.0f;
