@@ -26,10 +26,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
             if (itemHolder != null && message.OldItem.Id == itemHolder.PlayerGameItem.Id)
             {
                 //It's me to update
+                var target = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(itemHolder.PlayerGameItem.Id);
                 //Copy the value for the entity
-                ObjectUtil.CopyObject(message.OldItem, message.NewItem);
-                message.OldItem.Props = message.NewItem.Props;
-                message.OldItem.ExtraProps = message.OldItem.ExtraProps;
+                ObjectUtil.CopyObject(target, message.NewItem);
+                target.Props = message.NewItem.Props;
+                target.ExtraProps = message.OldItem.ExtraProps;
             }
 
             return true;

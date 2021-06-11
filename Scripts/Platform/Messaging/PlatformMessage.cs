@@ -18,7 +18,7 @@ namespace GameFramework.GameStructure.Platform.Messaging
 
         public const string PLATFORM_MESSAGE_CONTENT_EQUIPMENT_KEY = "EQUIPMENT";
 
-        public const string PLATFORM_MESSAGE_CHARACTER_ID_KEY = "CharacterId";
+        public const string PLATFORM_MESSAGE_PGI_ID_KEY = "PGI_Id";
 
         public string Header;
         public Dictionary<string, object> Content = new Dictionary<string, object>();

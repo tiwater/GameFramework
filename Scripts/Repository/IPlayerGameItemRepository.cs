@@ -31,5 +31,12 @@ namespace GameFramework.Repository
         /// </summary>
         /// <returns></returns>
         Task<PlayerGameItem> LoadCurrentScene(string theme);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="characterId"></param>
+        /// <returns></returns>
+        Task<List<PlayerGameItem>> GetEquipments(string itemId);
     }
 }

@@ -126,5 +126,10 @@ namespace GameFramework.Repository
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<PlayerGameItem>> GetEquipments(string itemId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
             if (itemHolder != null && message.CharacterId == itemHolder.PlayerGameItem.Id)
             {
                 //It's me to update the equipment
-                PlayerGameItem character = GameManager.Instance.PlayerGameItems.SelectedCharacter;
+                PlayerGameItem character = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(message.CharacterId);
                 //Update the equipment list
                 character.Equipments = message.NewEquipments;
                 //Rebind

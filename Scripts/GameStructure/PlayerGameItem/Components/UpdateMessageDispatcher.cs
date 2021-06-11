@@ -7,6 +7,8 @@ using GameFramework.GameStructure;
 using GameFramework.GameStructure.PlayerGameItems.Messages;
 using GameFramework.GameStructure.Util;
 using System.Collections.Generic;
+using GameFramework.Service;
+using System.Threading.Tasks;
 
 namespace GameFramework.GameStructure.PlayerGameItems.Components
 {
@@ -17,6 +19,12 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
     {
         public override void OnMessage(PlatformMessage message)
         {
+            HandlePlatformMessage(message);
+        }
+
+        private async Task HandlePlatformMessage(PlatformMessage message)
+        {
+
             //Convert the PlatformMessage to specific message or handle it directly
             if (message.Content.ContainsKey(PlatformMessage.PLATFORM_MESSAGE_TYPE_KEY))
             {
@@ -24,8 +32,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
                 if (type == PlatformMessage.PLATFORM_MESSAGE_TYPE_CREATION_UPDATED)
                 {
                     //Creation properties updated
-                    PlayerGameItem newItem = JsonUtility.FromJson<PlayerGameItem>((string)message.Content[PlatformMessage.PLATFORM_MESSAGE_CONTENT_PGI_KEY]);
-                    PlayerGameItem oldItem = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(newItem.Id);
+                    string itemId = (string)message.Content[PlatformMessage.PLATFORM_MESSAGE_PGI_ID_KEY];
+
+                    PlayerGameItem newItem = await PlayerGameItemService.Instance.GetPlayerGameItem(itemId);
+                    //Clone the oldItem to avoid some message receiver may change the origin item
+                    PlayerGameItem oldItem = JsonUtility.FromJson<PlayerGameItem>(JsonUtility.ToJson(GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(newItem.Id)));
                     PlayerGameItemUpdatedMessage pgiMessage = new PlayerGameItemUpdatedMessage(oldItem, newItem);
 
                     GameManager.SafeQueueMessage(pgiMessage);
@@ -34,10 +45,13 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
                 else if (type == PlatformMessage.PLATFORM_MESSAGE_TYPE_EQUIPMENT_UPDATED)
                 {
                     //Equipment updated
-                    List<PlayerGameItem> newEquipments = JsonUtil.ListFromJson<PlayerGameItem>((string)message.Content[PlatformMessage.PLATFORM_MESSAGE_CONTENT_EQUIPMENT_KEY]);
-                    List<PlayerGameItem> oldEquipments = GameManager.Instance.PlayerGameItems.SelectedCharacter.Equipments;
-                    string charId = (string)message.Content[PlatformMessage.PLATFORM_MESSAGE_CHARACTER_ID_KEY];
-                    EquipmentUpdatedMessage eqMessage = new EquipmentUpdatedMessage(charId, oldEquipments, newEquipments);
+                    string itemId = (string)message.Content[PlatformMessage.PLATFORM_MESSAGE_PGI_ID_KEY];
+
+                    List<PlayerGameItem> newEquipments = await PlayerGameItemService.Instance.GetEquipments(itemId);
+                    //Copy the item to avoid some message receiver may change the origin item
+                    List<PlayerGameItem> oldEquipments = JsonUtil.ListFromJson< PlayerGameItem >(JsonUtil.ListToJson<PlayerGameItem>(GameManager.Instance.PlayerGameItems.SelectedCharacter.Equipments));
+
+                    EquipmentUpdatedMessage eqMessage = new EquipmentUpdatedMessage(itemId, oldEquipments, newEquipments);
 
                     GameManager.SafeQueueMessage(eqMessage);
                     return;

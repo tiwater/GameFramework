@@ -24,9 +24,18 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
         return player;
     }
 
-    public virtual Task<PlayerGameItem> GetPlayerGameItem(string itemId)
+    public async virtual Task<PlayerGameItem> GetPlayerGameItem(string itemId)
     {
-        throw new NotImplementedException();
+
+        PlayerGameItem character = new PlayerGameItem();
+        character.GiType = "Character";
+        character.GiId = "Character_BallFish";
+        character.Id = itemId;
+        character.PrefabType = LocalisablePrefabType.Type1;
+        character.IsActive = true;
+        character.Props.Health = UnityEngine.Random.Range(0,100);
+
+        return character;
     }
 
     public async virtual Task<PlayerGameItem> LoadCurrentScene(string theme)
@@ -129,5 +138,37 @@ public class PlayerGameItemMockRepository : BaseRepository, IPlayerGameItemRepos
     public virtual Task UpdateParentChildRelation(string parentId, string childId, bool add)
     {
         throw new NotImplementedException();
+    }
+
+    static bool hasEquipment = false;
+    public async Task<List<PlayerGameItem>> GetEquipments(string itemId)
+    {
+
+        var Equipments = new List<PlayerGameItem>();
+
+        if (hasEquipment)
+        {
+            PlayerGameItem equipment = new PlayerGameItem();
+            equipment.GiType = "AddressableGameItem";
+            equipment.GiId = "AGI_Stick1";
+            equipment.Id = "4";
+            equipment.PrefabType = LocalisablePrefabType.InGame;
+            equipment.IsActive = true;
+            equipment.Props.Slotted = Slot.RHand;
+            Equipments.Add(equipment);
+
+            //Skin
+            PlayerGameItem skin = new PlayerGameItem();
+            skin.GiType = "AddressableGameItem";
+            skin.GiId = "AGI_BallFishSkin1";
+            skin.Id = "5";
+            skin.PrefabType = LocalisablePrefabType.InGame;
+            skin.IsActive = true;
+            skin.Props.Slotted = Slot.Body;
+
+            Equipments.Add(skin);
+        }
+        hasEquipment = !hasEquipment;
+        return Equipments;
     }
 }
