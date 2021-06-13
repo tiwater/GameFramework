@@ -54,7 +54,7 @@ namespace GameFramework.GameStructure.Characters
         /// </summary>
         /// <param name="gameItem"></param>
         /// <param name="localisablePrefabType"></param>
-        public async Task BindCharacterPGI(PlayerGameItem gameItem, LocalisablePrefabType localisablePrefabType = LocalisablePrefabType.InGame)
+        public virtual async Task BindCharacterPGI(PlayerGameItem gameItem, LocalisablePrefabType localisablePrefabType = LocalisablePrefabType.InGame)
         {
             if (gameItem == null || gameItem.GiType != typeof(Character).Name)
             {

@@ -132,6 +132,29 @@ namespace GameFramework.Display.Placement.Components
         private void LookAt(Vector3 targetVector, float rotateAngel)
         {
             //TODO: Now we suppose Y axis is up-direction, may need to support change this in the future
+            //Apply the rotation
+            Quaternion newRotation = CalculateRotation(targetVector, rotateAngel);
+            float gap = Quaternion.Angle(transform.rotation, newRotation);
+            if (gap > 0.1)
+            {
+                //Constant turn speed
+                //float t = rotateSpeed / gap * Time.deltaTime;
+                //Rotate faster in the beginning
+                float t = TurnSpeed * Time.deltaTime;
+                newRotation = Quaternion.Lerp(transform.rotation, newRotation, t);
+            }
+            if (rigidbodyComp == null)
+            {
+                transform.rotation = newRotation;
+            }
+            else
+            {
+                rigidbodyComp.MoveRotation(newRotation);
+            }
+        }
+
+        public Quaternion CalculateRotation(Vector3 targetVector, float rotateAngel)
+        {
             Vector3 target = targetVector;
             //The actual Z
             Vector3 forward = targetVector;
@@ -158,7 +181,7 @@ namespace GameFramework.Display.Placement.Components
                     forward = rq * forward;
                     up = rq * up;
                 }
-                
+
             }
             else if (forwardDirection == AxisDirection.X)
             {
@@ -224,24 +247,7 @@ namespace GameFramework.Display.Placement.Components
                 }
             }
             //Apply the rotation
-            Quaternion newRotation = Quaternion.LookRotation(forward, up);
-            float gap = Quaternion.Angle(transform.rotation, newRotation);
-            if (gap > 0.1)
-            {
-                //Constant turn speed
-                //float t = rotateSpeed / gap * Time.deltaTime;
-                //Rotate faster in the beginning
-                float t = TurnSpeed * Time.deltaTime;
-                newRotation = Quaternion.Lerp(transform.rotation, newRotation, t);
-            }
-            if (rigidbodyComp == null)
-            {
-                transform.rotation = newRotation;
-            }
-            else
-            {
-                rigidbodyComp.MoveRotation(newRotation);
-            }
+            return Quaternion.LookRotation(forward, up);
         }
 
     }
