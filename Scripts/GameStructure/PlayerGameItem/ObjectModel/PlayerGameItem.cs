@@ -9,13 +9,13 @@ using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 {
     [Serializable]
-    public class PlayerGameItem
+    public class PlayerGameItem : BaseItem
     {
-        public string Id;
+        /// <summary>
+        /// The user customized name for this item. The field Name is reserved for the localized name of the type
+        /// </summary>
         public string CustomName;
         public string PlayerId;
-        public string GiId;
-        public string GiType;
         public long Amount;
         public string HostDeviceId;
         public string CreatedDeviceId;
