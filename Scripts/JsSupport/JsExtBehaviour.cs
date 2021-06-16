@@ -6,6 +6,7 @@ using System.Collections;
 using GameFramework.GameStructure;
 using System.Threading.Tasks;
 using UnityEngine.EventSystems;
+using GameFramework.UI.Dialogs.Components;
 
 namespace GameFramework.GameStructure.JsSupport
 {
@@ -31,6 +32,8 @@ namespace GameFramework.GameStructure.JsSupport
         public int DebugPort = 43990;                   // Debug port
         private JsLoader Loader;
         private string ScriptsDir = Path.Combine(Application.streamingAssetsPath, "Scripts");
+        //For TS debug
+        //private string ScriptsDir = "/Users/<user>/Projects/carnie/TsProj/output";
 
         private bool IsJsStartCalled = false;
 
@@ -136,6 +139,16 @@ namespace GameFramework.GameStructure.JsSupport
         {
             await Task.Delay(delay);
             return;
+        }
+
+        public DialogManager GetDialogManager()
+        {
+            return DialogManager.Instance;
+        }
+
+        public async Task PerformOperation()
+        {
+            //TODO: Call the service to send operation
         }
     }
 }

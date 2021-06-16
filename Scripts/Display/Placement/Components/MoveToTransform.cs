@@ -19,8 +19,21 @@ namespace GameFramework.Display.Placement.Components
         /// <summary>
         /// A transform that this gameobject will follow.
         /// </summary>
+        public Vector3 Target
+        {
+            get
+            {
+                return _target;
+            }
+            set
+            {
+                _target = value;
+                isMoving = true;
+            }
+        }
+        [SerializeField]
         [Tooltip("A transform that this gameobject will go to.")]
-        public Vector3 Target;
+        private Vector3 _target;
 
         protected bool isMoving = false;
 
