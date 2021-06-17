@@ -96,6 +96,14 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         protected readonly Dictionary<string, GameObject> _cachedPrefabInstances = new Dictionary<string, GameObject>();
         protected GameObject _selectedPrefabInstance;
 
+        public GameObject SelectedPrefabInstance
+        {
+            get
+            {
+                return _selectedPrefabInstance;
+            }
+        }
+
 
         /// <summary>
         /// Show the actual prefab
@@ -110,7 +118,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         {
 
             GameObject newPrefabInstance;
-            _cachedPrefabInstances.TryGetValue(GameItem.GiId, out newPrefabInstance);
+            _cachedPrefabInstances.TryGetValue(GameItem.GiId + "_" + PrefabType + "_" + Name, out newPrefabInstance);
             if (newPrefabInstance == null)
             {
                 newPrefabInstance = await GameItem.InstantiatePrefab(PrefabType, Name,
@@ -123,7 +131,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
                         newPrefabInstance.transform.position -= modifier.Offset;
                     }
                     newPrefabInstance.SetActive(false); // start inactive so we don't run transitions immediately
-                    _cachedPrefabInstances.Add(GameItem.GiId, newPrefabInstance);
+                    _cachedPrefabInstances.Add(GameItem.GiId + "_" + PrefabType + "_" + Name, newPrefabInstance);
                 }
             }
 

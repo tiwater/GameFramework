@@ -21,6 +21,8 @@ namespace GameFramework.Service
         private static string MOCK_SKIN_ID2 = "sk2";
         private static string MOCK_STICK_ID1 = "stick1";
 
+        private IPlayerGameItemRepository pgiRepository;
+
         protected static PlayerGameItemService _instance;
 
         public static PlayerGameItemService Instance
@@ -35,21 +37,26 @@ namespace GameFramework.Service
             }
         }
 
+        private PlayerGameItemService()
+        {
+            pgiRepository = RepoFactory.GetRepository<IPlayerGameItemRepository>();
+        }
+
         public async Task<string> LoadToken()
         {
-            return await RepoFactory.PlayerGameItemRepository.LoadToken();
+            return await pgiRepository.LoadToken();
         }
 
         public async Task StoreToken(string token)
         {
-            await RepoFactory.PlayerGameItemRepository.StoreToken(token);
+            await pgiRepository.StoreToken(token);
         }
 
 
         public async Task<PlayerGameItem> GetCurrentPlayerInstance()
         {
 
-            return await RepoFactory.PlayerGameItemRepository.GetCurrentPlayerInstance();
+            return await pgiRepository.GetCurrentPlayerInstance();
         }
 
         public async Task<PlayerGameItem> GetPlayerInstance()
@@ -65,12 +72,12 @@ namespace GameFramework.Service
 
         public async Task<PlayerGameItem> GetPlayerGameItem(string itemId)
         {
-            return await RepoFactory.PlayerGameItemRepository.GetPlayerGameItem(itemId);
+            return await pgiRepository.GetPlayerGameItem(itemId);
         }
 
         public async Task<List<PlayerGameItem>> GetEquipments(string itemId)
         {
-            return await RepoFactory.PlayerGameItemRepository.GetEquipments(itemId);
+            return await pgiRepository.GetEquipments(itemId);
         }
 
         public async Task UpdatePlayer()
@@ -85,24 +92,24 @@ namespace GameFramework.Service
         public async Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
         {
 
-            return await RepoFactory.PlayerGameItemRepository.LoadPlayerGameItems(itemId);
+            return await pgiRepository.LoadPlayerGameItems(itemId);
         }
 
         public async Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item)
         {
-            return await RepoFactory.PlayerGameItemRepository.CreatePlayerGameItem(item);
+            return await pgiRepository.CreatePlayerGameItem(item);
         }
 
         public async Task AddChild(string parentId, PlayerGameItem child)
         {
             //TODO: call the service to persistent child and update the parent-child relationship
             child = await CreatePlayerGameItem(child);
-            await RepoFactory.PlayerGameItemRepository.UpdateParentChildRelation(parentId, child.Id, true);
+            await pgiRepository.UpdateParentChildRelation(parentId, child.Id, true);
         }
 
         public async Task<PlayerGameItem> LoadCurrentScene(string theme)
         {
-            return await RepoFactory.PlayerGameItemRepository.LoadCurrentScene(theme.ToLower());
+            return await pgiRepository.LoadCurrentScene(theme.ToLower());
         }
     }
 }

@@ -586,6 +586,11 @@ namespace GameFramework.GameStructure
         public UnityPlatformBridge UnityPlatformBridge;
 
         /// <summary>
+        /// A dictionary to keep some global resources
+        /// </summary>
+        private Dictionary<string, object> _resources = new Dictionary<string, object>();
+
+        /// <summary>
         /// The callback from Android layer to dispatch the Intent,
         /// wrapper of the UnityAndroidBridge OnIntent method
         /// </summary>
@@ -1488,5 +1493,27 @@ namespace GameFramework.GameStructure
             Players.SetSelected(playerNumber);
         }
         #endregion Player Related
+
+        /// <summary>
+        /// Put some global resources
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="res"></param>
+        public void PutResource(string key, object res)
+        {
+            _resources.Add(key, res);
+        }
+
+        /// <summary>
+        /// Get the stored resource
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public object GetResource(string key)
+        {
+            object res = null;
+            _resources.TryGetValue(key, out res);
+            return res;
+        }
     }
 }

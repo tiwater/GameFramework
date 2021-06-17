@@ -6,8 +6,8 @@ namespace GameFramework.Repository
     public class RepoFactory
     {
         public enum RepoMode { Pref, Rpc, Mock };
-        private RepoMode repoMode = RepoMode.Mock;
-        private static RepoMode defaultMode = RepoMode.Rpc;
+        protected RepoMode repoMode = RepoMode.Mock;
+        protected static RepoMode defaultMode = RepoMode.Rpc;
 
         /// <summary>
         /// Specifiy the repository mode we want
@@ -19,17 +19,6 @@ namespace GameFramework.Repository
             {
                 //Generate default repo factory
                 _factoryInstance = new RepoFactory(repoMode);
-            }
-        }
-
-        /// <summary>
-        /// Get the PlayerGameItemRepository 
-        /// </summary>
-        public static IPlayerGameItemRepository PlayerGameItemRepository
-        {
-            get
-            {
-                return FactoryInstance.GetRepository(typeof(IPlayerGameItemRepository)) as IPlayerGameItemRepository;
             }
         }
 
@@ -48,13 +37,24 @@ namespace GameFramework.Repository
             }
         }
 
-        private static RepoFactory _factoryInstance;
+        protected static RepoFactory _factoryInstance;
 
-        private Dictionary<Type, BaseRepository> repos = new Dictionary<Type, BaseRepository>();
+        protected Dictionary<Type, IRepository> repos = new Dictionary<Type, IRepository>();
 
-        private RepoFactory(RepoMode repoMode)
+        protected RepoFactory(RepoMode repoMode)
         {
             this.repoMode = repoMode;
+        }
+
+        /// <summary>
+        /// Get the repository instance in the specified type
+        /// </summary>
+        /// <typeparam name="T">The interface type we expect</typeparam>
+        /// <returns></returns>
+        public static T GetRepository<T>() where T : IRepository
+        {
+            return (T)FactoryInstance.GetRepository(typeof(T));
+
         }
 
         /// <summary>
@@ -62,35 +62,29 @@ namespace GameFramework.Repository
         /// </summary>
         /// <param name="type">The repository's interface</param>
         /// <returns></returns>
-        private BaseRepository GetRepository(Type type)
+        protected virtual IRepository GetRepository(Type type)
         {
-            BaseRepository repository;
+            IRepository repository;
             //Get repository
             repos.TryGetValue(type, out repository);
             if (repository == null)
             {
                 //If don't have instance yet, create one
-                if (repoMode == RepoMode.Pref)
+                if (type == typeof(IPlayerGameItemRepository))
                 {
-                    //Prefs repositories
-                    if (type == typeof(IPlayerGameItemRepository))
+                    if (repoMode == RepoMode.Pref)
                     {
+                        //Prefs repositories
                         repository = new PlayerGameItemPrefRepository();
                     }
-                }
-                else if (repoMode == RepoMode.Rpc)
-                {
-                    //Rpc repositories
-                    if (type == typeof(IPlayerGameItemRepository))
+                    else if (repoMode == RepoMode.Rpc)
                     {
+                        //Rpc repositories
                         repository = new PlayerGameItemRpcRepository();
                     }
-                }
-                else if (repoMode == RepoMode.Mock)
-                {
-                    //Rpc repositories
-                    if (type == typeof(IPlayerGameItemRepository))
+                    else if (repoMode == RepoMode.Mock)
                     {
+                        //Mock repositories
                         repository = new PlayerGameItemMockRepository();
                     }
                 }
@@ -103,18 +97,14 @@ namespace GameFramework.Repository
             return repository;
         }
 
-        private void RegisterRepository(Type type, BaseRepository repository)
-        {
-            repos.Add(type, repository);
-        }
-
         /// <summary>
-        /// Register a repository for PlayerGameItemRepository
+        /// Register a customized repository in the factory for a specific type
         /// </summary>
-        /// <param name="repository"></param>
-        public void RegisterPlayerGameItemRepository(BaseRepository repository)
+        /// <typeparam name="T">The repository interface we will register</typeparam>
+        /// <param name="repository">The repository instance to register</param>
+        public void RegisterRepository<T>(IRepository repository) where T : IRepository
         {
-            RegisterRepository(typeof(IPlayerGameItemRepository), repository);
+            repos.Add(typeof(T), repository);
         }
     }
 }

@@ -5,7 +5,7 @@ using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
 
 namespace GameFramework.Repository
 {
-    public interface IPlayerGameItemRepository
+    public interface IPlayerGameItemRepository : IRepository
     {
         Task<PlayerGameItem> CreatePlayerGameItem(PlayerGameItem item);
         Task UpdateParentChildRelation(string parentId, string childId, bool add);

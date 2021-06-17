@@ -34,7 +34,7 @@ namespace GameFramework.GameStructure
             DisplayPlayGameItems(transform, GameManager.Instance.SceneRootNode);
         }
 
-        private void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
+        protected void DisplayPlayGameItems(Transform parent, PlayerGameItem item)
         {
             if (item != null)
             {

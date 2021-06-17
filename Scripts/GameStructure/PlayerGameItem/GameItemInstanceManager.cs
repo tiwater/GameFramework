@@ -38,7 +38,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
         /// </summary>
         /// <param name="pgi"></param>
         /// <returns></returns>
-        private async Task PopulateGameItem(PlayerGameItem pgi)
+        public async Task PopulateGameItem(PlayerGameItem pgi)
         {
             Dictionary<string, List<string>> gameItems = new Dictionary<string, List<string>>();
             FetchGameItems(pgi, gameItems);
