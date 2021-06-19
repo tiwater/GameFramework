@@ -87,6 +87,23 @@ namespace GameFramework.Repository
                         //Mock repositories
                         repository = new PlayerGameItemMockRepository();
                     }
+                } else if (type == typeof(IOperationRepository))
+                {
+                    if (repoMode == RepoMode.Pref)
+                    {
+                        //Prefs repositories
+                        throw new NotImplementedException();
+                    }
+                    else if (repoMode == RepoMode.Rpc)
+                    {
+                        //Rpc repositories
+                        repository = new OperationRpcRepository();
+                    }
+                    else if (repoMode == RepoMode.Mock)
+                    {
+                        //Mock repositories
+                        repository = new OperationMockRepository();
+                    }
                 }
                 if (repository != null)
                 {

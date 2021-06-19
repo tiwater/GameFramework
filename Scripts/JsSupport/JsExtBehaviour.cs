@@ -2,19 +2,21 @@
 using Puerts;
 using System;
 using System.IO;
-using System.Collections;
-using GameFramework.GameStructure;
 using System.Threading.Tasks;
 using UnityEngine.EventSystems;
 using GameFramework.UI.Dialogs.Components;
+using GameFramework.Operation;
+using GameFramework.Operation.Components;
+using GameFramework.Messaging;
+using GameFramework.Service;
 
 namespace GameFramework.GameStructure.JsSupport
 {
     public delegate void ModuleInit(JsExtBehaviour monoBehaviour);
 
-    public class JsExtBehaviour : GmAwakeDependBehaviour, IPointerClickHandler
+    public class JsExtBehaviour : GmAwakeDependBehaviour, IPointerClickHandler, IOperationPerformer
     {
-
+        public delegate void OperationCallback(int result);
         /// <summary>
         /// The js module name.
         /// </summary>
@@ -26,6 +28,8 @@ namespace GameFramework.GameStructure.JsSupport
         public Action JsFixedUpdate;
         public Action<PointerEventData> JsOnClick;
         public Action JsOnDestroy;
+        public Action<CharacterOperation> JsOnOperation;
+        public Action<BaseMessage> JsOnMessage;
 
         private JsEnv JsEnv;
         public bool IsDebug = false;                    // Is it debug
@@ -117,6 +121,18 @@ namespace GameFramework.GameStructure.JsSupport
             JsEnv.Dispose();
         }
 
+        /// <summary>
+        /// Receives the message for the js code
+        /// </summary>
+        /// <param name="message"></param>
+        public void OnMessage(BaseMessage message)
+        {
+            if (JsOnMessage != null)
+            {
+                JsOnMessage(message);
+            }
+        }
+
         public SceneItemInstanceManager GetSceneItemInstanceManager()
         {
             return transform.root.GetComponentInChildren<SceneItemInstanceManager>();
@@ -146,9 +162,44 @@ namespace GameFramework.GameStructure.JsSupport
             return DialogManager.Instance;
         }
 
-        public async Task PerformOperation()
+        /// <summary>
+        /// Send user's operation to server side. If got a new operation, execute it
+        /// </summary>
+        /// <param name="userOperation"></param>
+        /// <returns></returns>
+        public async Task SendUserOperation(UserOperation userOperation)
         {
-            //TODO: Call the service to send operation
+            var operation = await OperationService.Instance.SendUserOperation(userOperation);
+            if (operation != null)
+            {
+                operation.Execute(this);
+            }
+        }
+
+        /// <summary>
+        /// Send the result of an operation to the server side. If got a new operation, execute it
+        /// </summary>
+        /// <param name="result">The result of an operation</param>
+        /// <returns></returns>
+        public async Task SendOperationResult(OperationResult result)
+        {
+            var operation = await OperationService.Instance.SendCharacterOperationResult(result);
+            if (operation != null)
+            {
+                operation.Execute(this);
+            }
+        }
+
+        /// <summary>
+        /// Execute the given operation in the js env
+        /// </summary>
+        /// <param name="operation"></param>
+        public void PerformOperation(CharacterOperation operation)
+        {
+            if (JsOnOperation != null)
+            {
+                JsOnOperation(operation);
+            }
         }
     }
 }
