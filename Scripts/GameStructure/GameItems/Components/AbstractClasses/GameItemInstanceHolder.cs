@@ -10,5 +10,5 @@ public abstract class GameItemInstanceHolder<T> : ShowPrefab<T> where T : GameIt
     /// <summary>
     /// The PlayerGameItem this context represents.
     /// </summary>
-    public PlayerGameItem PlayerGameItem;
+    public PlayerGameItem PlayerGameItem { get; set; }
 }

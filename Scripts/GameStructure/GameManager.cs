@@ -815,6 +815,7 @@ namespace GameFramework.GameStructure
             //    return;
             //}
             RegisterServices();
+            CreateManagers();
 
             // secure preferences
             PreferencesFactory.UseSecurePrefs = SecurePreferences;
@@ -872,7 +873,6 @@ namespace GameFramework.GameStructure
             SetDisplayProperties();
 
             // setup of worlds and levels
-            CreateManagers();
 
             if (IsHandleGameItemInTree)
             {
