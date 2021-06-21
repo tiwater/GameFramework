@@ -139,6 +139,8 @@ namespace GameFramework.Display.Placement.Components
         {
             CheckValue();
             UpdateBehavior();
+            SetProgress(currentValue);
+            SetIndicator();
         }
 
         // Update is called once per frame
