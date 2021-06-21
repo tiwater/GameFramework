@@ -56,7 +56,7 @@ namespace GameFramework.Operation
             PlayerGameItemId = playerGameItemId;
             ExpectFeedback = feedback;
             OperationType = this.GetType().Name;
-            addMode = addMode;
+            AddMode = addMode;
         }
 
         public void Execute(IOperationPerformer performer)
