@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Creation;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
@@ -48,7 +49,7 @@ namespace GameFramework.Repository
 
             var request = new GetCreationRequest();
 
-            request.Theme = theme;
+            request.World = theme.ToLower();
 
             var reply = await client.GetCreationAsync(request);
 
@@ -67,24 +68,20 @@ namespace GameFramework.Repository
                 item = new PlayerGameItem();
                 item.GiType = creation.CreationType;
                 item.GiId = creation.Template;
-                item.Id = creation.CreationId;
+                item.Id = creation.Id;
                 Enum.TryParse(creation.PrefabType, out item.PrefabType);
                 item.CustomName = creation.Name;
-                item.ModelVersion = creation.ModelVersion;
+                item.ModelVersion = creation.SchemaVersion;
                 item.IsActive = "active" == creation.Status;
                 item.Category = creation.Category;
 
                 //The props the logic cares
-                if (creation.Props != null)
+                if (creation.Attrs != null)
                 {
-                    item.Props = new Props();
-                    item.Props.Achievement = creation.Props.Achievement;
-                    item.Props.Age = creation.Props.Age;
-                    item.Props.Health = creation.Props.Health;
-                    item.Props.Hungry = creation.Props.Hungry;
-                    item.Props.Mood = creation.Props.Mood;
-                    item.Props.Rank = creation.Props.Rank;
-                    Enum.TryParse(creation.Props.Slotted, out item.Props.Slotted);
+                    foreach(var pair in creation.Attrs)
+                    {
+                        item.Attrs.Add(pair.Key, pair.Value);
+                    }
                 }
                 //The extra props
                 if (creation.ExtraProps != null)
@@ -97,8 +94,6 @@ namespace GameFramework.Repository
 
                     var children = new List<PlayerGameItem>();
                     var equipments = new List<PlayerGameItem>();
-                    //item.Children = new List<PlayerGameItem>();
-                    //item.Equipments = new List<EquipmentItem>();
                     foreach (var child in creation.Children)
                     {
                         var subItem = PopulatePlayerGameItem(child);

@@ -154,6 +154,64 @@ namespace GameFramework.GameStructure.Util
             }
         }
 
+
+
+        /// <summary>
+        /// Compare whether two dictionaries are equal. Return the first different key if found
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="src"></param>
+        /// <returns></returns>
+        public static List<T> CompareObjects<T, M>(Dictionary<T, M> dest, Dictionary<T, M> src)
+        {
+            List<T> differentFields = new List<T>();
+
+            //Check the dictionary
+            foreach(var pair in dest)
+            {
+                if (!src.ContainsKey(pair.Key))
+                {
+                    //If the dest key existed in src?
+                    differentFields.Add(pair.Key);
+                    return differentFields;
+                } else
+                {
+                    //Yes
+                    if (CompareObjects(src[pair.Key], pair.Value).Count != 0)
+                    {
+                        //Compare the value
+                        differentFields.Add(pair.Key);
+                        return differentFields;
+                    }
+                }
+            }
+
+            if (dest.Count < src.Count)
+            {
+                foreach (var pair in src)
+                {
+                    if (!dest.ContainsKey(pair.Key))
+                    {
+                        //If the dest key existed in src?
+                        differentFields.Add(pair.Key);
+                        return differentFields;
+                    }
+                    else
+                    {
+                        //Yes
+                        if (CompareObjects(dest[pair.Key], pair.Value).Count != 0)
+                        {
+                            //Compare the value
+                            differentFields.Add(pair.Key);
+                            return differentFields;
+                        }
+                    }
+                }
+            }
+
+            return differentFields;
+        }
+
         /// <summary>
         /// Compare the direct fields and properties of two objects, return the name list of the fields which are different in the values
         /// </summary>
@@ -209,6 +267,39 @@ namespace GameFramework.GameStructure.Util
                 }
             }
             return differentFields;
+        }
+
+        /// <summary>
+        /// Try to parse the provided object to a specific type
+        /// </summary>
+        /// <typeparam name="T">The type we want to conver to</typeparam>
+        /// <param name="obj">Object to convert</param>
+        /// <param name="defaultValue">The default value if cannot parse</param>
+        /// <returns></returns>
+        public static T TryParse<T>(object obj, T defaultValue = default(T))
+        {
+            if (obj == null)
+                return defaultValue;
+
+            Type t = typeof(T);
+            if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))   //支持可空类型
+                t = t.GetGenericArguments()[0];
+
+            var tryParse = t.GetMethod("TryParse", BindingFlags.Public | BindingFlags.Static, Type.DefaultBinder
+                , new Type[] { obj.GetType(), t.MakeByRefType() }
+                , new ParameterModifier[] { new ParameterModifier(2) });
+
+            if (tryParse != null)
+            {
+                var parameters = new object[] { obj, Activator.CreateInstance(t) };
+                bool success = (bool)tryParse.Invoke(null, parameters);
+                if (success)
+                    return (T)parameters[1];
+                else
+                    return defaultValue;
+            }
+
+            return (T)Convert.ChangeType(obj, typeof(T));
         }
     }
 }

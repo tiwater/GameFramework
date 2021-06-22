@@ -42,7 +42,7 @@ public class RpcTest
 
             //var reply = await client.GetCreationAsync(new Google.Protobuf.WellKnownTypes.Empty());
             var request = new GetCreationRequest();
-            request.Theme = "lido";
+            request.World = "lido";
             var reply = await client.GetCreationAsync(request);
 
             channel.ShutdownAsync().Wait();

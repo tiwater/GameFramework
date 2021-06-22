@@ -35,7 +35,7 @@ namespace GameFramework.Repository
             character.Id = itemId;
             character.PrefabType = LocalisablePrefabType.Type1;
             character.IsActive = true;
-            character.Props.Health = UnityEngine.Random.Range(0, 100);
+            character.SetFloatAttr(PlayerGameItem.ATTRS_HEALTH, UnityEngine.Random.Range(0, 100));
 
             return character;
         }
@@ -57,7 +57,7 @@ namespace GameFramework.Repository
             character.GiId = "Character_Turtle";
             character.Id = "2";
             character.PrefabType = LocalisablePrefabType.Type1;
-            character.IsActive = true;
+            character.SetBoolAttr(PlayerGameItem.ATTRS_IS_PLAYER, true);
 
             scene.Children.Add(character);
 
@@ -78,7 +78,7 @@ namespace GameFramework.Repository
             equipment.Id = "4";
             equipment.PrefabType = LocalisablePrefabType.InGame;
             equipment.IsActive = true;
-            equipment.Props.Slotted = Slot.RHand;
+            equipment.SetAttr(PlayerGameItem.ATTRS_SLOTTED, Enum.GetName(typeof(Slot), Slot.RHand));
 
             character.Equipments = new List<PlayerGameItem>();
             character.Equipments.Add(equipment);
@@ -90,7 +90,7 @@ namespace GameFramework.Repository
             skin.Id = "5";
             skin.PrefabType = LocalisablePrefabType.InGame;
             skin.IsActive = true;
-            skin.Props.Slotted = Slot.Body;
+            skin.SetAttr(PlayerGameItem.ATTRS_SLOTTED, Enum.GetName(typeof(Slot), Slot.Body));
 
             character.Equipments.Add(skin);
 
@@ -110,9 +110,9 @@ namespace GameFramework.Repository
                 seaweed.GiId = "AGI_Seaweeds";
                 seaweed.Id = seaweed.GiId + i;
                 seaweed.PrefabType = (i % (LocalisablePrefabType.Type7 - LocalisablePrefabType.Type1 + 1) + LocalisablePrefabType.Type1);
-                seaweed.ExtraProps.SetVector3(Constants.PROP_KEY_POSITION, new Vector3(UnityEngine.Random.Range(-80, 80) / 10.0f,
+                seaweed.SetVector3Attr(PlayerGameItem.ATTRS_POSITION, new Vector3(UnityEngine.Random.Range(-80, 80) / 10.0f,
                     0, UnityEngine.Random.Range(-70, 120) / 10.0f));
-                seaweed.ExtraProps.SetVector3(Constants.PROP_KEY_ROTATION, Quaternion.identity.eulerAngles);
+                seaweed.SetVector3Attr(PlayerGameItem.ATTRS_ROTATION, Quaternion.identity.eulerAngles);
 
                 seaweeds.Add(seaweed);
                 //seaweed.Props = Variables.FromJsonMapString(seaweed.Props.ToJsonMapString());
@@ -156,7 +156,7 @@ namespace GameFramework.Repository
                 equipment.Id = "4";
                 equipment.PrefabType = LocalisablePrefabType.InGame;
                 equipment.IsActive = true;
-                equipment.Props.Slotted = Slot.RHand;
+                equipment.SetAttr(PlayerGameItem.ATTRS_SLOTTED, Enum.GetName(typeof(Slot), Slot.RHand));
                 Equipments.Add(equipment);
 
                 //Skin
@@ -166,7 +166,7 @@ namespace GameFramework.Repository
                 skin.Id = "5";
                 skin.PrefabType = LocalisablePrefabType.InGame;
                 skin.IsActive = true;
-                skin.Props.Slotted = Slot.Body;
+                skin.SetAttr(PlayerGameItem.ATTRS_SLOTTED, Enum.GetName(typeof(Slot), Slot.Body));
 
                 Equipments.Add(skin);
             }

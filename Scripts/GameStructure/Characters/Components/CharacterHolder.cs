@@ -8,6 +8,7 @@ using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItemContext;
 using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
+using System;
 
 namespace GameFramework.GameStructure.Characters
 {
@@ -116,7 +117,7 @@ namespace GameFramework.GameStructure.Characters
             foreach (var equipment in equipments)
             {
                 EquipmentInfo equipmentInfo = new EquipmentInfo();
-                equipmentInfo.slot = equipment.Props.Slotted;
+                Enum.TryParse<Slot>(equipment.GetAttr(PlayerGameItem.ATTRS_SLOTTED), true, out equipmentInfo.slot);
                 equipmentInfo.equipment = GameManager.Instance.GetIBaseGameItemManager(equipment.GiType).BaseGetItem(equipment.GiId);
                 equipmentInfo.PrefabType = equipment.PrefabType;
                 equipmentInfos.Add(equipmentInfo);

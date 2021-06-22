@@ -29,7 +29,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
                 var target = GameManager.Instance.PlayerGameItems.GetPlayerGameItemById(itemHolder.PlayerGameItem.Id);
                 //Copy the value for the entity
                 ObjectUtil.CopyObject(target, message.NewItem);
-                target.Props = message.NewItem.Props;
+                target.Attrs = message.NewItem.Attrs;
                 target.ExtraProps = message.OldItem.ExtraProps;
             }
 

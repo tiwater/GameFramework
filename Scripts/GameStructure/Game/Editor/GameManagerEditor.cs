@@ -59,6 +59,7 @@ namespace GameFramework.GameStructure.Game.Editor
         SerializedProperty _isHandleGameItemInTreeProperty;
         SerializedProperty _allowOfflineProperty;
         SerializedProperty _allowOfflineBootProperty;
+        SerializedProperty _mockProperty;
 
         SerializedProperty _playerSetupModeProperty;
         SerializedProperty _playerCountProperty;
@@ -110,6 +111,7 @@ namespace GameFramework.GameStructure.Game.Editor
 
             _playerSetupModeProperty = serializedObject.FindProperty("PlayerSetupMode");
             _playerCountProperty = serializedObject.FindProperty("PlayerCount");
+            _mockProperty = serializedObject.FindProperty("MockData");
 
             _worldSetupModeProperty = serializedObject.FindProperty("WorldSetupMode");
             _autoCreateWorldsProperty = serializedObject.FindProperty("AutoCreateWorlds");
@@ -256,6 +258,8 @@ namespace GameFramework.GameStructure.Game.Editor
             else if (_playerSetupModeProperty.enumValueIndex == 4)
                 EditorGUILayout.HelpBox("MasterWithOverrides mode is not currently implemented for Players. Let us know if you need this functionality...", MessageType.Info);
             EditorGUILayout.EndVertical();
+
+            EditorGUILayout.PropertyField(_mockProperty, new GUIContent("Load mock data"));
 
             EditorGUILayout.PropertyField(_isHandleGameItemInTreeProperty, new GUIContent("Is handle GameItems in a tree"));
 

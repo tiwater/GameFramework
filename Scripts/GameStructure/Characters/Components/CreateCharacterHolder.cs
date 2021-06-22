@@ -47,10 +47,8 @@ namespace GameFramework.GameStructure.Characters
                 //If it's character
                 if (item.GiType == typeof(Character).Name)
                 {
-                    Vector3 position = item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION)!=null?
-                        item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION).Value : Vector3.zero;
-                    Vector3 rotation = item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION) != null ?
-                        item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION).Value: Vector3.zero;
+                    Vector3 position = item.GetVector3Attr(PlayerGameItem.ATTRS_POSITION, Vector3.zero);
+                    Vector3 rotation = item.GetVector3Attr(PlayerGameItem.ATTRS_POSITION, Vector3.zero);
                     GameObject characterHolder = GameObject.Instantiate(CharacterHolder, position,
                        Quaternion.Euler(rotation.x, rotation.y, rotation.z));
                     CharacterHolder holderComponent = characterHolder.GetComponent<CharacterHolder>();

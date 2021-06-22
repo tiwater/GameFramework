@@ -29,7 +29,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
         /// <returns></returns>
         public async Task LoadItemInCurrentScene()
         {
-            Root = await PlayerGameItemService.Instance.LoadCurrentScene(GameManager.Instance.GameName);
+            Root = await PlayerGameItemService.Instance.LoadCurrentScene(GameManager.Instance.GameName + "3D");
             await PopulateGameItem(Root);
         }
 
@@ -57,7 +57,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
         {
             List<string> items;
 
-            if(pgi.GiType == typeof(Character).Name && pgi.IsActive)
+            if(pgi.GiType == typeof(Character).Name && pgi.GetBoolAttr(PlayerGameItem.ATTRS_IS_PLAYER))
             {
                 SelectedCharacter = pgi;
             }

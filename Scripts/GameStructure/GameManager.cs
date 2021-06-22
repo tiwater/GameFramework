@@ -75,7 +75,12 @@ namespace GameFramework.GameStructure
         const string VariablesPrefix = "GV.";
 
         // Inspector Values
-        #region General 
+        #region General
+
+        /// <summary>
+        /// Whether load mock data
+        /// </summary>
+        public bool MockData = false;
 
         /// <summary>
         /// The name of this game

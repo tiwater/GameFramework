@@ -25,31 +25,28 @@ namespace Creation {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg5jcmVhdGlvbi5wcm90bxIIY3JlYXRpb24iIwoSR2V0Q3JlYXRpb25SZXF1",
-            "ZXN0Eg0KBXRoZW1lGAEgASgJIj0KFVVwZGF0ZUNyZWF0aW9uUmVxdWVzdBIk",
-            "CghjcmVhdGlvbhgBIAEoCzISLmNyZWF0aW9uLkNyZWF0aW9uIn4KDUNyZWF0",
-            "aW9uUHJvcHMSDwoHc2xvdHRlZBgBIAEoCRIOCgZoZWFsdGgYAiABKAUSDAoE",
-            "bW9vZBgDIAEoCRIOCgZodW5ncnkYBCABKAUSCwoDYWdlGAUgASgFEgwKBHJh",
-            "bmsYBiABKAUSEwoLYWNoaWV2ZW1lbnQYByABKAkirAMKCENyZWF0aW9uEhUK",
-            "DW1vZGVsX3ZlcnNpb24YASABKAkSEwoLY3JlYXRpb25faWQYAiABKAkSDgoG",
-            "c3RhdHVzGAMgASgJEhUKDWNyZWF0aW9uX3R5cGUYBCABKAkSEwoLcHJlZmFi",
-            "X3R5cGUYBSABKAkSEAoIdGVtcGxhdGUYBiABKAkSDAoEbmFtZRgHIAEoCRIT",
-            "CgtkZXNjcmlwdGlvbhgIIAEoCRIQCghjYXRlZ29yeRgJIAEoCRIoCglyZXNv",
-            "dXJjZXMYCiADKAsyFS5jcmVhdGlvbi5DcmVhdGlvblJlcxINCgVzbG90cxgL",
-            "IAMoCRImCgVwcm9wcxgMIAEoCzIXLmNyZWF0aW9uLkNyZWF0aW9uUHJvcHMS",
-            "NwoLZXh0cmFfcHJvcHMYDSADKAsyIi5jcmVhdGlvbi5DcmVhdGlvbi5FeHRy",
-            "YVByb3BzRW50cnkSJAoIY2hpbGRyZW4YDiADKAsyEi5jcmVhdGlvbi5DcmVh",
-            "dGlvbhoxCg9FeHRyYVByb3BzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
-            "GAIgASgJOgI4ASIoCgtDcmVhdGlvblJlcxIMCgR0eXBlGAEgASgJEgsKA3Vy",
-            "bBgCIAEoCTJTChBDcmVhdGlvblByb3ZpZGVyEj8KC0dldENyZWF0aW9uEhwu",
-            "Y3JlYXRpb24uR2V0Q3JlYXRpb25SZXF1ZXN0GhIuY3JlYXRpb24uQ3JlYXRp",
-            "b25iBnByb3RvMw=="));
+            "ZXN0Eg0KBXdvcmxkGAEgASgJIj0KFVVwZGF0ZUNyZWF0aW9uUmVxdWVzdBIk",
+            "CghjcmVhdGlvbhgBIAEoCzISLmNyZWF0aW9uLkNyZWF0aW9uIuoDCghDcmVh",
+            "dGlvbhIWCg5zY2hlbWFfdmVyc2lvbhgBIAEoCRIKCgJpZBgCIAEoCRIQCghx",
+            "dWFudGl0eRgDIAEoBRIOCgZzdGF0dXMYBCABKAkSFQoNY3JlYXRpb25fdHlw",
+            "ZRgFIAEoCRITCgtwcmVmYWJfdHlwZRgGIAEoCRIQCgh0ZW1wbGF0ZRgHIAEo",
+            "CRIMCgRuYW1lGAggASgJEhMKC2Rlc2NyaXB0aW9uGAkgASgJEhAKCGNhdGVn",
+            "b3J5GAogASgJEigKCXJlc291cmNlcxgLIAMoCzIVLmNyZWF0aW9uLkNyZWF0",
+            "aW9uUmVzEg0KBXNsb3RzGAwgAygJEiwKBWF0dHJzGA0gAygLMh0uY3JlYXRp",
+            "b24uQ3JlYXRpb24uQXR0cnNFbnRyeRI3CgtleHRyYV9wcm9wcxgOIAMoCzIi",
+            "LmNyZWF0aW9uLkNyZWF0aW9uLkV4dHJhUHJvcHNFbnRyeRIkCghjaGlsZHJl",
+            "bhgPIAMoCzISLmNyZWF0aW9uLkNyZWF0aW9uGiwKCkF0dHJzRW50cnkSCwoD",
+            "a2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARoxCg9FeHRyYVByb3BzRW50",
+            "cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASIoCgtDcmVhdGlv",
+            "blJlcxIMCgR0eXBlGAEgASgJEgsKA3VybBgCIAEoCTJTChBDcmVhdGlvblBy",
+            "b3ZpZGVyEj8KC0dldENyZWF0aW9uEhwuY3JlYXRpb24uR2V0Q3JlYXRpb25S",
+            "ZXF1ZXN0GhIuY3JlYXRpb24uQ3JlYXRpb25iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.GetCreationRequest), global::Creation.GetCreationRequest.Parser, new[]{ "Theme" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.GetCreationRequest), global::Creation.GetCreationRequest.Parser, new[]{ "World" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.UpdateCreationRequest), global::Creation.UpdateCreationRequest.Parser, new[]{ "Creation" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationProps), global::Creation.CreationProps.Parser, new[]{ "Slotted", "Health", "Mood", "Hungry", "Age", "Rank", "Achievement" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.Creation), global::Creation.Creation.Parser, new[]{ "ModelVersion", "CreationId", "Status", "CreationType", "PrefabType", "Template", "Name", "Description", "Category", "Resources", "Slots", "Props", "ExtraProps", "Children" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Creation.Creation), global::Creation.Creation.Parser, new[]{ "SchemaVersion", "Id", "Quantity", "Status", "CreationType", "PrefabType", "Template", "Name", "Description", "Category", "Resources", "Slots", "Attrs", "ExtraProps", "Children" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::Creation.CreationRes), global::Creation.CreationRes.Parser, new[]{ "Type", "Url" }, null, null, null, null)
           }));
     }
@@ -86,7 +83,7 @@ namespace Creation {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GetCreationRequest(GetCreationRequest other) : this() {
-      theme_ = other.theme_;
+      world_ = other.world_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -95,14 +92,14 @@ namespace Creation {
       return new GetCreationRequest(this);
     }
 
-    /// <summary>Field number for the "theme" field.</summary>
-    public const int ThemeFieldNumber = 1;
-    private string theme_ = "";
+    /// <summary>Field number for the "world" field.</summary>
+    public const int WorldFieldNumber = 1;
+    private string world_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Theme {
-      get { return theme_; }
+    public string World {
+      get { return world_; }
       set {
-        theme_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        world_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -119,14 +116,14 @@ namespace Creation {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Theme != other.Theme) return false;
+      if (World != other.World) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (Theme.Length != 0) hash ^= Theme.GetHashCode();
+      if (World.Length != 0) hash ^= World.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -143,9 +140,9 @@ namespace Creation {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Theme.Length != 0) {
+      if (World.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Theme);
+        output.WriteString(World);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -156,9 +153,9 @@ namespace Creation {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Theme.Length != 0) {
+      if (World.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(Theme);
+        output.WriteString(World);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -169,8 +166,8 @@ namespace Creation {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (Theme.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Theme);
+      if (World.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(World);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -183,8 +180,8 @@ namespace Creation {
       if (other == null) {
         return;
       }
-      if (other.Theme.Length != 0) {
-        Theme = other.Theme;
+      if (other.World.Length != 0) {
+        World = other.World;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -201,7 +198,7 @@ namespace Creation {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            Theme = input.ReadString();
+            World = input.ReadString();
             break;
           }
         }
@@ -219,7 +216,7 @@ namespace Creation {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            Theme = input.ReadString();
+            World = input.ReadString();
             break;
           }
         }
@@ -410,394 +407,6 @@ namespace Creation {
 
   }
 
-  public sealed partial class CreationProps : pb::IMessage<CreationProps>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<CreationProps> _parser = new pb::MessageParser<CreationProps>(() => new CreationProps());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<CreationProps> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[2]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationProps() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationProps(CreationProps other) : this() {
-      slotted_ = other.slotted_;
-      health_ = other.health_;
-      mood_ = other.mood_;
-      hungry_ = other.hungry_;
-      age_ = other.age_;
-      rank_ = other.rank_;
-      achievement_ = other.achievement_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public CreationProps Clone() {
-      return new CreationProps(this);
-    }
-
-    /// <summary>Field number for the "slotted" field.</summary>
-    public const int SlottedFieldNumber = 1;
-    private string slotted_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Slotted {
-      get { return slotted_; }
-      set {
-        slotted_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "health" field.</summary>
-    public const int HealthFieldNumber = 2;
-    private int health_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Health {
-      get { return health_; }
-      set {
-        health_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "mood" field.</summary>
-    public const int MoodFieldNumber = 3;
-    private string mood_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Mood {
-      get { return mood_; }
-      set {
-        mood_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "hungry" field.</summary>
-    public const int HungryFieldNumber = 4;
-    private int hungry_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Hungry {
-      get { return hungry_; }
-      set {
-        hungry_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "age" field.</summary>
-    public const int AgeFieldNumber = 5;
-    private int age_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Age {
-      get { return age_; }
-      set {
-        age_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "rank" field.</summary>
-    public const int RankFieldNumber = 6;
-    private int rank_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Rank {
-      get { return rank_; }
-      set {
-        rank_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "achievement" field.</summary>
-    public const int AchievementFieldNumber = 7;
-    private string achievement_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string Achievement {
-      get { return achievement_; }
-      set {
-        achievement_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as CreationProps);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(CreationProps other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Slotted != other.Slotted) return false;
-      if (Health != other.Health) return false;
-      if (Mood != other.Mood) return false;
-      if (Hungry != other.Hungry) return false;
-      if (Age != other.Age) return false;
-      if (Rank != other.Rank) return false;
-      if (Achievement != other.Achievement) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Slotted.Length != 0) hash ^= Slotted.GetHashCode();
-      if (Health != 0) hash ^= Health.GetHashCode();
-      if (Mood.Length != 0) hash ^= Mood.GetHashCode();
-      if (Hungry != 0) hash ^= Hungry.GetHashCode();
-      if (Age != 0) hash ^= Age.GetHashCode();
-      if (Rank != 0) hash ^= Rank.GetHashCode();
-      if (Achievement.Length != 0) hash ^= Achievement.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Slotted.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Slotted);
-      }
-      if (Health != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Health);
-      }
-      if (Mood.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(Mood);
-      }
-      if (Hungry != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(Hungry);
-      }
-      if (Age != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(Age);
-      }
-      if (Rank != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(Rank);
-      }
-      if (Achievement.Length != 0) {
-        output.WriteRawTag(58);
-        output.WriteString(Achievement);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Slotted.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Slotted);
-      }
-      if (Health != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Health);
-      }
-      if (Mood.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(Mood);
-      }
-      if (Hungry != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(Hungry);
-      }
-      if (Age != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(Age);
-      }
-      if (Rank != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(Rank);
-      }
-      if (Achievement.Length != 0) {
-        output.WriteRawTag(58);
-        output.WriteString(Achievement);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (Slotted.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Slotted);
-      }
-      if (Health != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Health);
-      }
-      if (Mood.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Mood);
-      }
-      if (Hungry != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Hungry);
-      }
-      if (Age != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Age);
-      }
-      if (Rank != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Rank);
-      }
-      if (Achievement.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Achievement);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(CreationProps other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Slotted.Length != 0) {
-        Slotted = other.Slotted;
-      }
-      if (other.Health != 0) {
-        Health = other.Health;
-      }
-      if (other.Mood.Length != 0) {
-        Mood = other.Mood;
-      }
-      if (other.Hungry != 0) {
-        Hungry = other.Hungry;
-      }
-      if (other.Age != 0) {
-        Age = other.Age;
-      }
-      if (other.Rank != 0) {
-        Rank = other.Rank;
-      }
-      if (other.Achievement.Length != 0) {
-        Achievement = other.Achievement;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            Slotted = input.ReadString();
-            break;
-          }
-          case 16: {
-            Health = input.ReadInt32();
-            break;
-          }
-          case 26: {
-            Mood = input.ReadString();
-            break;
-          }
-          case 32: {
-            Hungry = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            Age = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            Rank = input.ReadInt32();
-            break;
-          }
-          case 58: {
-            Achievement = input.ReadString();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            Slotted = input.ReadString();
-            break;
-          }
-          case 16: {
-            Health = input.ReadInt32();
-            break;
-          }
-          case 26: {
-            Mood = input.ReadString();
-            break;
-          }
-          case 32: {
-            Hungry = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            Age = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            Rank = input.ReadInt32();
-            break;
-          }
-          case 58: {
-            Achievement = input.ReadString();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class Creation : pb::IMessage<Creation>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -810,7 +419,7 @@ namespace Creation {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -827,8 +436,9 @@ namespace Creation {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public Creation(Creation other) : this() {
-      modelVersion_ = other.modelVersion_;
-      creationId_ = other.creationId_;
+      schemaVersion_ = other.schemaVersion_;
+      id_ = other.id_;
+      quantity_ = other.quantity_;
       status_ = other.status_;
       creationType_ = other.creationType_;
       prefabType_ = other.prefabType_;
@@ -838,7 +448,7 @@ namespace Creation {
       category_ = other.category_;
       resources_ = other.resources_.Clone();
       slots_ = other.slots_.Clone();
-      props_ = other.props_ != null ? other.props_.Clone() : null;
+      attrs_ = other.attrs_.Clone();
       extraProps_ = other.extraProps_.Clone();
       children_ = other.children_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -849,30 +459,41 @@ namespace Creation {
       return new Creation(this);
     }
 
-    /// <summary>Field number for the "model_version" field.</summary>
-    public const int ModelVersionFieldNumber = 1;
-    private string modelVersion_ = "";
+    /// <summary>Field number for the "schema_version" field.</summary>
+    public const int SchemaVersionFieldNumber = 1;
+    private string schemaVersion_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string ModelVersion {
-      get { return modelVersion_; }
+    public string SchemaVersion {
+      get { return schemaVersion_; }
       set {
-        modelVersion_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        schemaVersion_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "creation_id" field.</summary>
-    public const int CreationIdFieldNumber = 2;
-    private string creationId_ = "";
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 2;
+    private string id_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string CreationId {
-      get { return creationId_; }
+    public string Id {
+      get { return id_; }
       set {
-        creationId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "quantity" field.</summary>
+    public const int QuantityFieldNumber = 3;
+    private int quantity_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Quantity {
+      get { return quantity_; }
+      set {
+        quantity_ = value;
       }
     }
 
     /// <summary>Field number for the "status" field.</summary>
-    public const int StatusFieldNumber = 3;
+    public const int StatusFieldNumber = 4;
     private string status_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Status {
@@ -883,7 +504,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "creation_type" field.</summary>
-    public const int CreationTypeFieldNumber = 4;
+    public const int CreationTypeFieldNumber = 5;
     private string creationType_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string CreationType {
@@ -894,7 +515,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "prefab_type" field.</summary>
-    public const int PrefabTypeFieldNumber = 5;
+    public const int PrefabTypeFieldNumber = 6;
     private string prefabType_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string PrefabType {
@@ -905,7 +526,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "template" field.</summary>
-    public const int TemplateFieldNumber = 6;
+    public const int TemplateFieldNumber = 7;
     private string template_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Template {
@@ -916,7 +537,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 7;
+    public const int NameFieldNumber = 8;
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Name {
@@ -927,7 +548,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "description" field.</summary>
-    public const int DescriptionFieldNumber = 8;
+    public const int DescriptionFieldNumber = 9;
     private string description_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Description {
@@ -938,7 +559,7 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "category" field.</summary>
-    public const int CategoryFieldNumber = 9;
+    public const int CategoryFieldNumber = 10;
     private string category_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Category {
@@ -949,9 +570,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "resources" field.</summary>
-    public const int ResourcesFieldNumber = 10;
+    public const int ResourcesFieldNumber = 11;
     private static readonly pb::FieldCodec<global::Creation.CreationRes> _repeated_resources_codec
-        = pb::FieldCodec.ForMessage(82, global::Creation.CreationRes.Parser);
+        = pb::FieldCodec.ForMessage(90, global::Creation.CreationRes.Parser);
     private readonly pbc::RepeatedField<global::Creation.CreationRes> resources_ = new pbc::RepeatedField<global::Creation.CreationRes>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Creation.CreationRes> Resources {
@@ -959,30 +580,29 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "slots" field.</summary>
-    public const int SlotsFieldNumber = 11;
+    public const int SlotsFieldNumber = 12;
     private static readonly pb::FieldCodec<string> _repeated_slots_codec
-        = pb::FieldCodec.ForString(90);
+        = pb::FieldCodec.ForString(98);
     private readonly pbc::RepeatedField<string> slots_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<string> Slots {
       get { return slots_; }
     }
 
-    /// <summary>Field number for the "props" field.</summary>
-    public const int PropsFieldNumber = 12;
-    private global::Creation.CreationProps props_;
+    /// <summary>Field number for the "attrs" field.</summary>
+    public const int AttrsFieldNumber = 13;
+    private static readonly pbc::MapField<string, string>.Codec _map_attrs_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 106);
+    private readonly pbc::MapField<string, string> attrs_ = new pbc::MapField<string, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Creation.CreationProps Props {
-      get { return props_; }
-      set {
-        props_ = value;
-      }
+    public pbc::MapField<string, string> Attrs {
+      get { return attrs_; }
     }
 
     /// <summary>Field number for the "extra_props" field.</summary>
-    public const int ExtraPropsFieldNumber = 13;
+    public const int ExtraPropsFieldNumber = 14;
     private static readonly pbc::MapField<string, string>.Codec _map_extraProps_codec
-        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 106);
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 114);
     private readonly pbc::MapField<string, string> extraProps_ = new pbc::MapField<string, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::MapField<string, string> ExtraProps {
@@ -990,9 +610,9 @@ namespace Creation {
     }
 
     /// <summary>Field number for the "children" field.</summary>
-    public const int ChildrenFieldNumber = 14;
+    public const int ChildrenFieldNumber = 15;
     private static readonly pb::FieldCodec<global::Creation.Creation> _repeated_children_codec
-        = pb::FieldCodec.ForMessage(114, global::Creation.Creation.Parser);
+        = pb::FieldCodec.ForMessage(122, global::Creation.Creation.Parser);
     private readonly pbc::RepeatedField<global::Creation.Creation> children_ = new pbc::RepeatedField<global::Creation.Creation>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<global::Creation.Creation> Children {
@@ -1012,8 +632,9 @@ namespace Creation {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ModelVersion != other.ModelVersion) return false;
-      if (CreationId != other.CreationId) return false;
+      if (SchemaVersion != other.SchemaVersion) return false;
+      if (Id != other.Id) return false;
+      if (Quantity != other.Quantity) return false;
       if (Status != other.Status) return false;
       if (CreationType != other.CreationType) return false;
       if (PrefabType != other.PrefabType) return false;
@@ -1023,7 +644,7 @@ namespace Creation {
       if (Category != other.Category) return false;
       if(!resources_.Equals(other.resources_)) return false;
       if(!slots_.Equals(other.slots_)) return false;
-      if (!object.Equals(Props, other.Props)) return false;
+      if (!Attrs.Equals(other.Attrs)) return false;
       if (!ExtraProps.Equals(other.ExtraProps)) return false;
       if(!children_.Equals(other.children_)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1032,8 +653,9 @@ namespace Creation {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (ModelVersion.Length != 0) hash ^= ModelVersion.GetHashCode();
-      if (CreationId.Length != 0) hash ^= CreationId.GetHashCode();
+      if (SchemaVersion.Length != 0) hash ^= SchemaVersion.GetHashCode();
+      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (Quantity != 0) hash ^= Quantity.GetHashCode();
       if (Status.Length != 0) hash ^= Status.GetHashCode();
       if (CreationType.Length != 0) hash ^= CreationType.GetHashCode();
       if (PrefabType.Length != 0) hash ^= PrefabType.GetHashCode();
@@ -1043,7 +665,7 @@ namespace Creation {
       if (Category.Length != 0) hash ^= Category.GetHashCode();
       hash ^= resources_.GetHashCode();
       hash ^= slots_.GetHashCode();
-      if (props_ != null) hash ^= Props.GetHashCode();
+      hash ^= Attrs.GetHashCode();
       hash ^= ExtraProps.GetHashCode();
       hash ^= children_.GetHashCode();
       if (_unknownFields != null) {
@@ -1062,48 +684,49 @@ namespace Creation {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ModelVersion.Length != 0) {
+      if (SchemaVersion.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(ModelVersion);
+        output.WriteString(SchemaVersion);
       }
-      if (CreationId.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(CreationId);
+        output.WriteString(Id);
+      }
+      if (Quantity != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Quantity);
       }
       if (Status.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Status);
       }
       if (CreationType.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(CreationType);
       }
       if (PrefabType.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteString(PrefabType);
       }
       if (Template.Length != 0) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteString(Template);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteString(Name);
       }
       if (Description.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteString(Description);
       }
       if (Category.Length != 0) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(82);
         output.WriteString(Category);
       }
       resources_.WriteTo(output, _repeated_resources_codec);
       slots_.WriteTo(output, _repeated_slots_codec);
-      if (props_ != null) {
-        output.WriteRawTag(98);
-        output.WriteMessage(Props);
-      }
+      attrs_.WriteTo(output, _map_attrs_codec);
       extraProps_.WriteTo(output, _map_extraProps_codec);
       children_.WriteTo(output, _repeated_children_codec);
       if (_unknownFields != null) {
@@ -1115,48 +738,49 @@ namespace Creation {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ModelVersion.Length != 0) {
+      if (SchemaVersion.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(ModelVersion);
+        output.WriteString(SchemaVersion);
       }
-      if (CreationId.Length != 0) {
+      if (Id.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(CreationId);
+        output.WriteString(Id);
+      }
+      if (Quantity != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Quantity);
       }
       if (Status.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Status);
       }
       if (CreationType.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(CreationType);
       }
       if (PrefabType.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteString(PrefabType);
       }
       if (Template.Length != 0) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteString(Template);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteString(Name);
       }
       if (Description.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteString(Description);
       }
       if (Category.Length != 0) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(82);
         output.WriteString(Category);
       }
       resources_.WriteTo(ref output, _repeated_resources_codec);
       slots_.WriteTo(ref output, _repeated_slots_codec);
-      if (props_ != null) {
-        output.WriteRawTag(98);
-        output.WriteMessage(Props);
-      }
+      attrs_.WriteTo(ref output, _map_attrs_codec);
       extraProps_.WriteTo(ref output, _map_extraProps_codec);
       children_.WriteTo(ref output, _repeated_children_codec);
       if (_unknownFields != null) {
@@ -1168,11 +792,14 @@ namespace Creation {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (ModelVersion.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ModelVersion);
+      if (SchemaVersion.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SchemaVersion);
       }
-      if (CreationId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(CreationId);
+      if (Id.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      }
+      if (Quantity != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Quantity);
       }
       if (Status.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Status);
@@ -1197,9 +824,7 @@ namespace Creation {
       }
       size += resources_.CalculateSize(_repeated_resources_codec);
       size += slots_.CalculateSize(_repeated_slots_codec);
-      if (props_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Props);
-      }
+      size += attrs_.CalculateSize(_map_attrs_codec);
       size += extraProps_.CalculateSize(_map_extraProps_codec);
       size += children_.CalculateSize(_repeated_children_codec);
       if (_unknownFields != null) {
@@ -1213,11 +838,14 @@ namespace Creation {
       if (other == null) {
         return;
       }
-      if (other.ModelVersion.Length != 0) {
-        ModelVersion = other.ModelVersion;
+      if (other.SchemaVersion.Length != 0) {
+        SchemaVersion = other.SchemaVersion;
       }
-      if (other.CreationId.Length != 0) {
-        CreationId = other.CreationId;
+      if (other.Id.Length != 0) {
+        Id = other.Id;
+      }
+      if (other.Quantity != 0) {
+        Quantity = other.Quantity;
       }
       if (other.Status.Length != 0) {
         Status = other.Status;
@@ -1242,12 +870,7 @@ namespace Creation {
       }
       resources_.Add(other.resources_);
       slots_.Add(other.slots_);
-      if (other.props_ != null) {
-        if (props_ == null) {
-          Props = new global::Creation.CreationProps();
-        }
-        Props.MergeFrom(other.Props);
-      }
+      attrs_.Add(other.attrs_);
       extraProps_.Add(other.extraProps_);
       children_.Add(other.children_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1265,61 +888,62 @@ namespace Creation {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            ModelVersion = input.ReadString();
+            SchemaVersion = input.ReadString();
             break;
           }
           case 18: {
-            CreationId = input.ReadString();
+            Id = input.ReadString();
             break;
           }
-          case 26: {
-            Status = input.ReadString();
+          case 24: {
+            Quantity = input.ReadInt32();
             break;
           }
           case 34: {
-            CreationType = input.ReadString();
+            Status = input.ReadString();
             break;
           }
           case 42: {
-            PrefabType = input.ReadString();
+            CreationType = input.ReadString();
             break;
           }
           case 50: {
-            Template = input.ReadString();
+            PrefabType = input.ReadString();
             break;
           }
           case 58: {
-            Name = input.ReadString();
+            Template = input.ReadString();
             break;
           }
           case 66: {
-            Description = input.ReadString();
+            Name = input.ReadString();
             break;
           }
           case 74: {
-            Category = input.ReadString();
+            Description = input.ReadString();
             break;
           }
           case 82: {
-            resources_.AddEntriesFrom(input, _repeated_resources_codec);
+            Category = input.ReadString();
             break;
           }
           case 90: {
-            slots_.AddEntriesFrom(input, _repeated_slots_codec);
+            resources_.AddEntriesFrom(input, _repeated_resources_codec);
             break;
           }
           case 98: {
-            if (props_ == null) {
-              Props = new global::Creation.CreationProps();
-            }
-            input.ReadMessage(Props);
+            slots_.AddEntriesFrom(input, _repeated_slots_codec);
             break;
           }
           case 106: {
-            extraProps_.AddEntriesFrom(input, _map_extraProps_codec);
+            attrs_.AddEntriesFrom(input, _map_attrs_codec);
             break;
           }
           case 114: {
+            extraProps_.AddEntriesFrom(input, _map_extraProps_codec);
+            break;
+          }
+          case 122: {
             children_.AddEntriesFrom(input, _repeated_children_codec);
             break;
           }
@@ -1338,61 +962,62 @@ namespace Creation {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            ModelVersion = input.ReadString();
+            SchemaVersion = input.ReadString();
             break;
           }
           case 18: {
-            CreationId = input.ReadString();
+            Id = input.ReadString();
             break;
           }
-          case 26: {
-            Status = input.ReadString();
+          case 24: {
+            Quantity = input.ReadInt32();
             break;
           }
           case 34: {
-            CreationType = input.ReadString();
+            Status = input.ReadString();
             break;
           }
           case 42: {
-            PrefabType = input.ReadString();
+            CreationType = input.ReadString();
             break;
           }
           case 50: {
-            Template = input.ReadString();
+            PrefabType = input.ReadString();
             break;
           }
           case 58: {
-            Name = input.ReadString();
+            Template = input.ReadString();
             break;
           }
           case 66: {
-            Description = input.ReadString();
+            Name = input.ReadString();
             break;
           }
           case 74: {
-            Category = input.ReadString();
+            Description = input.ReadString();
             break;
           }
           case 82: {
-            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
+            Category = input.ReadString();
             break;
           }
           case 90: {
-            slots_.AddEntriesFrom(ref input, _repeated_slots_codec);
+            resources_.AddEntriesFrom(ref input, _repeated_resources_codec);
             break;
           }
           case 98: {
-            if (props_ == null) {
-              Props = new global::Creation.CreationProps();
-            }
-            input.ReadMessage(Props);
+            slots_.AddEntriesFrom(ref input, _repeated_slots_codec);
             break;
           }
           case 106: {
-            extraProps_.AddEntriesFrom(ref input, _map_extraProps_codec);
+            attrs_.AddEntriesFrom(ref input, _map_attrs_codec);
             break;
           }
           case 114: {
+            extraProps_.AddEntriesFrom(ref input, _map_extraProps_codec);
+            break;
+          }
+          case 122: {
             children_.AddEntriesFrom(ref input, _repeated_children_codec);
             break;
           }
@@ -1415,7 +1040,7 @@ namespace Creation {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Creation.CreationReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

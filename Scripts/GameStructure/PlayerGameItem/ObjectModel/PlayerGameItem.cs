@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
 using GameFramework.Service;
@@ -11,6 +12,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
     [Serializable]
     public class PlayerGameItem : BaseItem
     {
+        public static readonly string ATTRS_SLOTTED= "Slotted";
+        public static readonly string ATTRS_HEALTH = "Health";
+        public static readonly string ATTRS_POSITION = "Position";
+        public static readonly string ATTRS_ROTATION = "Rotation";
+        public static readonly string ATTRS_IS_PLAYER = "IsPlayer";
         /// <summary>
         /// The user customized name for this item. The field Name is reserved for the localized name of the type
         /// </summary>
@@ -36,7 +42,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         public LocalisablePrefabType PrefabType;
         public bool IsActive;
 
-        public Props Props = new Props();
+        public Dictionary<string, string> Attrs = new Dictionary<string, string>();
 
         /// <summary>
         /// A list of custom variables for this game item.
@@ -59,15 +65,6 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 
         public PlayerGameItem()
         {
-            //Add default properties
-            //if (Props.GetVector3(Constants.PROP_KEY_POSITION) == null)
-            //{
-            //    Props.SetVector3(Constants.PROP_KEY_POSITION, Vector3.zero);
-            //}
-            //if (Props.GetVector3(Constants.PROP_KEY_ROTATION) == null)
-            //{
-            //    Props.SetVector3(Constants.PROP_KEY_ROTATION, Quaternion.identity.eulerAngles);
-            //}
         }
 
         public async Task AddChild(PlayerGameItem child)
@@ -86,7 +83,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         public List<string> CompareWith(PlayerGameItem that)
         {
             List<string> differents = ObjectUtil.CompareObjects(this, that);
-            differents.AddRange(ObjectUtil.CompareObjects(this.Props, that.Props));
+            differents.AddRange(ObjectUtil.CompareObjects(this.Attrs, that.Attrs));
             if(CompareLists(this.Children, that.Children) != 0)
             {
                 //Children are different
@@ -168,6 +165,84 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             //No difference
             return 0;
 
+        }
+
+        public string GetAttr(string key)
+        {
+            string value;
+            Attrs.TryGetValue(key, out value);
+            return value;
+        }
+
+        public void SetAttr(string key, string value)
+        {
+            Attrs[key] = value;
+        }
+
+        private T GetTypedAttr<T>(string key, T defaultValue)
+        {
+            string value = null;
+            Attrs.TryGetValue(key, out value);
+            return ObjectUtil.TryParse<T>(value, defaultValue);
+        }
+
+        public float GetFloatAttr(string key, float defaultValue = 0)
+        {
+            return GetTypedAttr<float>(key, defaultValue);
+        }
+
+        public void SetFloatAttr(string key, float value)
+        {
+            Attrs[key] = value.ToString();
+        }
+
+        public bool GetBoolAttr(string key, bool defaultValue = false)
+        {
+            return GetTypedAttr<bool>(key, defaultValue);
+        }
+
+        public void SetBoolAttr(string key, bool value)
+        {
+            Attrs[key] = value.ToString();
+        }
+
+        public Vector3 GetVector3Attr(string key, Vector3 defaultValue)
+        {
+            string value = null;
+            if(Attrs.TryGetValue(key, out value))
+            {
+                Vector3 vector3 = JsonUtility.FromJson<Vector3>(value);
+                return vector3;
+            } else 
+            {
+                //Doesn't have the value, return the default
+                return defaultValue;
+            }
+        }
+
+        public void SetVector3Attr(string key, Vector3 value)
+        {
+            Attrs[key] = JsonUtility.ToJson(value);
+        }
+
+        public Quaternion GetQuaternionAttr(string key, Quaternion defaultValue)
+        {
+            string value = null;
+            if (Attrs.TryGetValue(key, out value))
+            {
+                Quaternion vector3 = JsonUtility.FromJson<Quaternion>(value);
+                return vector3;
+            }
+            else
+            {
+                //Doesn't have the value, return the default
+                return defaultValue;
+            }
+        }
+
+        public void SetQuaternionAttr(string key, Quaternion value)
+        {
+            Attrs[key] = JsonUtility.ToJson(value);
         }
     }
 

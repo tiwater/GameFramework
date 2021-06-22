@@ -39,28 +39,10 @@ namespace GameFramework.GameStructure
             if (item != null)
             {
                 //Get the position and rotation info for the GameItem
-                var positionVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_POSITION);
-                var rotationVariable = item.ExtraProps.GetVector3(Constants.PROP_KEY_ROTATION);
-                Vector3 position;
-                Quaternion rotation;
-                //Position
-                if (positionVariable != null)
-                {
-                    position = positionVariable.Value;
-                }
-                else
-                {
-                    position = Vector3.zero;
-                }
-                //Rotation
-                if (rotationVariable != null)
-                {
-                    rotation = Quaternion.Euler(rotationVariable.Value);
-                }
-                else
-                {
-                    rotation = Quaternion.identity;
-                }
+                var position = item.GetVector3Attr(PlayerGameItem.ATTRS_POSITION, Vector3.zero);
+                var rotationVariable = item.GetVector3Attr(PlayerGameItem.ATTRS_ROTATION, Vector3.zero);
+                Quaternion rotation = Quaternion.Euler(rotationVariable);
+
                 GameObject gameObject = null;
 
                 if (item.GiType == typeof(Level).Name)
