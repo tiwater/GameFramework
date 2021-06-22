@@ -74,6 +74,9 @@ namespace GameFramework.GameStructure
 
         const string VariablesPrefix = "GV.";
 
+        public const string UI_SUFFIX = "2D";
+        public const string SCENE_SUFFIX = "3D";
+
         // Inspector Values
         #region General
 
