@@ -59,7 +59,7 @@ namespace GameFramework.GameStructure
                     //Config the prefab
                     var holderComponent = gameObject.GetComponent<CharacterHolder>();
                     holderComponent.BindCharacterPGI(item, item.PrefabType);
-                    if (item.IsActive)
+                    if (item.IsPlayerCharacter())
                     {
                         //Link to the player's character holder
                         PlayerCharacterHolder = gameObject;

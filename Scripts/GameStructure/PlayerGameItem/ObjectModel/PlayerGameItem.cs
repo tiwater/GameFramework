@@ -167,6 +167,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 
         }
 
+        public bool IsPlayerCharacter()
+        {
+            return GetBoolAttr(ATTRS_IS_PLAYER);
+        }
+
         public string GetAttr(string key)
         {
             string value;
