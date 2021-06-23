@@ -22,6 +22,36 @@ namespace GameFramework.Display.Placement.Components
         public RectTransform ProgressBar;
         public RectTransform Indicator;
 
+        public bool ShowBackground {
+            get {
+                return _showBackground;
+            }
+            set
+            {
+                _showBackground = value;
+                UpdateBehavior();
+            }
+        }
+        [Tooltip("Whether show the background Image")]
+        [SerializeField]
+        private bool _showBackground = true;
+
+        public bool ShowIndicator
+        {
+            get
+            {
+                return _showIndicator;
+            }
+            set
+            {
+                _showIndicator = value;
+                UpdateBehavior();
+            }
+        }
+        [Tooltip("Whether show the idicator")]
+        [SerializeField]
+        private bool _showIndicator = true;
+
         /// <summary>
         /// The progress increment direction
         /// </summary>
@@ -172,6 +202,10 @@ namespace GameFramework.Display.Placement.Components
 
             pbImage.fillClockwise = Clockwise;
             pbImage.fillOrigin = (int)FillOrigin;
+
+            //Enable/Disable the images
+            bgImage.gameObject.SetActive(ShowBackground);
+            icImage.gameObject.SetActive(ShowIndicator);
         }
 
         /// <summary>
