@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.Util;
 using GameFramework.Service;
+using Newtonsoft.Json;
 using UnityEngine;
 using static GameFramework.GameStructure.GameItems.ObjectModel.GameItem;
 
@@ -17,6 +19,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         public static readonly string ATTRS_POSITION = "Position";
         public static readonly string ATTRS_ROTATION = "Rotation";
         public static readonly string ATTRS_IS_PLAYER = "IsPlayer";
+        public static readonly string ATTRS_INDEX = "Index";
         /// <summary>
         /// The user customized name for this item. The field Name is reserved for the localized name of the type
         /// </summary>
@@ -42,6 +45,9 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
         public LocalisablePrefabType PrefabType;
         public bool IsActive;
 
+        /// <summary>
+        /// Store customized attributes, all in string format
+        /// </summary>
         public Dictionary<string, string> Attrs = new Dictionary<string, string>();
 
         /// <summary>
@@ -172,6 +178,11 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             return GetBoolAttr(ATTRS_IS_PLAYER);
         }
 
+        /// <summary>
+        /// Get the attributes in Attrs
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetAttr(string key)
         {
             string value;
@@ -179,12 +190,25 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             return value;
         }
 
+        /// <summary>
+        /// Store attribute value into Attrs
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetAttr(string key, string value)
         {
             Attrs[key] = value;
         }
 
-        private T GetTypedAttr<T>(string key, T defaultValue)
+        /// <summary>
+        /// The generic method to get attribute value from Attrs other than string type,
+        /// the target type must support parse
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        private T GetParsableTypedAttr<T>(string key, T defaultValue)
         {
             string value = null;
             Attrs.TryGetValue(key, out value);
@@ -193,7 +217,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 
         public float GetFloatAttr(string key, float defaultValue = 0)
         {
-            return GetTypedAttr<float>(key, defaultValue);
+            return GetParsableTypedAttr<float>(key, defaultValue);
         }
 
         public void SetFloatAttr(string key, float value)
@@ -203,7 +227,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
 
         public bool GetBoolAttr(string key, bool defaultValue = false)
         {
-            return GetTypedAttr<bool>(key, defaultValue);
+            return GetParsableTypedAttr<bool>(key, defaultValue);
         }
 
         public void SetBoolAttr(string key, bool value)
@@ -211,31 +235,30 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             Attrs[key] = value.ToString();
         }
 
-        public Vector3 GetVector3Attr(string key, Vector3 defaultValue)
+        public int GetIntAttr(string key, int defaultValue = 0)
         {
-            string value = null;
-            if(Attrs.TryGetValue(key, out value))
-            {
-                Vector3 vector3 = JsonUtility.FromJson<Vector3>(value);
-                return vector3;
-            } else 
-            {
-                //Doesn't have the value, return the default
-                return defaultValue;
-            }
+            return GetParsableTypedAttr<int>(key, defaultValue);
         }
 
-        public void SetVector3Attr(string key, Vector3 value)
+        public void SetIntAttr(string key, int value)
         {
-            Attrs[key] = JsonUtility.ToJson(value);
+            Attrs[key] = value.ToString();
         }
 
-        public Quaternion GetQuaternionAttr(string key, Quaternion defaultValue)
+        /// <summary>
+        /// The generic method to get attribute value from Attrs other than string type,
+        /// the target type doesn't support parse, but must support JsonUtility
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public T GetTypedAttr<T>(string key, T defaultValue)
         {
             string value = null;
             if (Attrs.TryGetValue(key, out value))
             {
-                Quaternion vector3 = JsonUtility.FromJson<Quaternion>(value);
+                T vector3 = JsonUtility.FromJson<T>(value);
                 return vector3;
             }
             else
@@ -245,29 +268,84 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
             }
         }
 
+        public Vector3 GetVector3Attr(string key, Vector3 defaultValue = default(Vector3))
+        {
+            return GetTypedAttr<Vector3>(key, defaultValue);
+        }
+
+        public void SetVector3Attr(string key, Vector3 value)
+        {
+            Attrs[key] = JsonUtility.ToJson(value);
+        }
+
+        public Quaternion GetQuaternionAttr(string key, Quaternion defaultValue = default(Quaternion))
+        {
+            return GetTypedAttr<Quaternion>(key, defaultValue);
+        }
+
         public void SetQuaternionAttr(string key, Quaternion value)
         {
             Attrs[key] = JsonUtility.ToJson(value);
         }
-    }
 
-    //[Serializable]
-    //public class EquipmentItem
-    //{
-    //    public string EquiptorId;
-    //    public Slot EquipSlot;
-    //    public PlayerGameItem Equipment;
-    //}
+        /// <summary>
+        /// Due to limitation of the JsonUtility and JsonConvert, deserialize the entity
+        /// by customized method
+        /// </summary>
+        /// <returns></returns>
+        public string ToJson()
+        {
+            string json = JsonUtility.ToJson(this);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(json);
+            //Remove the last "}"
+            sb.Length --;
 
-    [Serializable]
-    public class Props
-    {
-        public Slot Slotted;
-        public float Health;
-        public string Mood;
-        public float Hungry;
-        public long Age;
-        public long Rank;
-        public string Achievement;
+            //Attrs
+            sb.Append(", \"Attrs\":");
+            sb.Append(JsonConvert.SerializeObject(Attrs));
+
+            //Append the generated string for ExtraProps in Dictionary format
+            sb.Append(", \"ExtraProps\":");
+            sb.Append(ExtraProps.ToJsonMapString());
+
+            if (Children != null)
+            {
+                //The children nodes
+                sb.Append(", \"Children\":[");
+
+                foreach (var child in Children)
+                {
+                    sb.Append(child.ToJson());
+                    sb.Append(",");
+                }
+                if (sb[sb.Length - 1] == ',')
+                {
+                    sb.Length--;
+                }
+                sb.Append("]");
+            }
+
+            if (Equipments != null)
+            {
+                //The equipments node
+                sb.Append(", \"Equipments\":[");
+
+                foreach (var child in Children)
+                {
+                    sb.Append(child.ToJson());
+                    sb.Append(",");
+                }
+                if (sb[sb.Length - 1] == ',')
+                {
+                    sb.Length--;
+                }
+                sb.Append("]");
+            }
+            sb.Append("}");
+
+
+            return sb.ToString();
+        }
     }
 }

@@ -27,7 +27,6 @@ namespace GameFramework.GameStructure
         public GameObject AgiHolder;
 
         public GameObject PlayerCharacterHolder { get; set; }
-        private UnityAction<PlatformMessage> listener;
 
         protected override void GmReadyStart()
         {
