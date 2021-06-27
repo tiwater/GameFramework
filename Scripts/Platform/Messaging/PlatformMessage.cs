@@ -8,6 +8,8 @@ namespace GameFramework.GameStructure.Platform.Messaging
     {
 
         public const string DEFAULT_MESSAGE_HEADER = "com.tiwater.karu.GAME_UPDATED";
+        public const string NOTABLE_MESSAGE_HEADER = "com.tiwater.karu.NOTABLE_UPDATE";
+
         public const string TYPE = "MsgType";
 
         public const string TYPE_CREATION_UPDATED = "CreationUpdated";

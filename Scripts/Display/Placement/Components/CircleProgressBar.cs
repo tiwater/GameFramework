@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace GameFramework.Display.Placement.Components
 {
     [ExecuteInEditMode]
-    public class CircleProgressBar : MonoBehaviour
+    public class CircleProgressBar : FloatValueWidget
     {
         private int defaultIndicatorSize = 20;
         private int defaultComponentSize = 400;
@@ -96,53 +96,6 @@ namespace GameFramework.Display.Placement.Components
         [Tooltip("The max rotation angle of the circle progress bar")]
         public int MaxAngle = 180;
 
-        /// <summary>
-        /// The max value the progress bar accepts
-        /// </summary>
-        [Tooltip("The max value the progress bar accepts")]
-        public float MinValue = 0;
-
-        /// <summary>
-        /// The min value the progress bar accepts
-        /// </summary>
-        [Tooltip("The min value the progress bar accepts")]
-        public float MaxValue = 1;
-
-        /// <summary>
-        /// The value of the progress
-        /// </summary>
-        public float Value
-        {
-            get
-            {
-                return _value;
-            }
-            set
-            {
-                _value = value;
-                CheckValue();
-                UpdateBehavior();
-            }
-        }
-        [Tooltip("The value of the progress")]
-        [SerializeField]
-        private float _value = 0.5f;
-
-        /// <summary>
-        /// Whether the progress of the value changing is displayed in animation
-        /// </summary>
-        [Tooltip("Whether the progress of the value changing is displayed in animation")]
-        public bool AnimatedProgress = true;
-
-        /// <summary>
-        /// The speed of the progress bar changing. Ignored when AnimatedProgress is false
-        /// </summary>
-        [Tooltip("The speed of the progress bar changing. Ignored when AnimatedProgress is false")]
-        public float Speed = 20;
-
-
-        private float currentValue = 0;
-
         public bool KeepIndicatorInBar = true;
         //If multiple progress bars are placed by joined together, the indicator might be overlapped by another bar's background
         //So put a space for the indicator to avoid the overlap
@@ -169,7 +122,7 @@ namespace GameFramework.Display.Placement.Components
         {
             CheckValue();
             UpdateBehavior();
-            SetProgress(currentValue);
+            SetProgress(CurrentValue);
             SetIndicator();
         }
 
@@ -180,10 +133,16 @@ namespace GameFramework.Display.Placement.Components
             //For the display in editor
             UpdateBehavior();
 #endif
-            if (Value != currentValue)
+            if (Value != CurrentValue)
             {
                 UpdateProgress();
             }
+        }
+
+        protected override void OnValueChanged(float oldValue, float newValue)
+        {
+            base.OnValueChanged(oldValue, newValue);
+            UpdateBehavior();
         }
 
         /// <summary>
@@ -213,67 +172,19 @@ namespace GameFramework.Display.Placement.Components
         /// </summary>
         private void UpdateProgress()
         {
-            if (AnimatedProgress)
-            {
-                float delta = Speed * Time.deltaTime;
-                float gap = Value - currentValue;
-                if (delta > Mathf.Abs(gap))
-                {
-                    //If move too much, then we are at the target position now
-                    currentValue = Value;
-                }
-                else
-                {
-                    //Decide the move direction
-                    if (gap > 0)
-                    {
-                        currentValue += delta;
-                    }
-                    else
-                    {
-                        currentValue -= delta;
-                    }
-                }
-            }
-            else
-            {
-                currentValue = Value;
-            }
+            UpdateCurrentValue();
 
             //Update the progress value
             //For the display in editor
             if (Application.IsPlaying(gameObject))
             {
-                SetProgress(currentValue);
+                SetProgress(CurrentValue);
             }
             else
             {
                 SetProgress(Value);
             }
             SetIndicator();
-        }
-
-        /// <summary>
-        /// Check whether the value of the progress is proper
-        /// </summary>
-        private void CheckValue()
-        {
-
-            if (MinValue > MaxValue)
-            {
-                Debug.LogWarning("MinValue " + MinValue + " > MaxValue: " + MaxValue);
-                MinValue = MaxValue;
-            }
-            if (Value > MaxValue)
-            {
-                Debug.LogWarning("Value " + Value + " > MaxValue: " + MaxValue);
-                Value = MaxValue;
-            }
-            if (Value < MinValue)
-            {
-                Debug.LogWarning("Value " + Value + " < MinValue: " + MinValue);
-                Value = MinValue;
-            }
         }
 
         /// <summary>

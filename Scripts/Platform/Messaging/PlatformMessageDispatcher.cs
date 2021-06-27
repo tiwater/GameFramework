@@ -22,6 +22,7 @@ namespace GameFramework.Platform.Messaging
         protected virtual void RegisterListenedMessageHeaders()
         {
             ListenedMessageHeaders.Add(PlatformMessage.DEFAULT_MESSAGE_HEADER);
+            ListenedMessageHeaders.Add(PlatformMessage.NOTABLE_MESSAGE_HEADER);
         }
 
         protected override void GmReadyStart()
