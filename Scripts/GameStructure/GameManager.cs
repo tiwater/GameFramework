@@ -1509,7 +1509,7 @@ namespace GameFramework.GameStructure
         /// <param name="res"></param>
         public void PutResource(string key, object res)
         {
-            _resources.Add(key, res);
+            _resources[key] = res;
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
     /// Listen to the EquipmentUpdatedMessage to update the equipments for a character
     /// </summary>
     [RequireComponent(typeof(CharacterHolder))]
+    [AddComponentMenu("Game Framework/PlayerGameItem/Equipment Updated Listener")]
     public class EquipmentUpdatedListener : RunOnMessage<EquipmentUpdatedMessage>
     {
 

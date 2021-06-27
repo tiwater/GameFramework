@@ -12,6 +12,7 @@ namespace GameFramework.GameStructure.PlayerGameItems.Components
     /// Listen to the PlayerGameItemUpdatedMessage for a character to update the character
     /// </summary>
     [RequireComponent(typeof(CharacterHolder))]
+    [AddComponentMenu("Game Framework/PlayerGameItem/Character Updated Listener")]
     public class CharacterUpdatedListener : PlayerGameItemUpdatedListener<CharacterHolder, Character>
     {
     }

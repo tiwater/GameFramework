@@ -12,6 +12,7 @@ namespace GameFramework.GameStructure.PlayerGameItems
     /// <summary>
     /// The class to manage the PlayGameItem, which is instance of GameItem
     /// </summary>
+    [AddComponentMenu("Game Framework/PlayerGameItem/GameItem Instance Manager")]
     public class GameItemInstanceManager
     {
         /// <summary>

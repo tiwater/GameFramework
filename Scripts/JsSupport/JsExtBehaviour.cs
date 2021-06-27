@@ -14,6 +14,7 @@ namespace GameFramework.GameStructure.JsSupport
 {
     public delegate void ModuleInit(JsExtBehaviour monoBehaviour);
 
+    [AddComponentMenu("Game Framework/JS Support/JsExtBehaviour")]
     public class JsExtBehaviour : GmAwakeDependBehaviour, IPointerClickHandler, IOperationPerformer
     {
         public delegate void OperationCallback(int result);
