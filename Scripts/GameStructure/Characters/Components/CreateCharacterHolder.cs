@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Threading.Tasks;
 using GameFramework.GameStructure.Characters.ObjectModel;
 using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
@@ -33,7 +33,7 @@ namespace GameFramework.GameStructure.Characters
         {
             while (!GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
             CreateHolder();
         }

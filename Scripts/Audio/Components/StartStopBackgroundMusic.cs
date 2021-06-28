@@ -63,7 +63,7 @@ namespace GameFramework.Audio.Components
         {
             while (!GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
 
 

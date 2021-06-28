@@ -20,7 +20,7 @@ namespace GameFramework.GameStructure
             //Wait for GameManager ready
             while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
             //Call LateStart
             GmReadyStart();

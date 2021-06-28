@@ -43,7 +43,7 @@ namespace GameFramework.GameStructure.GameItems.Components.AbstractClasses
         {
             while (GameManager.Instance ==null || !GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
 
             if (Context.GetReferencedContextMode() == ObjectModel.GameItemContext.ContextModeType.Selected)

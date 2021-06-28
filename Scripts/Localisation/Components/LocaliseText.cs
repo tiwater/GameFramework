@@ -155,7 +155,7 @@ namespace GameFramework.Localisation.Components
 
             while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
             base.OnEnable();
         }
@@ -167,7 +167,7 @@ namespace GameFramework.Localisation.Components
         {
             while (GameManager.Instance == null || !GameManager.Instance.IsInitialised)
             {
-                yield return Task.Yield();
+                yield return null;
             }
             LocaliseSync();
         }
