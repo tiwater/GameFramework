@@ -14,12 +14,14 @@ namespace GameFramework.GameStructure.PlayerGameItems.ObjectModel
     [Serializable]
     public class PlayerGameItem : BaseItem
     {
-        public static readonly string ATTRS_SLOTTED= "Slotted";
-        public static readonly string ATTRS_HEALTH = "Health";
-        public static readonly string ATTRS_POSITION = "Position";
-        public static readonly string ATTRS_ROTATION = "Rotation";
-        public static readonly string ATTRS_IS_PLAYER = "IsPlayer";
-        public static readonly string ATTRS_INDEX = "Index";
+        public const string ATTRS_SLOTTED= "Slotted";
+        public const string ATTRS_HEALTH = "Health";
+        public const string ATTRS_MOOD = "Mood";
+        public const string ATTRS_HUNGRY = "Hungry";
+        public const string ATTRS_POSITION = "Position";
+        public const string ATTRS_ROTATION = "Rotation";
+        public const string ATTRS_IS_PLAYER = "IsPlayer";
+        public const string ATTRS_INDEX = "Index";
         /// <summary>
         /// The user customized name for this item. The field Name is reserved for the localized name of the type
         /// </summary>
