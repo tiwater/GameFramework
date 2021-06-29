@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
     public float Smoothing = 5f;
 
     public bool SupportRotate = true;
-    public float RotateSpeed = 50f;
+    public float RotateSpeed = 250f;
 
     public float DragThreshold = 0.5f;
 
@@ -19,9 +19,6 @@ public class CameraFollow : MonoBehaviour
     private float dragTime = 0;
 
     private Vector3 offset;
-
-    private Touch oldTouch1;
-    private Touch oldTouch2;
 
     private float touchFactor = 0.05f;
 
@@ -80,14 +77,14 @@ public class CameraFollow : MonoBehaviour
                                 dy = Input.GetAxis("Mouse Y");
                             }
                             //Rotate around z axis
-                            transform.RotateAround(Target.position, Vector3.up, RotateSpeed * dx);
+                            transform.RotateAround(Target.position, Vector3.up, RotateSpeed * dx * Time.deltaTime);
                             //Calculate the new forward and right
                             Vector3 forward = transform.position - Target.position;
                             Vector3 right = Vector3.Cross(Vector3.up, forward);
                             //Calculate the angle between up axis
                             var angle = Vector3.Angle(forward, Vector3.up);
                             //The angle to rotate
-                            float ry = RotateSpeed * dy;
+                            float ry = RotateSpeed * dy * Time.deltaTime;
                             angle += ry;
                             //Limit the rotate range
                             if (angle <= 0)
