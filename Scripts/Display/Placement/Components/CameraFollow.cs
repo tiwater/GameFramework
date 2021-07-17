@@ -30,12 +30,20 @@ public class CameraFollow : MonoBehaviour
             if (sceneManager != null && sceneManager.GetComponent<SceneItemInstanceManager>() != null
             && sceneManager.GetComponent<SceneItemInstanceManager>().PlayerCharacterHolder != null)
             {
-                //Get the character
-                Target = sceneManager.GetComponent<SceneItemInstanceManager>()
-                    .PlayerCharacterHolder.transform;
-                //Record the offset
-                offset = transform.position - Target.position;
-                initialized = true;
+                var renderer = sceneManager.GetComponent<SceneItemInstanceManager>()
+                    .PlayerCharacterHolder.GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                {
+                    //Get the character
+                    Target = sceneManager.GetComponent<SceneItemInstanceManager>()
+                        .PlayerCharacterHolder.transform;
+                    //Record the offset
+                    //Because the models stand on origin, so the center has an offset to the origin
+                    var centerOffset = new Vector3(0, renderer.bounds.size.y / 2, 0);
+                    transform.position = transform.position + centerOffset;
+                    offset = transform.position - Target.position;
+                    initialized = true;
+                }
             }
         }
         if (initialized)
@@ -55,7 +63,8 @@ public class CameraFollow : MonoBehaviour
                         isDown = true;
                         dragTime = 0;
                     }
-                } else
+                }
+                else
                 {
                     if (1 == Input.touchCount || Input.GetMouseButton(0))
                     {
@@ -71,7 +80,8 @@ public class CameraFollow : MonoBehaviour
                                 Vector2 deltaPos = touch.deltaPosition;
                                 dx = deltaPos.x * touchFactor;
                                 dy = deltaPos.y * touchFactor;
-                            } else
+                            }
+                            else
                             {
                                 dx = Input.GetAxis("Mouse X");
                                 dy = Input.GetAxis("Mouse Y");
@@ -90,7 +100,8 @@ public class CameraFollow : MonoBehaviour
                             if (angle <= 0)
                             {
                                 ry -= (angle - 0.1f);
-                            } else if(angle >= 180)
+                            }
+                            else if (angle >= 180)
                             {
                                 ry -= (angle - 180 + 0.1f);
                             }
@@ -99,7 +110,8 @@ public class CameraFollow : MonoBehaviour
                             //Update the new offset
                             offset = transform.position - Target.position;
                         }
-                    } else
+                    }
+                    else
                     {
                         //Not press down 1 point
                         isDown = false;

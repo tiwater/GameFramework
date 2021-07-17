@@ -51,7 +51,7 @@ namespace GameFramework.GameStructure.Characters.ObjectModel
         public override async Task LoadAddressableResources(List<string> giIds)
         {
             await base.LoadAddressableResources(giIds);
-            //TODO: mark the selected Character
+            //Mark the selected Character
             var pgi = GameManager.Instance.PlayerGameItems.SelectedCharacter;
             if(pgi!=null)
             {
