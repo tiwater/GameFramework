@@ -52,7 +52,7 @@ namespace GameFramework.Display.Placement.Components
                             .PlayerCharacterHolder.transform;
                         //Record the offset
                         //Because the models stand on origin, so the center has an offset to the origin
-                        var centerOffset = new Vector3(0, renderer.bounds.size.y / 2, 0);
+                        var centerOffset = new Vector3(0, renderer.bounds.center.y, 0);
                         transform.position = transform.position + centerOffset;
                         offset = transform.position - Target.position;
                         initialized = true;
