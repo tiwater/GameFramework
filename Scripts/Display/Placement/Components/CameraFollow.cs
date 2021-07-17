@@ -43,12 +43,20 @@ namespace GameFramework.Display.Placement.Components
                 if (sceneManager != null && sceneManager.GetComponent<SceneItemInstanceManager>() != null
                 && sceneManager.GetComponent<SceneItemInstanceManager>().PlayerCharacterHolder != null)
                 {
-                    //Get the character
-                    Target = sceneManager.GetComponent<SceneItemInstanceManager>()
-                        .PlayerCharacterHolder.transform;
-                    //Record the offset
-                    offset = transform.position - Target.position;
-                    initialized = true;
+                    var renderer = sceneManager.GetComponent<SceneItemInstanceManager>()
+                        .PlayerCharacterHolder.GetComponentInChildren<Renderer>();
+                    if (renderer != null)
+                    {
+                        //Get the character
+                        Target = sceneManager.GetComponent<SceneItemInstanceManager>()
+                            .PlayerCharacterHolder.transform;
+                        //Record the offset
+                        //Because the models stand on origin, so the center has an offset to the origin
+                        var centerOffset = new Vector3(0, renderer.bounds.size.y / 2, 0);
+                        transform.position = transform.position + centerOffset;
+                        offset = transform.position - Target.position;
+                        initialized = true;
+                    }
                 }
             }
             if (initialized)

@@ -19,45 +19,27 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //----------------------------------------------
 
+using GameFramework.GameStructure.GameItems.Components.AbstractClasses;
 using GameFramework.GameStructure.GameItems.ObjectModel;
-using GameFramework.GameStructure.Characters.Messages;
-using System.Threading.Tasks;
-using GameFramework.GameStructure.PlayerGameItems.ObjectModel;
-using System.Collections.Generic;
+using UnityEngine;
+using GameFramework.GameStructure.AddressableGameItems.ObjectModel;
 
-namespace GameFramework.GameStructure.Characters.ObjectModel
+namespace GameFramework.GameStructure.Characters.Components
 {
     /// <summary>
-    /// For managing an array of characters inlcuding selection, unlocking
+    /// Set an image to the specified sprite from the referenced AddressableGameItem
     /// </summary>
-    public class CharacterGameItemManager : GameItemManager<Character, GameItem>
+    [AddComponentMenu("Game Framework/GameStructure/Characters/Set Image To AddressableGameItem Sprite")]
+    [HelpURL("http://www.flipwebapps.com/unity-assets/game-framework/game-structure/Characters/")]
+    public class SetImageToAddressableGameItemSprite : SetImageToSprite<AddressableGameItem>
     {
         /// <summary>
-        /// Called when the current selection changes. Override this in any base class to provide further handling such as sending out messaging.
+        /// Return a GameItemManager that this works upon.
         /// </summary>
-        /// <param name="newSelection"></param>
-        /// <param name="oldSelection"></param>
-        /// You may want to override this in your derived classes to send custom messages.
-        public override void OnSelectedChanged(Character newSelection, Character oldSelection)
-        {
-                GameManager.SafeQueueMessage(new CharacterChangedMessage(newSelection, oldSelection));
-        }
-
-        /// <summary>
-        /// Load the addressable resources for the PlayerGameItem
-        /// </summary>
-        /// <param name="pgi"></param>
         /// <returns></returns>
-        public override async Task LoadAddressableResources(List<string> giIds)
+        protected override GameItemManager<AddressableGameItem, GameItem> GetGameItemManager()
         {
-            await base.LoadAddressableResources(giIds);
-            //Mark the selected Character
-            var pgi = GameManager.Instance.PlayerGameItems.SelectedCharacter;
-            if(pgi!=null)
-            {
-                Selected = GetItem(pgi.GiId);
-                Selected.PlayerGameItem = pgi;
-            }
+            return GameManager.Instance.AddressableGameItems;
         }
     }
 }
