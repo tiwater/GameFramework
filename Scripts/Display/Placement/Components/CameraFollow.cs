@@ -35,7 +35,7 @@ namespace GameFramework.Display.Placement.Components
 
         private float touchFactor = 0.05f;
 
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (!initialized)
             {
