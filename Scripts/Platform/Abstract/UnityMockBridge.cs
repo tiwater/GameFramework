@@ -70,5 +70,15 @@ namespace GameFramework.Platform.Abstract
                 }
             }
         }
+
+        public override void StartService(string packageName, string className)
+        {
+            //Dummy
+        }
+
+        public override void StopService(string packageName, string className)
+        {
+            //Dummy
+        }
     }
 }

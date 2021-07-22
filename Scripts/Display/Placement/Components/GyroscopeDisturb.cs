@@ -5,7 +5,8 @@ using UnityEngine;
 
 namespace GameFramework.Display.Placement.Components
 {
-    public class MemsAction : MonoBehaviour
+    //TODO: Complete after have Gyroscope
+    public class GyroscopeDisturb : MonoBehaviour
     {
         public float Speed = 20;
 

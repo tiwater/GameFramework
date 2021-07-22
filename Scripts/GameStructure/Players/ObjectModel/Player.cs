@@ -179,10 +179,10 @@ namespace GameFramework.GameStructure.Players.ObjectModel
         {
             Reset();
 
-            _livesCounter = GetCounter("Lives");
-            _healthCounter = GetCounter("Health");
-            Assert.IsNotNull(_livesCounter, "All GameItems must have a counter defined with the Key 'Lives'");
-            Assert.IsNotNull(_healthCounter, "All GamItems must have a counter defined with the Key 'Health'");
+            //_livesCounter = GetCounter("Lives");
+            //_healthCounter = GetCounter("Health");
+            //Assert.IsNotNull(_livesCounter, "All GameItems must have a counter defined with the Key 'Lives'");
+            //Assert.IsNotNull(_healthCounter, "All GamItems must have a counter defined with the Key 'Health'");
 
             //Name = GetSettingString("CustomName", CustomName);
 

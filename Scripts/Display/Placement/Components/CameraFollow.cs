@@ -23,6 +23,8 @@ namespace GameFramework.Display.Placement.Components
         public bool SupportRotate = true;
         public float RotateSpeed = 250f;
 
+        public string ItemInstanceManagerOwner = "SceneManager";
+
         /// <summary>
         /// The time threshold to start drag the camera to rotate around the target
         /// </summary>
@@ -39,23 +41,33 @@ namespace GameFramework.Display.Placement.Components
         {
             if (!initialized)
             {
-                GameObject sceneManager = GameObject.Find("SceneManager");
-                if (sceneManager != null && sceneManager.GetComponent<SceneItemInstanceManager>() != null
-                && sceneManager.GetComponent<SceneItemInstanceManager>().PlayerCharacterHolder != null)
+                if (Target != null)
                 {
-                    var renderer = sceneManager.GetComponent<SceneItemInstanceManager>()
-                        .PlayerCharacterHolder.GetComponentInChildren<Renderer>();
-                    if (renderer != null)
+                    //Already has a target, then follow it
+                    offset = transform.position - Target.position;
+                    initialized = true;
+                }
+                else
+                {
+                    //Find the player's character and follow its center
+                    GameObject sceneManager = GameObject.Find(ItemInstanceManagerOwner);
+                    if (sceneManager != null && sceneManager.GetComponent<SceneItemInstanceManager>() != null
+                    && sceneManager.GetComponent<SceneItemInstanceManager>().PlayerCharacterHolder != null)
                     {
-                        //Get the character
-                        Target = sceneManager.GetComponent<SceneItemInstanceManager>()
-                            .PlayerCharacterHolder.transform;
-                        //Record the offset
-                        //Because the models stand on origin, so the center has an offset to the origin
-                        var centerOffset = new Vector3(0, renderer.bounds.center.y, 0);
-                        transform.position = transform.position + centerOffset;
-                        offset = transform.position - Target.position;
-                        initialized = true;
+                        var renderer = sceneManager.GetComponent<SceneItemInstanceManager>()
+                            .PlayerCharacterHolder.GetComponentInChildren<Renderer>();
+                        if (renderer != null)
+                        {
+                            //Get the character
+                            Target = sceneManager.GetComponent<SceneItemInstanceManager>()
+                                .PlayerCharacterHolder.transform;
+                            //Record the offset
+                            //Because the models stand on origin, so the center has an offset to the origin
+                            var centerOffset = new Vector3(0, renderer.bounds.center.y, 0);
+                            transform.position = transform.position + centerOffset;
+                            offset = transform.position - Target.position;
+                            initialized = true;
+                        }
                     }
                 }
             }

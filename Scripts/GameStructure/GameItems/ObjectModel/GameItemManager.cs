@@ -416,7 +416,7 @@ namespace GameFramework.GameStructure.GameItems.ObjectModel
                 if (item.GiId == selectedNumber)
                     Selected = item;
             }
-            if (Selected == null)
+            if (Selected == null && Items.Count>0)
                 Selected = Items[0];
         }
 

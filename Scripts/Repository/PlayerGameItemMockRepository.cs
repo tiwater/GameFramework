@@ -122,9 +122,10 @@ namespace GameFramework.Repository
             return seaweeds;
         }
 
-        public virtual Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
+        public async virtual Task<List<PlayerGameItem>> LoadPlayerGameItems(string itemId)
         {
-            throw new NotImplementedException();
+            var items = new List<PlayerGameItem>();
+            return items;
         }
 
         public virtual Task<string> LoadToken()

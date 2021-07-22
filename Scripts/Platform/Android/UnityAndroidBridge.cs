@@ -138,5 +138,39 @@ namespace GameFramework.Platform.Android
             return currentActivity;
 
         }
+
+
+        public override void StartService(string packageName, string className)
+        {
+
+#if UNITY_EDITOR
+            //None in editor
+#elif UNITY_ANDROID
+
+
+            AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+
+            //Set intent
+            intentObject.Call<AndroidJavaObject>("setClassName", packageName, className);
+
+            GetCurrentActivity().Call<AndroidJavaObject>("startService", intentObject);
+#endif
+        }
+
+        public override void StopService(string packageName, string className)
+        {
+#if UNITY_EDITOR
+            //None in editor
+#elif UNITY_ANDROID
+
+
+            AndroidJavaObject intentObject = new AndroidJavaObject("android.content.Intent");
+
+            //Set intent
+            intentObject.Call<AndroidJavaObject>("setClassName", packageName, className);
+
+            GetCurrentActivity().Call<AndroidJavaObject>("stopService", intentObject);
+#endif
+        }
     }
 }

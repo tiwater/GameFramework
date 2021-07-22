@@ -1035,50 +1035,55 @@ namespace GameFramework.GameStructure
 
         private async Task SetupPlayers()
         {
-
-            // setup players
-            Players = new PlayerGameItemManager();
-            if (PlayerSetupMode == GameItemSetupMode.Automatic)
-                await Players.LoadAutomatic(0, PlayerCount - 1);
-            else if (PlayerSetupMode == GameItemSetupMode.FromResources)
-                await Players.Load(0, PlayerCount - 1);
-            else if (PlayerSetupMode == GameItemSetupMode.Specified)
-                Debug.LogError("World Specified setup mode is not currently implemented. Use one of the other modes for now.");
-            else if (PlayerSetupMode == GameItemSetupMode.FromServer)
+            try
             {
-                await Players.LoadFromStorage();
-
-                if (Players.Selected.PlayerGameItem == null)
+                // setup players
+                Players = new PlayerGameItemManager();
+                if (PlayerSetupMode == GameItemSetupMode.Automatic)
+                    await Players.LoadAutomatic(0, PlayerCount - 1);
+                else if (PlayerSetupMode == GameItemSetupMode.FromResources)
+                    await Players.Load(0, PlayerCount - 1);
+                else if (PlayerSetupMode == GameItemSetupMode.Specified)
+                    Debug.LogError("World Specified setup mode is not currently implemented. Use one of the other modes for now.");
+                else if (PlayerSetupMode == GameItemSetupMode.FromServer)
                 {
-                    //TODO: Get network status
-                    bool IsNetworkConnected = true;
-                    if (IsNetworkConnected)
+                    await Players.LoadFromStorage();
+
+                    if (Players.Selected.PlayerGameItem == null)
                     {
-                        //Need the client to create a new player account
-                        //Or wait for setup user later
-                    }
-                    else
-                    {
-                        if (AllowOfflineBoot)
+                        //TODO: Get network status
+                        bool IsNetworkConnected = true;
+                        if (IsNetworkConnected)
                         {
-                            await Players.LoadAutomatic(0, 0);
-                            //If no PlayerGameItem in offline mode, create one
-                            Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance();
+                            //Need the client to create a new player account
+                            //Or wait for setup user later
                         }
                         else
                         {
-                            //Didn't get player, which means we cannot proceed with the game until we connect to the web and create the account
-                            //TODO: Show warning and hold the process
-                            return;
+                            if (AllowOfflineBoot)
+                            {
+                                await Players.LoadAutomatic(0, 0);
+                                //If no PlayerGameItem in offline mode, create one
+                                Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance();
+                            }
+                            else
+                            {
+                                //Didn't get player, which means we cannot proceed with the game until we connect to the web and create the account
+                                //TODO: Show warning and hold the process
+                                return;
+                            }
                         }
-                    }
 
+                    }
                 }
-            }
-            if(PlayerSetupMode != GameItemSetupMode.FromServer)
+                if (PlayerSetupMode != GameItemSetupMode.FromServer)
+                {
+                    //If no PlayerGameItem in offline mode, create one
+                    Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance(Players.Selected.GiId);
+                }
+            } catch(Exception ex)
             {
-                //If no PlayerGameItem in offline mode, create one
-                Players.Selected.PlayerGameItem = Players.Selected.GenerateGameItemInstance(Players.Selected.GiId);
+                Debug.Log(ex.Message);
             }
         }
 

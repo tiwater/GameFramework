@@ -41,6 +41,20 @@ namespace GameFramework.Platform.Abstract
         public abstract void RemoveMessageListener(UnityAction<PlatformMessage> unityAction);
 
         /// <summary>
+        /// Start a system service
+        /// </summary>
+        /// <param name="packageName"></param>
+        /// <param name="className"></param>
+        public abstract void StartService(string packageName, string className);
+
+        /// <summary>
+        /// Stop the specified service
+        /// </summary>
+        /// <param name="packageName"></param>
+        /// <param name="className"></param>
+        public abstract void StopService(string packageName, string className);
+
+        /// <summary>
         /// The callback from native layer when a native message is received
         /// </summary>
         /// <param name="jsonMessage">The json format of the PlatformMessage converted from the native message by the UnityPlatformBridge</param>
