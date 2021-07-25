@@ -140,7 +140,7 @@ namespace GameFramework.Platform.Android
         }
 
 
-        public override void StartService(string packageName, string className)
+        public override void StartService(string packageName, string className, string action = null, Dictionary<string, object> content = null)
         {
 
 #if UNITY_EDITOR
@@ -152,6 +152,17 @@ namespace GameFramework.Platform.Android
 
             //Set intent
             intentObject.Call<AndroidJavaObject>("setClassName", packageName, className);
+            if (!string.IsNullOrEmpty(action))
+            {
+                intentObject.Call<AndroidJavaObject>("setAction", action);
+            }
+            if (content != null)
+            {
+                foreach (var msg in content)
+                {
+                    intentObject.Call<AndroidJavaObject>("putExtra", msg.Key, msg.Value);
+                }
+            }
 
             GetCurrentActivity().Call<AndroidJavaObject>("startService", intentObject);
 #endif

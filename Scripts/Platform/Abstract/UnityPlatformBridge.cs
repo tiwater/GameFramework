@@ -45,7 +45,7 @@ namespace GameFramework.Platform.Abstract
         /// </summary>
         /// <param name="packageName"></param>
         /// <param name="className"></param>
-        public abstract void StartService(string packageName, string className);
+        public abstract void StartService(string packageName, string className, string action=null, Dictionary<string, object> content = null);
 
         /// <summary>
         /// Stop the specified service

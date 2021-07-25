@@ -71,7 +71,7 @@ namespace GameFramework.Platform.Abstract
             }
         }
 
-        public override void StartService(string packageName, string className)
+        public override void StartService(string packageName, string className, string action = null, Dictionary<string, object> content = null)
         {
             //Dummy
         }
