@@ -20,6 +20,7 @@ namespace GameFramework.Display.Placement.Components
         public float PushForce = 1;
         public float VibrativeFreq = 8;
         public float ShakeVolve = 0.00002f;
+        public float ShakeDuration = 4;
 
         public CameraFollow CameraFollowComp;
         public MoveToPosition MoveToPositionComp;
@@ -87,7 +88,10 @@ namespace GameFramework.Display.Placement.Components
             //{
             //    Debug.Log("delta:" + accDelta.sqrMagnitude);
             //}
-            t = t + Time.deltaTime;
+            if (disturbing)
+            {
+                t = t + Time.deltaTime;
+            }
             if (accDelta.sqrMagnitude > ShakeVolve)
             {
                 vibrativeForce = lastVibrativeForce + accDelta * 100;
@@ -101,42 +105,45 @@ namespace GameFramework.Display.Placement.Components
                     //TODO: The animation should repeat until the vibration ends
                     jsComp.PerformOperation(new NormalShowAction("dummy", GameItemHolder.PlayerGameItem.Id, "Dizzy"));
                 }
-                t = 0;
-            }
-            lastVibrativeForce = vibrativeForce * Mathf.Exp(-t / 2) * Mathf.Sin(t * VibrativeFreq);
-
-            if (t < 4 || (disturbing && lastVibrativeForce.sqrMagnitude > 0.0025f))
-            {
                 if (!disturbing)
                 {
                     originalPosition = transform.position;
                     disturbing = true;
                 }
-                //RigidbodyComp.AddForce(lastVibrativeForce);
-                CameraFollowComp.enabled = false;
-                MoveToPositionComp.enabled = false;
+                t = 0;
+            }
+            if (disturbing)
+            {
+                lastVibrativeForce = vibrativeForce * Mathf.Exp(-t / 2) * Mathf.Sin(t * VibrativeFreq);
 
-                //Rotate the move direction according to camera
-                Vector3 movement;
-                if (SupportY)
+                if (t < ShakeDuration || lastVibrativeForce.sqrMagnitude > 0.0025f)
                 {
-                    movement = Camera.main.transform.rotation * lastVibrativeForce;
+                    //RigidbodyComp.AddForce(lastVibrativeForce);
+                    CameraFollowComp.enabled = false;
+                    MoveToPositionComp.enabled = false;
+
+                    //Rotate the move direction according to camera
+                    Vector3 movement;
+                    if (SupportY)
+                    {
+                        movement = Camera.main.transform.rotation * lastVibrativeForce;
+                    }
+                    else
+                    {
+                        Vector3 cameraRoate = Camera.main.transform.rotation.eulerAngles;
+                        movement = (Quaternion.AngleAxis(cameraRoate.y, Vector3.up) * lastVibrativeForce);
+                    }
+
+                    RigidbodyComp.MovePosition(originalPosition + movement * PushForce);
                 }
                 else
                 {
-                    Vector3 cameraRoate = Camera.main.transform.rotation.eulerAngles;
-                    movement = (Quaternion.AngleAxis(cameraRoate.y, Vector3.up) * lastVibrativeForce);
+                    //TODO: Support customized action when the vibration ends
+                    RigidbodyComp.MovePosition(originalPosition);
+                    CameraFollowComp.enabled = true;
+                    MoveToPositionComp.enabled = true;
+                    disturbing = false;
                 }
-
-                RigidbodyComp.MovePosition(originalPosition + movement * PushForce);
-            }
-            else if(disturbing)
-            {
-                //TODO: Support customized action when the vibration ends
-                RigidbodyComp.MovePosition(originalPosition);
-                CameraFollowComp.enabled = true;
-                MoveToPositionComp.enabled = true;
-                disturbing = false;
             }
         }
     }
